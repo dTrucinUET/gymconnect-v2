@@ -1,0 +1,34 @@
+{
+  "name": "gymconnect",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@mantine/core": "^7.15.1",
+    "@mantine/dates": "^7.15.1",
+    "@mantine/form": "^7.15.1",
+    "@mantine/hooks": "^7.15.1",
+    "@mantine/notifications": "^7.15.1",
+    "@tabler/icons-react": "^3.24.0",
+    "dayjs": "^1.11.13",
+    "next": "14.2.16",
+    "postcss-functions": "^4.0.2",
+    "postcss-mixins": "^11.0.3",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8.4.49",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1",
+    "typescript": "^5"
+  }
+}
