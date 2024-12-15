@@ -16,6 +16,7 @@ module.exports = {
       rating: { type: Sequelize.FLOAT, allowNull: true },
       balance: { type: Sequelize.FLOAT, allowNull: false },
       amount: { type: Sequelize.INTEGER, allowNull: false },
+      days: { type: Sequelize.FLOAT, allowNull: false },
       type: { 
         type: Sequelize.ENUM('card', 'trainer', 'exercise'), 
         allowNull: false 
