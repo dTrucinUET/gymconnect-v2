@@ -2,19 +2,19 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class RolePermission extends Model {
+  class UserRoom extends Model {
     static associate(models) {
-      RolePermission.belongsTo(models.Role, { foreignKey: 'role_id' });
-      RolePermission.belongsTo(models.Permission, { foreignKey: 'permission_id' });
+      UserRoom.belongsTo(models.User, { foreignKey: 'role_id' });
+      UserRoom.belongsTo(models.Room, { foreignKey: 'permission_id' });
     }
   }
 
-  RolePermission.init(
+  UserRoom.init(
     {
       role_id: {
         type: DataTypes.INTEGER,
         references: {
-          model: 'roles',
+          model: 'users',
           key: 'id',
         },
         onUpdate: 'CASCADE',
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       permission_id: {
         type: DataTypes.INTEGER,
         references: {
-          model: 'permissions',
+          model: 'rooms',
           key: 'id',
         },
         onUpdate: 'CASCADE',
@@ -32,11 +32,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'RolePermission',
-      tableName: 'role_permission',
+      modelName: 'UserRoom',
+      tableName: 'user_room',
       timestamps: true,
     }
   );
 
-  return RolePermission;
+  return UserRoom;
 };
