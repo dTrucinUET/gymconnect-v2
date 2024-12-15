@@ -1,7 +1,5 @@
-import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
 import db from '../models/index'
-import { where } from 'sequelize/lib/sequelize';
 
 
 const salt = bcrypt.genSaltSync(10);
@@ -21,84 +19,48 @@ const createNewUser = async (email, password, username) => {
             username: username
         })
     } catch (err) {
-        console.error('Error creating user:', err);
+        throw Error(err)
     }
 
 }
 
 const getUserList = async () => {
 
-    //test relationship 
-    // let newUser = await db.User.findOne({
-    //     where: { id: 1 },
-    //     attributes: ["id", "username", "phone", "sex", "address"],
-    //     include: {
-    //         model: db.Group,
-    //         attributes: ["id", "name", "description"],
-    //     },
-    //     raw: true,
-    //     nest: true
-    // })
-
-    // // let userRole = await db.Group.findAll({
-    // //     where: { id: newUser.Group.id },
-    // //     include: db.Role,
-    // //     raw: true,
-    // //     nest: true
-    // // })
-
-    // let userRole = await db.Role.findAll({
-
-    //     include: {
-    //         model: db.Group,
-    //         where: { id: newUser.Group.id }
-    //     },
-    //     raw: true,
-    //     nest: true
-    // })
-
-    // console.log("check role User ", userRole);
-    // console.log("check User", newUser);
-
-
     let user = []
     try {
         user = await db.User.findAll()
         return user;
     } catch (err) {
-        console.error('Error fetching user list:', err);
-        return user;
+        throw Error(err)
     }
 }
 
-const deleteUser = async (userIndex) => {
+const deleteUserService = async (userIndex) => {
 
     try {
         await db.User.destroy({
             where: { id: userIndex }
         });
     } catch (err) {
-        console.error('Error deleting user:', err);
+        throw Error(err)
 
     }
 
 }
-const getUserById = async (userIndex) => {
+const getUserByIdService = async (userIndex) => {
     let user = {}
     try {
         user = await db.User.findOne({ where: { id: userIndex } });
         return user.get({ plain: true });
     } catch (err) {
-        console.error('Error deleting user:', err);
-        return results;
+        throw Error(err)
     }
 
 }
-const updateUserInfor = async (email, username, userIndex) => {
+const updateUserInfor = async (userIndex, data) => {
     try {
         await db.User.update({
-            email: email,
-            username: username,
+            ...data
         },
             {
                 where: {
@@ -108,15 +70,14 @@ const updateUserInfor = async (email, username, userIndex) => {
         );
 
     } catch (err) {
-        console.error('Error update user:', err);
+       throw Error(err)
     }
 
 }
-
-export default {
+module.exports = {
     createNewUser,
     getUserList,
-    deleteUser,
-    getUserById,
+    deleteUserService,
+    getUserByIdService,
     updateUserInfor
 }

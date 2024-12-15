@@ -1,5 +1,5 @@
-import e from 'express';
-import jwt, { decode } from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
+const { jwt } = require('jsonwebtoken')
 require("dotenv").config();
 
 const nonSecurePaths = ['/', '/register', '/login', '/logout'];
@@ -124,9 +124,17 @@ const checkUserPermission = (req, res, next) => {
         })
     }
 }
+
+const authenticateUser = (req, res, next) => {
+    checkUserJWT(req, res, next)
+    checkUserPermission(req, res, next)
+    next()
+}
+
 module.exports = {
     createJWT,
     verifyJWT,
     checkUserJWT,
-    checkUserPermission
+    checkUserPermission,
+    authenticateUser
 }
