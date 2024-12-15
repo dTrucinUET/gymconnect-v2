@@ -7,10 +7,15 @@ import { useForm } from '@mantine/form';
 import { useRouter } from 'next/navigation';
 import Logo from '../logo/logo';
 import LogoBlackGym from '../logo/logoblackgym';
+import { stringify } from 'querystring';
+interface DataUserSignup {
+    email: string;
+    password: string;
 
+}
 const Login = () => {
     const Router = useRouter()
-    const form = useForm({
+    const form = useForm<DataUserSignup>({
         initialValues: {
             email: '',
             password: '',
@@ -22,36 +27,41 @@ const Login = () => {
         },
     });
 
-    const handleSubmit = async (values: any) => {
+    const handleSubmit = async (values: DataUserSignup) => {
         try {
             console.log(values);
-
-            const response = await fetch('api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(values),
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                showNotification({
-                    title: 'Success',
-                    message: 'Logged in successfully!',
-                    color: 'green',
-                    position: 'bottom-right'
-
-                });
-            } else {
-                showNotification({
-                    title: 'Error',
-                    message: 'Login failed. Please check your credentials.',
-                    color: 'red',
-                    position: 'bottom-right'
-                });
+            const data = {
+                email: values.email,
+                password: values.password
             }
+            sessionStorage.setItem('user', JSON.stringify(data));
+            Router.push('/admin')
+            // const response = await fetch('api/login', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(values),
+            // });
+
+            // const data = await response.json();
+
+            // if (data.success) {
+            //     showNotification({
+            //         title: 'Success',
+            //         message: 'Logged in successfully!',
+            //         color: 'green',
+            //         position: 'bottom-right'
+
+            //     });
+            // } else {
+            //     showNotification({
+            //         title: 'Error',
+            //         message: 'Login failed. Please check your credentials.',
+            //         color: 'red',
+            //         position: 'bottom-right'
+            //     });
+            // }
         } catch (error) {
             console.error(error);
             showNotification({

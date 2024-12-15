@@ -1,4 +1,4 @@
-    .container {
+    /* .container {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -54,4 +54,132 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+    } */
+
+    /* Default styles (for larger screens) */
+    .container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 100vh;
+        background-image: url('/bg2.png');
+        object-fit: cover;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        overflow-x: auto;
+        /* Enable horizontal scrolling if needed */
+    }
+
+    .title {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .imageWrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 90vh;
+        z-index: -1;
+    }
+
+    .formWrapper {
+        width: 50%;
+        /* Default width */
+        height: 100vh;
+        padding: 20px;
+        background-color: #fff;
+        max-width: 1200px;
+        /* Limit max width for larger screens */
+        overflow: auto;
+        /* Enable scrolling within the form if necessary */
+    }
+
+    .formWrapper form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .inputField,
+    .buttonField {
+        margin-bottom: 12px;
+    }
+
+    .buttonField {
+        width: 100%;
+    }
+
+    /* Media Queries for responsive layout */
+    @media (max-width: 1200px) {
+        .formWrapper {
+            width: 60%;
+            /* Reduce form width on medium screens */
+        }
+    }
+
+    @media (max-width: 992px) {
+        .formWrapper {
+            width: 80%;
+            /* Further reduce form width on smaller screens */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+            /* Stack form and background image vertically */
+            justify-content: center;
+            overflow-x: auto;
+            /* Enable horizontal scroll if form is too wide */
+        }
+
+        .formWrapper {
+            width: 90%;
+            /* Make form more flexible */
+            height: auto;
+            /* Let form take height based on content */
+            margin-bottom: 20px;
+            /* Add margin for spacing */
+            max-width: 600px;
+            /* Limit max-width to avoid filling screen on small devices */
+        }
+
+        .title {
+            font-size: 1.2rem;
+            /* Reduce font size for small screens */
+        }
+
+        .inputField,
+        .buttonField {
+            margin-bottom: 10px;
+            /* Reduce margin on small screens */
+        }
+    }
+
+    @media (max-width: 480px) {
+        .formWrapper {
+            width: 100%;
+            /* Full-width form on very small screens */
+            height: auto;
+            /* Allow form to grow with content */
+            padding: 10px;
+            /* Reduce padding */
+            max-width: 400px;
+            /* Ensure form doesn't become too wide on small screens */
+        }
+
+        .title {
+            font-size: 1rem;
+            /* Further reduce font size */
+        }
+
+        .inputField,
+        .buttonField {
+            margin-bottom: 8px;
+            /* Further reduce margin */
+        }
     }

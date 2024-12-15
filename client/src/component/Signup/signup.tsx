@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, TextInput, PasswordInput, Button, Text, Group, Paper, Title, Checkbox, Anchor, px, Popover, Box } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
@@ -11,10 +11,25 @@ import { useRouter } from 'next/navigation';
 import LogoBlackGym from '../logo/logoblackgym';
 import { log } from 'node:console';
 const SignupForm = () => {
-    const [date, setDate] = useState<Date | null>(null);  // Store selected date
+    const [date, setDate] = useState<Date | null>();  // Store selected date
     const [opened, setOpened] = useState(false);  // Control DatePicker visibility
 
     const Router = useRouter()
+    const [location, setLocation] = useState({
+        ward: '',
+        district: '',
+        province: '',
+    });
+    const handleLocationChange = (field: any, value: any) => {
+        setLocation((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
+    useEffect(() => {
+        const fullLocation = `${location.ward}, ${location.district}, ${location.province}`;
+        form.setFieldValue('location', fullLocation);
+    }, [location]);
 
     const form = useForm({
         initialValues: {
@@ -25,7 +40,7 @@ const SignupForm = () => {
             password: '',
             confirmPassword: '',
             birthdate: '',
-            address: '',
+            location: '',
             detailedAddress: '',
             terms: false,
         },
@@ -42,7 +57,8 @@ const SignupForm = () => {
 
     const handleSubmit = async (values: any) => {
         try {
-
+            const fullLocation = `${location.ward}, ${location.district}, ${location.province}`;
+            form.setFieldValue('location', fullLocation);
             console.log(values);
 
             const response = await fetch('/api/signup', {
@@ -61,6 +77,7 @@ const SignupForm = () => {
                     message: 'Registration successful!',
                     color: 'green',
                 });
+                Router.push('/signin')
             } else {
                 showNotification({
                     title: 'Error',
@@ -75,6 +92,8 @@ const SignupForm = () => {
                 message: 'Something went wrong. Please try again later.',
                 color: 'red',
             });
+            // Router.push('/signin')
+
         }
     };
     const handleClickButton = (path: string) => {
@@ -133,31 +152,37 @@ const SignupForm = () => {
                             />
                         </Group>
                         <DatePickerInput
-                            label="Pick date"
-                            placeholder="Pick date"
+                            label="Ngày Sinh"
+                            placeholder="04/12/2004"
                             value={date}
                             {...form.getInputProps('birthdate')}
                         />
-                        <Group >
-                            <PasswordInput
+
+                        <Group>
+                            <TextInput
                                 style={{ width: '30%' }}
-                                label="Mật khẩu"
-                                placeholder="Nhập mật khẩu của bạn"
-                                {...form.getInputProps('password')}
+                                label="Xã/Phường"
+                                placeholder="29 Dịch Vọng"
+                                value={location.ward}
+                                onChange={(e) => handleLocationChange('ward', e.target.value)}
                             />
-                            <PasswordInput
+                            <TextInput
                                 style={{ width: '30%' }}
-                                label="Nhắc lại mật khẩu"
-                                placeholder="Nhập lại mật khẩu của bạn"
-                                {...form.getInputProps('confirmPassword')}
+                                label="Quận/Huyện"
+                                placeholder="Cầu Giấy"
+                                value={location.district}
+                                onChange={(e) => handleLocationChange('district', e.target.value)}
                             />
-                            <PasswordInput
+                            <TextInput
                                 style={{ width: '30%' }}
-                                label="Nhắc lại mật khẩu"
-                                placeholder="Nhập lại mật khẩu của bạn"
-                                {...form.getInputProps('confirmPassword')}
+                                label="Tỉnh/Thành"
+                                placeholder="Hà Nội"
+                                value={location.province}
+                                onChange={(e) => handleLocationChange('province', e.target.value)}
                             />
                         </Group>
+
+
                         <TextInput
                             label="Địa chỉ chi tiết"
                             placeholder="29 Dich vong Cau Giay Ha Noi"
@@ -178,7 +203,7 @@ const SignupForm = () => {
                     <Group p="center" >
                         <Text size="sm" color="gray">
                             Đã có tài khoản?{' '}
-                            <Anchor size="sm" onClick={() => handleClickButton('/Signin')}>
+                            <Anchor size="sm" onClick={() => handleClickButton('/signin')}>
                                 Trở về trang đăng nhập
                             </Anchor>
                         </Text>

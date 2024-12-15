@@ -1,0 +1,90 @@
+ .navbar {
+   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+   height: 90vh;
+   width: rem(300px);
+   padding: var(--mantine-spacing-md);
+   padding-top: 45px;
+   padding-bottom: 0;
+   display: flex;
+   flex-direction: column;
+   transition:
+     margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+     width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+     padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+     opacity 0.4s ease-in-out 0.2s,
+     visibility 0.4s ease-in-out 0.3s;
+   overflow: hidden;
+ }
+
+ .navInline {
+   margin-left: -300px;
+   width: 0;
+   padding: 0;
+   opacity: 0;
+   visibility: hidden;
+ }
+
+ .navOutline {
+   margin-left: 0;
+   width: rem(300px);
+   opacity: 1;
+   visibility: visible;
+ }
+
+
+ .toggle {
+   position: absolute;
+   top: 65px;
+   left: 10px;
+   background-color: white;
+   z-index: 1;
+   border: 1px solid black;
+   transition: left 1s cubic-bezier(0.4, 0, 0.2, 1);
+ }
+
+ .links {
+   flex: 1;
+   margin-left: calc(var(--mantine-spacing-md) * -1);
+   margin-right: calc(var(--mantine-spacing-md) * -1);
+ }
+
+ .linksInner {
+   padding-top: 0px;
+   padding-bottom: var(--mantine-spacing-xl);
+ }
+
+
+ @media (max-width: 768px) {
+   .navbar {
+     margin-left: -300px;
+     width: 0;
+     padding-top: 45px;
+     padding: 0;
+     opacity: 0;
+     visibility: hidden;
+     transition:
+       margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+       width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+       padding 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+       opacity 0.4s ease-in-out 0.2s,
+       visibility 0.4s ease-in-out 0.3s;
+   }
+
+   .navInline {
+     margin-left: 3px;
+     padding-top: 45px;
+     width: 100vw;
+     opacity: 1;
+     visibility: visible;
+   }
+
+   .toggle {
+     position: absolute;
+     top: 65px;
+     left: 10px;
+     background-color: white;
+     z-index: 1;
+     transition: left 1s cubic-bezier(0.4, 0, 0.2, 1);
+   }
+
+ }
