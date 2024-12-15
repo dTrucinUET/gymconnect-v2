@@ -101,7 +101,9 @@ const HeaderMegaMenu = () => {
                         <Button variant="light" className={classes.link} onClick={() => handleNavigate('/')}>
                             Trang chủ
                         </Button>
-
+                        <Button variant="light" className={classes.link} onClick={() => handleNavigate('/admin/user')}>
+                            Admin
+                        </Button>
                         <Collapse in={linksOpened}>{links}</Collapse>
 
                         <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
@@ -154,7 +156,7 @@ const HeaderMegaMenu = () => {
                     </Group>
 
                     <Group visibleFrom="sm">
-                        <Button className={classes.buttonRegister} variant="outline" onClick={() => handleNavigate('/Signin')} >Đăng ký ngay</Button>
+                        <Button className={classes.buttonRegister} variant="outline" onClick={() => handleNavigate('/signin')} >Đăng ký ngay</Button>
                         {/* <Button className='buttonSingup'>Sign up</Button> */}
                     </Group>
 
@@ -201,7 +203,10 @@ const HeaderMegaMenu = () => {
                         {/* <Button variant="outline" color="white">Log in</Button>
                         <Button variant="outline" color="white">Sign up</Button> */}
                     </Group>
+                    <Group justify="center" grow pb="xl" px="md">
+                        <Button className={classes.buttonRegister} variant="outline" >Đăng ký ngay</Button>
 
+                    </Group>
                 </ScrollArea>
             </Drawer>
         </>
