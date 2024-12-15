@@ -1,12 +1,14 @@
 'use client '
 import React from "react";
-import { Container, Group, Text, Button, Anchor, Box, Stack, Divider, useMantineTheme } from '@mantine/core';
+import { Container, Group, Text, Button, Anchor, Box, Stack, Divider, useMantineTheme, } from '@mantine/core';
 import { IconBrandFacebook, IconBrandTwitter, IconBrandInstagram } from '@tabler/icons-react';
 import Logo from "../logo/logo";
 
 export default function Footer() {
 
     return (
+        <Container fluid px={0}>
+
         <Box bg="black" py={8} style={{
             color: 'white',
         }}>
@@ -48,5 +50,6 @@ export default function Footer() {
                 </Group>
             </Container>
         </Box >
+        </Container>
     );
 }
