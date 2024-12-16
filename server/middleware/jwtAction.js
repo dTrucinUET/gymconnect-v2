@@ -1,5 +1,5 @@
 // import jwt from 'jsonwebtoken';
-const { jwt } = require('jsonwebtoken')
+const jwt = require("jsonwebtoken")
 require("dotenv").config();
 
 const nonSecurePaths = ['/', '/register', '/login', '/logout'];
