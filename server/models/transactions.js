@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       status: DataTypes.ENUM('pending', 'failed', 'completed'),
       user_id: DataTypes.INTEGER,
       service_id: DataTypes.INTEGER,
+      days: DataTypes.FLOAT,
     },
     {
       sequelize,

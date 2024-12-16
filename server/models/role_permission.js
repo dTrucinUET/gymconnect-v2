@@ -1,55 +1,42 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('role_permission', {
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    role_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'roles',
-        key: 'id'
-      }
-    },
-    permission_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'permissions',
-        key: 'id'
-      }
+'use strict';
+const { Model } = require('sequelize');
+
+module.exports = (sequelize, DataTypes) => {
+  class RolePermission extends Model {
+    static associate(models) {
+      RolePermission.belongsTo(models.Role, { foreignKey: 'role_id' });
+      RolePermission.belongsTo(models.Permission, { foreignKey: 'permission_id' });
     }
-  }, {
-    sequelize,
-    tableName: 'role_permission',
-    timestamps: true,
-    indexes: [
-      {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+  }
+
+  RolePermission.init(
+    {
+      role_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'roles',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      {
-        name: "role_id",
-        using: "BTREE",
-        fields: [
-          { name: "role_id" },
-        ]
+      permission_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'permissions',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      {
-        name: "permission_id",
-        using: "BTREE",
-        fields: [
-          { name: "permission_id" },
-        ]
-      },
-    ]
-  });
+    },
+    {
+      sequelize,
+      modelName: 'RolePermission',
+      tableName: 'role_permission',
+      timestamps: true,
+    }
+  );
+
+  return RolePermission;
 };

@@ -13,10 +13,10 @@ module.exports = {
                 updatedAt: new Date(),
             });
         }
-        await queryInterface.bulkInsert('transactionlogs', transactionLogs, {});
+        await queryInterface.bulkInsert('transactionLogs', transactionLogs, {});
     },
 
     async down(queryInterface, Sequelize) {
-        await queryInterface.bulkDelete('transactionlogs', null, {});
+        await queryInterface.bulkDelete('transactionLogs', null, {});
     }
 };
