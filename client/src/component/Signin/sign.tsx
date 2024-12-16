@@ -23,13 +23,17 @@ const Login = () => {
 
         validate: {
             email: (value: string) => (/^\S+@\S+$/.test(value) ? null : 'Email is invalid'),
-            password: (value: string | any[]) => (value.length < 6 ? 'Password must have at least 6 characters' : null),
+            password: (value: string | any[]) => (
+                value.length < 6 ? 'Password must have at least 6 characters' : null
+            ),
         },
     });
 
     const handleSubmit = async (values: DataUserSignup) => {
         try {
             console.log(values);
+            //validate data user 
+
             const data = {
                 email: values.email,
                 password: values.password

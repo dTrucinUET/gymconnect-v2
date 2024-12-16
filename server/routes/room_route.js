@@ -4,7 +4,7 @@ const { Router } = require('express');
 const roomController = require('../controllers/roomController')
 
 // Initialization
-const router = Router();
+const   router = Router();
 
 // Requests 
 router.get('/:id', roomController.getRoomById);

@@ -1,4 +1,3 @@
-import mysql from 'mysql2/promise';
 import bcrypt from 'bcryptjs';
 import db from '../models/index'
 
@@ -19,12 +18,8 @@ const checkEmailExists = async (data) => {
         }
     });
 
-    if (user) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    const isExist = user ? true : false;
+    return isExist
 
 }
 
@@ -36,12 +31,8 @@ const checkPhoneExists = async (data) => {
         }
     });
 
-    if (user) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    const isExist = user ? true : false;
+    return isExist
 
 }
 
