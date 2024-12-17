@@ -1,6 +1,11 @@
-import bcrypt from 'bcryptjs';
-import db from '../models/index'
+const bcrypt = require('bcryptjs');
+const UserModel = require('../models/users')
 
+const sequelize = require('../config/sequelize.js');
+const { DataTypes } = require('sequelize');
+
+const Sequelize_In = sequelize
+const User = UserModel(Sequelize_In, DataTypes)
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -13,7 +18,7 @@ const createNewUser = async (email, password, username) => {
     let hashpass = hashUserPassWord(password);
 
     try {
-        await db.User.create({
+        await User.create({
             email: email,
             password: hashpass,
             username: username
@@ -28,7 +33,7 @@ const getUserList = async () => {
 
     let user = []
     try {
-        user = await db.User.findAll()
+        user = await User.findAll()
         return user;
     } catch (err) {
         throw Error(err)
@@ -38,7 +43,7 @@ const getUserList = async () => {
 const deleteUserService = async (userIndex) => {
 
     try {
-        await db.User.destroy({
+        await User.destroy({
             where: { id: userIndex }
         });
     } catch (err) {
@@ -50,7 +55,7 @@ const deleteUserService = async (userIndex) => {
 const getUserByIdService = async (userIndex) => {
     let user = {}
     try {
-        user = await db.User.findOne({ where: { id: userIndex } });
+        user = await User.findOne({ where: { id: userIndex } });
         return user.get({ plain: true });
     } catch (err) {
         throw Error(err)
@@ -59,7 +64,7 @@ const getUserByIdService = async (userIndex) => {
 }
 const updateUserInfor = async (userIndex, data) => {
     try {
-        await db.User.update({
+        await User.update({
             ...data
         },
             {

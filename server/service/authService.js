@@ -19,6 +19,8 @@ const hashUserPassWord = (userPassWord) => {
 }
 
 const registerService = async (register_data) => {
+    console.log('hit services server regist');
+
     const user_email = register_data.email
     const user_phone = register_data.phone_number
     let message = null
@@ -101,7 +103,8 @@ const loginService = async (username, password) => {
         }
         token = received_token
         message = 'Login successful'
-        return { message: message, token: token }
+
+        return { message: message, token: token, user_data: token_data }
 
     }
     catch (err) {

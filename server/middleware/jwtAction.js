@@ -5,17 +5,47 @@ require("dotenv").config();
 
 const nonSecurePaths = ['/', '/register', '/login', '/logout'];
 
+const roleRoutes = {
+    '/room': ['admin', 'user', 'manager'],
+    '/room/:id': ['admin', 'user', 'manager'],
+    '/room_comment': ['admin', 'user', 'manager'],
+    '/room_comment/:id': ['admin', 'user', 'manager'],
+    '/equipments': ['admin', 'user', 'manager'],
+    '/equipments/:id': ['admin', 'user', 'manager'],
+    '/equipments_comment': ['admin', 'user', 'manager'],
+    '/equipments_comment/:id': ['admin', 'user', 'manager'],
+    '/users': ['admin'],
+    '/users/:id': ['admin'],
+    '/logs': ['admin', 'user', 'manager'],
+    '/logs/:id': ['admin', 'user', 'manager'],
+    '/permission': ['admin', 'user', 'manager'],
+    '/permission/:id': ['admin', 'user', 'manager'],
+    '/roles': ['admin', 'user', 'manager'],
+    '/roles/:id': ['admin', 'user', 'manager'],
+    '/role_permission': ['admin', 'user', 'manager'],
+    '/role_permission/:id': ['admin', 'user', 'manager'],
+    '/service': ['admin', 'user', 'manager'],
+    '/service/:id': ['admin', 'user', 'manager'],
+    '/service_comment': ['admin', 'user', 'manager'],
+    '/service_comment/:id': ['admin', 'user', 'manager'],
+    '/transaction': ['admin', 'user', 'manager'],
+    '/transaction/:id': ['admin', 'user', 'manager'],
+    'transaction_logs': ['admin', 'user', 'manager'],
+    '/transaction_logs/:id': ['admin', 'user', 'manager'],
+
+}
+
 const createJWT = (payload) => {
     let token = null;
 
     try {
-        let key = process.env.JWT_SECRET;
+        let key = process.env.JWT_SECRET || 'trucxinhlunglinh';
 
         token = jwt.sign(
             payload,
             key,
             {
-                expiresIn: process.env.JWT_EXPIRESIN
+                expiresIn: process.env.JWT_EXPIRESIN || 3600000
             }
         );
 
@@ -47,10 +77,13 @@ const extractToken = (req) => {
     return null;
 }
 const checkUserJWT = (req, res, next) => {
-    if (nonSecurePaths.includes(req.path)) return next();
+
+    if (nonSecurePaths.includes(req.originalUrl)) return next();
 
     let cookies = req.cookies;
     let bearerToken = extractToken(req);
+
+    console.log(bearerToken);
 
     if (cookies && cookies.access_token || bearerToken) {
         let token = cookies && cookies.access_token ? cookies.access_token : bearerToken;
@@ -86,27 +119,23 @@ const checkUserJWT = (req, res, next) => {
 }
 const checkUserPermission = (req, res, next) => {
 
-    if (nonSecurePaths.includes(req.path) || req.path === '/account') return next();
+    if (nonSecurePaths.includes(req.originalUrl)) return next();
 
     if (req.user) {
-        let email = req.user.email;
-        let roles = req.user.role.Roles;
-        console.log(roles);
+        let role = req.user.role_name;
+        console.log(role);
 
-        if (!roles || roles.length === 0) {
+        if (!role || role.length === 0) {
             return res.status(401).json({
                 EM: "Unauthorized the user. Please login...",
                 EC: -1,
                 DT: ''
             })
         }
+        const currentURL = req.originalUrl;
+        const allowedAccess = roleRoutes[currentURL].includes(role)
 
-        let currentURL = req.path;
-
-        let canAccess = roles.some(item => item.url == currentURL);
-        console.log(currentURL);
-
-        if (canAccess === true) {
+        if (allowedAccess) {
             next();
         }
         else {
@@ -126,16 +155,10 @@ const checkUserPermission = (req, res, next) => {
     }
 }
 
-const authenticateUser = (req, res, next) => {
-    checkUserJWT(req, res, next)
-    checkUserPermission(req, res, next)
-    next()
-}
 
 module.exports = {
     createJWT,
     verifyJWT,
     checkUserJWT,
-    checkUserPermission,
-    authenticateUser
+    checkUserPermission
 }
