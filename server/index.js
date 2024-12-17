@@ -19,6 +19,7 @@ const registerRoute = require('./routes/register_route.js')
 const loginRoute = require('./routes/login_route.js')
 const logoutroute = require('./routes/logout_route.js')
 const userRoute = require('./routes/user_route.js')
+const userRoomRoute = require('./routes/user_room_route.js')
 
 const app = express();
 const port = 8080;
@@ -55,6 +56,7 @@ app.use('/transaction', checkUserJWT, checkUserPermission, transactionRoute);
 app.use('/transaction_logs', checkUserJWT, checkUserPermission, transactionLogsRoute);
 
 app.use('/users', checkUserJWT, checkUserPermission, userRoute)
+app.use('/user_room', checkUserJWT, checkUserPermission, userRoomRoute)
 
 
 app.listen(port, () => {

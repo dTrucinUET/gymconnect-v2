@@ -31,6 +31,8 @@ const roleRoutes = {
     '/transaction/:id': ['admin', 'user', 'manager'],
     'transaction_logs': ['admin', 'user', 'manager'],
     '/transaction_logs/:id': ['admin', 'user', 'manager'],
+    '/user_room': ['admin', 'user', 'manager'],
+    '/user_room/:id': ['admin', 'user', 'manager'],
 
 }
 
@@ -131,7 +133,12 @@ const checkUserPermission = (req, res, next) => {
                 DT: ''
             })
         }
-        const currentURL = req.originalUrl;
+        let currentURL = req.originalUrl;
+        console.log(currentURL);
+        if(currentURL.includes('?')){
+            currentURL = currentURL.split('?')[0];
+        }
+        
         const allowedAccess = roleRoutes[currentURL].includes(role)
 
         if (allowedAccess) {

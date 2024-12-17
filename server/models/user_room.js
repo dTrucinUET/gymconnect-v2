@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 
   UserRoom.init(
     {
-      role_id: {
+      user_id: {
         type: DataTypes.INTEGER,
         references: {
           model: 'users',
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      permission_id: {
+      room_id: {
         type: DataTypes.INTEGER,
         references: {
           model: 'rooms',

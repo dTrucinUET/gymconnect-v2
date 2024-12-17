@@ -11,13 +11,13 @@ module.exports = {
      */
     await queryInterface.createTable('user_room', {
       id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-      role_id: { 
+      user_id: { 
         type: Sequelize.INTEGER, 
         references: { model: 'users', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      permission_id: { 
+      room_id: { 
         type: Sequelize.INTEGER, 
         references: { model: 'rooms', key: 'id' },
         onUpdate: 'CASCADE',
