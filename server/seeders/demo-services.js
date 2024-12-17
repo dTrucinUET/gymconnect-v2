@@ -11,6 +11,7 @@ module.exports = {
                 description: faker.lorem.sentence(),
                 rating: faker.datatype.float({ min: 1, max: 5, precision: 0.1 }),
                 balance: faker.datatype.float({ min: 100, max: 1000, precision: 0.01 }),
+                days: faker.datatype.float({ min: 100, max: 1000, precision: 0.01 }),
                 amount: faker.datatype.number({ min: 1, max: 10 }),
                 type: faker.random.arrayElement(['card', 'trainer', 'exercise']),
                 room_id: faker.datatype.number({ min: 1, max: 10 }),

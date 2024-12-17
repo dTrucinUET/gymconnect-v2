@@ -22,7 +22,8 @@ import {
     Text,
     ThemeIcon,
     UnstyledButton,
-    useMantineTheme,
+    useMantineTheme, 
+    Container,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
@@ -91,6 +92,8 @@ const HeaderMegaMenu = () => {
 
     return (
         < >
+            <Container fluid px={0}>
+
             <header className={classes.header} style={{ paddingBottom: 0 }
             }>
                 <Group justify="space-between" h="100%">
@@ -209,6 +212,7 @@ const HeaderMegaMenu = () => {
                     </Group>
                 </ScrollArea>
             </Drawer>
+            </Container>
         </>
     );
 }

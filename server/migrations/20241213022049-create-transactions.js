@@ -21,6 +21,7 @@ module.exports = {
         type: Sequelize.ENUM('pending', 'failed', 'completed'), 
         allowNull: false 
       },
+      days: { type: Sequelize.FLOAT, allowNull: false },
       createdAt: { type: Sequelize.DATE, allowNull: false },
       updatedAt: { type: Sequelize.DATE, allowNull: false },
     });

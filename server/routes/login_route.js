@@ -8,6 +8,7 @@ const router = Router();
 
 // Requests 
 
+router.post('/', loginController.login);
 
 
 module.exports = router;

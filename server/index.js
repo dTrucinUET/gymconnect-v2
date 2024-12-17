@@ -1,4 +1,6 @@
 const express = require("express");
+const cookieParser = require("cookie-parser")
+
 
 const { authenticateUser } = require('./middleware/jwtAction.js')
 const configCors = require('./config/cors.js')
@@ -16,14 +18,15 @@ const serviceCommentRoute = require('./routes/services_comment_route.js')
 const transactionLogsRoute = require('./routes/transaction_logs_route.js')
 const transactionRoute = require('./routes/transaction_route.js')
 const registerRoute = require('./routes/register_route.js')
-
+const loginRoute = require('./routes/login_route.js')
+const logoutroute = require('./routes/logout_route.js')
 
 const app = express();
 const port = 8080;
 
 configCors(app);
 app.use(express.json())
-
+app.use(cookieParser())
 
 app.get("/", (req, res) => {
    res.send("Hello World!");
@@ -31,6 +34,8 @@ app.get("/", (req, res) => {
 
 app.use('/register', registerRoute)
 
+app.use('/login', loginRoute)
+app.use('/logout', logoutroute)
 
 app.use('/room_comment', roomCommentRoute);
 app.use('/room', roomRoute);

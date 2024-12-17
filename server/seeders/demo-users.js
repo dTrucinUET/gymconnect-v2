@@ -27,6 +27,7 @@ module.exports = {
         avatar_url: faker.image.avatar(),
         location: JSON.stringify({ city: faker.address.city(), country: faker.address.country() }),
         balance: faker.datatype.float({ min: 0, max: 1000, precision: 0.01 }),
+        role_name: 'user',
         createdAt: new Date(),
         updatedAt: new Date(),
       });

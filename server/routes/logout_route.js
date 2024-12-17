@@ -8,5 +8,7 @@ const router = Router();
 
 // Requests 
 
+router.get('/', logoutController.logout);
+
 
 module.exports = router;

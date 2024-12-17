@@ -19,7 +19,7 @@ const migrations = [
     '20241213022049-create-transactions.js',
     '20241213022054-create-transaction-logs.js',
     '20241213022058-create-logs.js',
-
+    '20241215143911-create-user-room.js'
   ];
   
 
