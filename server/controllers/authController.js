@@ -1,5 +1,5 @@
 
-const {registerService, hashUserPassWord, loginService, logoutService} = require('../service/authService')
+const {registerService, loginService, logoutService} = require('../service/authService')
 
 const register = async(req, res) => {
     const payload = req.body
@@ -18,7 +18,7 @@ const login = async(req, res) => {
     const username = payload.username
     const password = payload.password
 
-    const {message, token} = await loginService(username, password)
+    const {message, token, user_data} = await loginService(username, password)
     
     if(!token){
         return res.status(400).json({ message: message })
@@ -27,7 +27,7 @@ const login = async(req, res) => {
     res.cookie("token", token, {
         maxAge: 604800000
     })
-    return res.status(200).json({ message: message })
+    return res.status(200).json({ message: message, user_data: user_data })
 
 }
 
