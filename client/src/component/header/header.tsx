@@ -22,7 +22,7 @@ import {
     Text,
     ThemeIcon,
     UnstyledButton,
-    useMantineTheme, 
+    useMantineTheme,
     Container,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -94,34 +94,37 @@ const HeaderMegaMenu = () => {
         < >
             <Container fluid px={0}>
 
-            <header className={classes.header} style={{ paddingBottom: 0 }
-            }>
-                <Group justify="space-between" h="100%">
+                <header className={classes.header} style={{ paddingBottom: 0 }
+                }>
+                    <Group justify="space-between" h="100%">
 
-                    <Logo />
+                        <Logo />
 
-                    <Group h="100%" gap={0} visibleFrom="sm">
-                        <Button variant="light" className={classes.link} onClick={() => handleNavigate('/')}>
-                            Trang chủ
-                        </Button>
-                        <Button variant="light" className={classes.link} onClick={() => handleNavigate('/admin/user')}>
-                            Admin
-                        </Button>
-                        <Collapse in={linksOpened}>{links}</Collapse>
+                        <Group h="100%" gap={0} visibleFrom="sm">
+                            <Button variant="light" className={classes.link} onClick={() => handleNavigate('/')}>
+                                Trang chủ
+                            </Button>
+                            <Button variant="light" className={classes.link} onClick={() => handleNavigate('/admin/user')}>
+                                Admin
+                            </Button>
+                            <Button variant="light" className={classes.link} onClick={() => handleNavigate('/manager/user')}>
+                                Manager
+                            </Button>
+                            <Collapse in={linksOpened}>{links}</Collapse>
 
-                        <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
-                            <HoverCard.Target>
-                                <Button variant="light" className={classes.link} onClick={() => handleNavigate('/room')}>
-                                    <Center inline>
-                                        <Box component="span" mr={5}>
-                                            Phòng tập
-                                        </Box>
-                                        {/* <IconChevronDown size={16} color={theme.colors.blue[6]} /> */}
-                                    </Center>
-                                </Button>
-                            </HoverCard.Target>
+                            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+                                <HoverCard.Target>
+                                    <Button variant="light" className={classes.link} onClick={() => handleNavigate('/room')}>
+                                        <Center inline>
+                                            <Box component="span" mr={5}>
+                                                Phòng tập
+                                            </Box>
+                                            {/* <IconChevronDown size={16} color={theme.colors.blue[6]} /> */}
+                                        </Center>
+                                    </Button>
+                                </HoverCard.Target>
 
-                            {/* <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
+                                {/* <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
                                 <Group justify="space-between" px="md">
                                     <Text fw={500}>Features</Text>
                                     <Anchor href="#" fz="xs">
@@ -149,69 +152,69 @@ const HeaderMegaMenu = () => {
                                     </Group>
                                 </div>
                             </HoverCard.Dropdown> */}
-                        </HoverCard>
-                        <Button variant="light" className={classes.link} onClick={() => handleNavigate('/about')}>
+                            </HoverCard>
+                            <Button variant="light" className={classes.link} onClick={() => handleNavigate('/about')}>
+                                Về Chúng Tôi
+                            </Button>
+                            <Button variant="light" className={classes.link} onClick={() => handleNavigate('/contact')}>
+                                Liên hệ
+                            </Button>
+                        </Group>
+
+                        <Group visibleFrom="sm">
+                            <Button className={classes.buttonRegister} variant="outline" onClick={() => handleNavigate('/signin')} >Đăng ký ngay</Button>
+                            {/* <Button className='buttonSingup'>Sign up</Button> */}
+                        </Group>
+
+                        <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+                    </Group>
+                </header >
+
+                <Drawer
+                    opened={drawerOpened}
+                    onClose={closeDrawer}
+                    size="100%"
+                    padding="md"
+                    title="Navigation"
+                    hiddenFrom="sm"
+                    zIndex={1000000}
+                >
+                    <ScrollArea >
+                        <Divider my="sm" />
+
+                        <a href="#" className={classes.link}>
+                            Trang chủ
+                        </a>
+                        <UnstyledButton className={classes.link} onClick={toggleLinks}>
+                            <Center inline>
+                                <Box component="span" mr={5}>
+                                    Phòng tập
+                                </Box>
+                                <IconChevronDown size={16} color={theme.colors.blue[6]} />
+                            </Center>
+                        </UnstyledButton>
+                        <Collapse in={linksOpened}>{links}</Collapse>
+                        <a href="#" className={classes.link}>
                             Về Chúng Tôi
-                        </Button>
-                        <Button variant="light" className={classes.link} onClick={() => handleNavigate('/contact')}>
+                        </a>
+                        <a href="#" className={classes.link}>
                             Liên hệ
-                        </Button>
-                    </Group>
+                        </a>
 
-                    <Group visibleFrom="sm">
-                        <Button className={classes.buttonRegister} variant="outline" onClick={() => handleNavigate('/signin')} >Đăng ký ngay</Button>
-                        {/* <Button className='buttonSingup'>Sign up</Button> */}
-                    </Group>
+                        <Divider my="sm" />
 
-                    <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
-                </Group>
-            </header >
+                        <Group justify="center" grow pb="xl" px="md">
+                            <Button className={classes.buttonRegister} variant="outline" >Đăng ký ngay</Button>
 
-            <Drawer
-                opened={drawerOpened}
-                onClose={closeDrawer}
-                size="100%"
-                padding="md"
-                title="Navigation"
-                hiddenFrom="sm"
-                zIndex={1000000}
-            >
-                <ScrollArea >
-                    <Divider my="sm" />
-
-                    <a href="#" className={classes.link}>
-                        Trang chủ
-                    </a>
-                    <UnstyledButton className={classes.link} onClick={toggleLinks}>
-                        <Center inline>
-                            <Box component="span" mr={5}>
-                                Phòng tập
-                            </Box>
-                            <IconChevronDown size={16} color={theme.colors.blue[6]} />
-                        </Center>
-                    </UnstyledButton>
-                    <Collapse in={linksOpened}>{links}</Collapse>
-                    <a href="#" className={classes.link}>
-                        Về Chúng Tôi
-                    </a>
-                    <a href="#" className={classes.link}>
-                        Liên hệ
-                    </a>
-
-                    <Divider my="sm" />
-
-                    <Group justify="center" grow pb="xl" px="md">
-                        <Button className={classes.buttonRegister} variant="outline" >Đăng ký ngay</Button>
-
-                        {/* <Button variant="outline" color="white">Log in</Button>
+                            {/* <Button variant="outline" color="white">Log in</Button>
                         <Button variant="outline" color="white">Sign up</Button> */}
-                    </Group>
-                    <Group justify="center" grow pb="xl" px="md">
-                        <Button className={classes.buttonRegister} variant="outline" >Đăng ký ngay</Button>
+                        </Group>
+                        <Group justify="center" grow pb="xl" px="md">
+                            <Button className={classes.buttonRegister} variant="outline" >Đăng ký ngay</Button>
 
-                    </Group>
-                </ScrollArea>
-            </Drawer>
+                        </Group>
+                    </ScrollArea>
+                </Drawer>
             </Container>
         </>
     );

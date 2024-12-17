@@ -11,11 +11,12 @@ const RoomDetail = async ({ params }: RoomDetailProps) => {
 
     const response = await fetch(`http://localhost:8080/room/${id}`);
     const room = await response.json();
+    console.log("room check here", room);
 
     if (!room) {
         notFound();
     }
-    console.log(room.location);
+    console.log("room location", room.location);
 
     return (
         <Container size="lg" style={{ marginTop: '2rem' }}>
