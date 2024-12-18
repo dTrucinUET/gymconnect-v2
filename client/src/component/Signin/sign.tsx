@@ -11,12 +11,16 @@ import Logo from '../logo/logo';
 import LogoBlackGym from '../logo/logoblackgym';
 import { stringify } from 'querystring';
 import { getToken } from '../utils/cookie_action';
+import { UserContext } from '../userContext/userContext';
 interface DataUserSignup {
     username: string;
     password: string;
 
 }
 const Login = () => {
+
+    const { loginContext } = React.useContext(UserContext);
+    const { user } = React.useContext(UserContext);
     const Router = useRouter()
     const form = useForm<DataUserSignup>({
         initialValues: {
@@ -64,7 +68,7 @@ const Login = () => {
                     token: token?.value,
                     username: data.user_data.username,
                     email: data.user_data.email,
-
+                    isAuthenticate: true,
                     first_name: data.user_data.first_name,
                     id: data.user_data.id,
                     last_name: data.user_data.last_name,
@@ -74,7 +78,8 @@ const Login = () => {
 
                 console.log('data context', dataContext);
 
-
+                localStorage.setItem('user', JSON.stringify(dataContext));
+                loginContext(dataContext)
                 showNotification({
                     title: 'Success',
                     message: 'Logged in successfully!',
@@ -83,7 +88,7 @@ const Login = () => {
 
                 });
 
-                localStorage.setItem('user', JSON.stringify(dataContext));
+
                 if (dataContext.role_name === 'admin') {
                     Router.push('/admin/user')
                 }

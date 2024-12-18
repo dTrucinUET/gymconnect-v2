@@ -24,11 +24,15 @@ import {
     UnstyledButton,
     useMantineTheme,
     Container,
+    Menu,
+    Avatar,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import classes from './header.module.css';
 import Logo from '../logo/logo';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { UserContext } from '../userContext/userContext';
+import { useContext, useEffect, useState } from 'react';
 
 const mockdata = [
     {
@@ -64,6 +68,57 @@ const mockdata = [
 ];
 
 const HeaderMegaMenu = () => {
+
+    const { loginContext } = useContext(UserContext);
+    const { user, logoutContext } = useContext(UserContext);
+
+    const pathname = usePathname();
+    const [userData, setUserData] = useState({
+        token: '',
+        username: '',
+        email: '',
+        isAuthenticate: false,
+        first_name: '',
+        last_name: '',
+        role_name: '',
+        id: 0,
+    })
+
+    const userDataDefault = {
+        token: '',
+        username: '',
+        email: '',
+        isAuthenticate: false,
+        first_name: '',
+        last_name: '',
+        role_name: '',
+        id: 0,
+    }
+    useEffect(() => {
+
+        if (user && user.isAuthenticate === false && pathname !== '/' && pathname !== '/login') {
+            // route.push('/login');
+            console.log("no data");
+        }
+        else {
+            console.log("check user");
+            console.log("user in context", user);
+            setUserData({
+                token: user.token,
+                username: user.username,
+                email: user.email,
+                isAuthenticate: user.isAuthenticate,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                role_name: user.role_name,
+                id: user.id
+            })
+        }
+
+    }, [user]);
+
+    console.log("check user Data", userData);
+
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const theme = useMantineTheme();
@@ -89,6 +144,11 @@ const HeaderMegaMenu = () => {
             </Group>
         </UnstyledButton>
     ));
+    const handleLogout = () => {
+        logoutContext();
+        setUserData(userDataDefault)
+        router.push('/')
+    }
 
     return (
         < >
@@ -104,12 +164,16 @@ const HeaderMegaMenu = () => {
                             <Button variant="light" className={classes.link} onClick={() => handleNavigate('/')}>
                                 Trang chủ
                             </Button>
-                            <Button variant="light" className={classes.link} onClick={() => handleNavigate('/admin/user')}>
-                                Admin
-                            </Button>
-                            <Button variant="light" className={classes.link} onClick={() => handleNavigate('/manager/user')}>
-                                Manager
-                            </Button>
+                            {user.role_name === 'admin' && (
+                                <Button className={classes.link} onClick={() => handleNavigate('/admin/user')}>
+                                    Admin
+                                </Button>
+                            )}
+                            {user.role_name === 'manager' && (
+                                <Button className={classes.link} onClick={() => handleNavigate('/manager/user')}>
+                                    Manager
+                                </Button>
+                            )}
                             <Collapse in={linksOpened}>{links}</Collapse>
 
                             <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
@@ -119,39 +183,11 @@ const HeaderMegaMenu = () => {
                                             <Box component="span" mr={5}>
                                                 Phòng tập
                                             </Box>
-                                            {/* <IconChevronDown size={16} color={theme.colors.blue[6]} /> */}
                                         </Center>
                                     </Button>
                                 </HoverCard.Target>
 
-                                {/* <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
-                                <Group justify="space-between" px="md">
-                                    <Text fw={500}>Features</Text>
-                                    <Anchor href="#" fz="xs">
-                                        View all
-                                    </Anchor>
-                                </Group>
 
-                                <Divider my="sm" />
-
-                                <SimpleGrid cols={2} spacing={0}>
-                                    {links}
-                                </SimpleGrid>
-
-                                <div className={classes.dropdownFooter}>
-                                    <Group justify="space-between">
-                                        <div>
-                                            <Text fw={500} fz="sm">
-                                                Get started
-                                            </Text>
-                                            <Text size="xs" c="dimmed">
-                                                Their food sources have decreased, and their numbers
-                                            </Text>
-                                        </div>
-                                        <Button variant="default">Get started</Button>
-                                    </Group>
-                                </div>
-                            </HoverCard.Dropdown> */}
                             </HoverCard>
                             <Button variant="light" className={classes.link} onClick={() => handleNavigate('/about')}>
                                 Về Chúng Tôi
@@ -161,10 +197,51 @@ const HeaderMegaMenu = () => {
                             </Button>
                         </Group>
 
-                        <Group visibleFrom="sm">
-                            <Button className={classes.buttonRegister} variant="outline" onClick={() => handleNavigate('/signin')} >Đăng ký ngay</Button>
-                            {/* <Button className='buttonSingup'>Sign up</Button> */}
-                        </Group>
+                        {user && user.isAuthenticate === false ? (
+                            <Group visibleFrom="sm">
+                                <Button
+                                    className={classes.buttonRegister}
+                                    variant="outline"
+                                    onClick={() => handleNavigate('/signin')}
+                                >
+                                    Đăng ký ngay
+                                </Button>
+                            </Group>
+                        ) : (
+                            <Group visibleFrom="sm">
+                                <Menu shadow="md" width={200} withinPortal>
+                                    <Menu.Target>
+                                        <Avatar
+                                            src={user.avatar || null}
+                                            radius="xl"
+                                            alt="Avatar"
+                                            size="md"
+                                            style={{ cursor: 'pointer' }}
+                                        />
+                                    </Menu.Target>
+
+                                    <Menu.Dropdown>
+                                        <Menu.Label>Tuỳ chọn</Menu.Label>
+                                        <Menu.Item onClick={() => handleNavigate('/profile')}>Profile</Menu.Item>
+                                        {user.role_name === 'admin' && (
+                                            <Menu.Item onClick={() => handleNavigate('/admin/user')}>
+                                                Admin
+                                            </Menu.Item>
+                                        )}
+                                        {user.role_name === 'manager' && (
+                                            <Menu.Item onClick={() => handleNavigate('/manager/user')}>
+                                                Manager
+                                            </Menu.Item>
+                                        )}
+                                        <Menu.Divider />
+                                        <Menu.Item color="red" onClick={handleLogout}>
+                                            Đăng xuất
+                                        </Menu.Item>
+                                    </Menu.Dropdown>
+                                </Menu>
+                            </Group>
+                        )}
+
 
                         <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
                     </Group>
@@ -179,12 +256,20 @@ const HeaderMegaMenu = () => {
                     hiddenFrom="sm"
                     zIndex={1000000}
                 >
-                    <ScrollArea >
+                    <ScrollArea>
                         <Divider my="sm" />
 
-                        <a href="#" className={classes.link}>
+                        {/* Menu Items */}
+                        <UnstyledButton className={classes.link} onClick={() => handleNavigate('/')}>
                             Trang chủ
-                        </a>
+                        </UnstyledButton>
+                        <UnstyledButton className={classes.link} onClick={() => handleNavigate('/admin/user')}>
+                            Admin
+                        </UnstyledButton>
+                        <UnstyledButton className={classes.link} onClick={() => handleNavigate('/manager/user')}>
+                            Manager
+                        </UnstyledButton>
+
                         <UnstyledButton className={classes.link} onClick={toggleLinks}>
                             <Center inline>
                                 <Box component="span" mr={5}>
@@ -194,27 +279,29 @@ const HeaderMegaMenu = () => {
                             </Center>
                         </UnstyledButton>
                         <Collapse in={linksOpened}>{links}</Collapse>
-                        <a href="#" className={classes.link}>
+
+                        <UnstyledButton className={classes.link} onClick={() => handleNavigate('/about')}>
                             Về Chúng Tôi
-                        </a>
-                        <a href="#" className={classes.link}>
+                        </UnstyledButton>
+                        <UnstyledButton className={classes.link} onClick={() => handleNavigate('/contact')}>
                             Liên hệ
-                        </a>
+                        </UnstyledButton>
 
                         <Divider my="sm" />
 
+                        {/* Register Button */}
                         <Group justify="center" grow pb="xl" px="md">
-                            <Button className={classes.buttonRegister} variant="outline" >Đăng ký ngay</Button>
-
-                            {/* <Button variant="outline" color="white">Log in</Button>
-                        <Button variant="outline" color="white">Sign up</Button> */}
-                        </Group>
-                        <Group justify="center" grow pb="xl" px="md">
-                            <Button className={classes.buttonRegister} variant="outline" >Đăng ký ngay</Button>
-
+                            <Button
+                                className={classes.buttonRegister}
+                                variant="outline"
+                                onClick={() => handleNavigate('/signin')}
+                            >
+                                Đăng ký ngay
+                            </Button>
                         </Group>
                     </ScrollArea>
                 </Drawer>
+
             </Container>
         </>
     );
