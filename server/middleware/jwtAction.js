@@ -79,6 +79,7 @@ const extractToken = (req) => {
     return null;
 }
 const checkUserJWT = (req, res, next) => {
+    console.log('checkUserJWT');
 
     if (nonSecurePaths.includes(req.originalUrl)) return next();
 
@@ -119,50 +120,111 @@ const checkUserJWT = (req, res, next) => {
 
     }
 }
+// const checkUserPermission = (req, res, next) => {
+
+//     if (nonSecurePaths.includes(req.originalUrl)) return next();
+
+//     if (req.user) {
+//         let role = req.user.role_name;
+//         console.log(role);
+
+//         if (!role || role.length === 0) {
+//             return res.status(401).json({
+//                 EM: "Unauthorized the user. Please login...",
+//                 EC: -1,
+//                 DT: ''
+//             })
+//         }
+//         let currentURL = req.originalUrl;
+//         console.log(currentURL);
+//         if (currentURL.includes('?')) {
+//             currentURL = currentURL.split('?')[0];
+//         }
+
+//         const allowedAccess = roleRoutes[currentURL].includes(role)
+
+//         if (allowedAccess) {
+//             next();
+//         }
+//         else {
+//             return res.status(401).json({
+//                 EM: "you don't have  permission to access this resource or perform this action.",
+//                 EC: -1,
+//                 DT: ''
+//             })
+//         }
+//     }
+//     else {
+//         return res.status(401).json({
+//             EM: 'Not authenticated the user',
+//             EC: -1,
+//             DT: ''
+//         })
+//     }
+// }
+
 const checkUserPermission = (req, res, next) => {
+    console.log("nonSecurePaths:", nonSecurePaths);
+    console.log("req.originalUrl", req.originalUrl);
+    console.log('hit permissioncheck');
 
-    if (nonSecurePaths.includes(req.originalUrl)) return next();
+    // If URL is in non-secure paths, skip permission check
+    if (nonSecurePaths.includes(req.originalUrl)) {
+        console.log('nonSecurePaths matched');
+        return next();
+    }
 
+    // Check if the user is authenticated
     if (req.user) {
         let role = req.user.role_name;
-        console.log(role);
+        console.log("Role:", role);
 
         if (!role || role.length === 0) {
+            console.log('not authen');
+
             return res.status(401).json({
                 EM: "Unauthorized the user. Please login...",
                 EC: -1,
                 DT: ''
-            })
+            });
         }
-        let currentURL = req.originalUrl;
-        console.log(currentURL);
-        if(currentURL.includes('?')){
-            currentURL = currentURL.split('?')[0];
-        }
-        
-        const allowedAccess = roleRoutes[currentURL].includes(role)
 
-        if (allowedAccess) {
-            next();
+        let currentURL = req.originalUrl;
+        console.log("currentURL:", currentURL);
+
+        if (currentURL.includes('?')) {
+            currentURL = currentURL.split('?')[0];
+            console.log('hit currentURL split');
+
         }
-        else {
+        console.log('URL after removing query:', currentURL);
+
+        const baseURL = currentURL.split('/')[1];
+
+        console.log("Base URL:", baseURL);
+
+        // Check if the route is allowed for the user's role
+        if (roleRoutes[`/${baseURL}`] && roleRoutes[`/${baseURL}`].includes(role)) {
+            console.log('Role has permission for this route.');
+            return next();
+        } else {
+            console.log('Role does NOT have permission for this route.');
             return res.status(401).json({
-                EM: "you don't have  permission to access this resource or perform this action.",
+                EM: "You don't have permission to access this resource or perform this action.",
                 EC: -1,
                 DT: ''
-            })
+            });
         }
-    }
-    else {
+    } else {
+        console.log('User is not authenticated.');
         return res.status(401).json({
             EM: 'Not authenticated the user',
             EC: -1,
             DT: ''
-        })
+        });
     }
-}
-
-
+    console.log('hit end');
+};
 module.exports = {
     createJWT,
     verifyJWT,

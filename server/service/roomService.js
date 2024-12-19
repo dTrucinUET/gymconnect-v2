@@ -73,6 +73,10 @@ const deleteRoomService = async (id) => {
 }
 const updateRoomService = async (id, data) => {
     try {
+        console.log(id, data);
+
+        console.log('hit edit room services');
+
         await Room.update(data, {
             where: { id: id }
         })

@@ -44,6 +44,8 @@ const deleteRoom = async (req, res) => {
 }
 
 const updateRoom = async (req, res) => {
+    console.log('hit update room');
+
     const update_id = req.params.id
     const message = await updateRoomService(update_id, req.body)
     if (!message) {

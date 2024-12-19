@@ -1,11 +1,16 @@
 const bcrypt = require('bcryptjs');
 const UserModel = require('../models/users')
-
+const RoleModel = require('../models/roles')
+const PermissionModel = require('../models/permissions')
+const RolePermissionModel = require('../models/role_permission')
 const sequelize = require('../config/sequelize.js');
-const { DataTypes } = require('sequelize');
+const { DataTypes, where } = require('sequelize');
 
 const Sequelize_In = sequelize
 const User = UserModel(Sequelize_In, DataTypes)
+const Role = RoleModel(Sequelize_In, DataTypes)
+const Permission = PermissionModel(Sequelize_In, DataTypes)
+const RolePermission = RolePermissionModel(Sequelize_In, DataTypes)
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -29,16 +34,71 @@ const createNewUser = async (email, password, username) => {
 
 }
 
-const getUserList = async () => {
+// const getUserList = async () => {
 
-    let user = []
+//     let user = []
+//     try {
+//         user = await User.findAll()
+//         return user;
+//     } catch (err) {
+//         throw Error(err)
+//     }
+// }
+
+const getUserList = async () => {
     try {
-        user = await User.findAll()
-        return user;
+        // Lấy tất cả users
+        const users = await User.findAll();
+        let userList = []
+        for (let user of users) {
+            const role1 = user;
+            console.log("role user", role1.dataValues.id);
+
+            const permission_role = await RolePermission.findAll({
+                where: {
+                    role_id: role1.dataValues.id
+                },
+                raw: true
+            });
+
+            console.log('permission_role', permission_role);
+
+            let permission_list = [];
+
+            for (let item of permission_role) {
+                console.log(item.permission_id);
+
+                const permission = await Permission.findOne({
+                    where: {
+                        id: item.permission_id
+                    },
+                    attributes: ['permission'],
+                    raw: true
+                });
+
+                if (permission && !permission_list.some(p => p.permission === permission.permission)) {
+                    permission_list.push(permission);
+                }
+            }
+
+            console.log(permission_list);
+            userList.push({
+                ...user.dataValues,
+                permission_list: permission_list
+
+            })
+        }
+
+
+        console.log(userList);
+
+        return userList;
     } catch (err) {
-        throw Error(err)
+        console.error('Error fetching users with permissions:', err);
+        throw new Error('Failed to fetch users with permissions');
     }
-}
+};
+
 
 const deleteUserService = async (userIndex) => {
 
@@ -75,7 +135,7 @@ const updateUserInfor = async (userIndex, data) => {
         );
 
     } catch (err) {
-       throw Error(err)
+        throw Error(err)
     }
 
 }
