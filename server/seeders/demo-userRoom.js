@@ -22,8 +22,8 @@ module.exports = {
     const userRooms = [];
     for (let i = 0; i < 20; i++) {
       userRooms.push({
-        role_id: userIds[faker.datatype.number({ min: 0, max: userIds.length - 1 })], // Randomly assign valid user_id
-        permission_id: roomIds[faker.datatype.number({ min: 0, max: roomIds.length - 1 })], // Randomly assign valid room_id
+        user_id: userIds[faker.datatype.number({ min: 0, max: userIds.length - 1 })], // Randomly assign valid user_id
+        room_id: roomIds[faker.datatype.number({ min: 0, max: roomIds.length - 1 })], // Randomly assign valid room_id
         createdAt: new Date(),
         updatedAt: new Date(),
       });

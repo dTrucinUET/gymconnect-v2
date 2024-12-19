@@ -1,10 +1,9 @@
 const { Router } = require('express');
-
 // Local Modules
 const roomController = require('../controllers/roomController')
 
 // Initialization
-const   router = Router();
+const router = Router();
 
 // Requests 
 router.get('/:id', roomController.getRoomById);

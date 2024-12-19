@@ -95,7 +95,7 @@ const loginService = async(username, password) => {
         }
         token = received_token
         message = 'Login successful'
-        return {message: message, token: token}
+        return {message: message, token: token, user_data : token_data}
 
     }
     catch(err){
