@@ -33,16 +33,20 @@ const SignupForm = () => {
 
     const form = useForm({
         initialValues: {
-            firstName: '',
-            lastName: '',
+            first_name: '',
+            last_name: '',
             email: '',
             username: '',
             password: '',
             confirmPassword: '',
-            birthdate: '',
+            dob: '',
             location: '',
-            detailedAddress: '',
             terms: false,
+            phone_number: 0,
+            balance: 1000,
+            role_name: 'user',
+            sex: '',
+            address: ''
         },
 
         validate: {
@@ -50,8 +54,9 @@ const SignupForm = () => {
             username: (value) => (value.length < 3 ? 'Username must have at least 3 characters' : null),
             password: (value) => (value.length < 6 ? 'Password must have at least 6 characters' : null),
             confirmPassword: (value, values) => (value !== values.password ? 'Passwords do not match' : null),
-            detailedAddress: (value) => (value.length < 10 ? 'Address is too short' : null),
+            address: (value) => (value.length < 10 ? 'Address is too short' : null),
             terms: (value) => (value === false ? 'You must accept the terms and conditions' : null),
+
         },
     });
 
@@ -61,17 +66,19 @@ const SignupForm = () => {
             form.setFieldValue('location', fullLocation);
             console.log(values);
 
-            const response = await fetch('/api/signup', {
+            const response = await fetch('http://localhost:8080/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(values),
+                credentials: 'include'
             });
+            console.log("response", response);
 
             const data = await response.json();
 
-            if (data.success) {
+            if (response.status === 201) {
                 showNotification({
                     title: 'Success',
                     message: 'Registration successful!',
@@ -134,9 +141,22 @@ const SignupForm = () => {
                         />
                         <TextInput
                             label="Tên Đăng nhập"
-                            placeholder="info@gymconnect.com"
+                            placeholder="username"
                             {...form.getInputProps('username')}
                         />
+
+                        <Group >
+                            <TextInput
+                                label="Số điện thoại"
+                                placeholder="0123456789"
+                                {...form.getInputProps('phone_number')}
+                            />
+                            <TextInput
+                                label="Giới tính"
+                                placeholder="Male"
+                                {...form.getInputProps('sex')}
+                            />
+                        </Group>
                         <Group >
                             <PasswordInput
                                 style={{ width: '48%' }}
@@ -155,7 +175,7 @@ const SignupForm = () => {
                             label="Ngày Sinh"
                             placeholder="04/12/2004"
                             value={date}
-                            {...form.getInputProps('birthdate')}
+                            {...form.getInputProps('dob')}
                         />
 
                         <Group>
@@ -186,7 +206,7 @@ const SignupForm = () => {
                         <TextInput
                             label="Địa chỉ chi tiết"
                             placeholder="29 Dich vong Cau Giay Ha Noi"
-                            {...form.getInputProps('detailedAddress')}
+                            {...form.getInputProps('address')}
                         />
 
                         <Checkbox

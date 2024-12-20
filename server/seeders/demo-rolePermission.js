@@ -14,8 +14,8 @@ module.exports = {
         const rolePermissions = [];
         for (let i = 0; i < 10; i++) {
             rolePermissions.push({
-                role_id: roleIds[faker.datatype.number({ min: 0, max: roleIds.length - 1 })], // Randomly assign valid role_id
-                permission_id: faker.datatype.number({ min: 1, max: 5 }), // Example for generating permission_id
+                role_id: roleIds[faker.datatype.number({ min: 0, max: roleIds.length - 1 })],
+                permission_id: faker.datatype.number({ min: 1, max: 5 }),
                 createdAt: new Date(),
                 updatedAt: new Date(),
             });

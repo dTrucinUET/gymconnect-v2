@@ -16,15 +16,17 @@
     "@mantine/notifications": "^7.15.1",
     "@tabler/icons-react": "^3.24.0",
     "dayjs": "^1.11.13",
-    "next": "14.2.16",
+    "eslint-config-next": "^15.1.0",
+    "next": "^15.1.0",
     "postcss-functions": "^4.0.2",
     "postcss-mixins": "^11.0.3",
-    "react": "^18",
-    "react-dom": "^18"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/react": "^18.3.16",
     "@types/react-dom": "^18",
     "postcss": "^8.4.49",
     "postcss-preset-mantine": "^1.17.0",

@@ -5,6 +5,7 @@ import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/c
 import '@mantine/notifications/styles.css';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/dates/styles.css';
+import { UserProvider } from '@/component/userContext/userContext';
 export const metadata = {
   title: 'Gym connect',
   description: '',
@@ -21,10 +22,13 @@ export default function RootLayout({
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>
-          <Notifications />
-          {children}
-        </MantineProvider>
+        <UserProvider>
+          <MantineProvider>
+            <Notifications />
+            {children}
+          </MantineProvider>
+        </UserProvider>
+
       </body>
     </html>
   );

@@ -1,4 +1,6 @@
 'use client'
+
+
 import React, { useState } from 'react';
 import { Container, TextInput, PasswordInput, Button, Text, Anchor, Group, Paper, Title, Modal } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
@@ -8,60 +10,103 @@ import { useRouter } from 'next/navigation';
 import Logo from '../logo/logo';
 import LogoBlackGym from '../logo/logoblackgym';
 import { stringify } from 'querystring';
+import { getToken } from '../utils/cookie_action';
+import { UserContext } from '../userContext/userContext';
 interface DataUserSignup {
-    email: string;
+    username: string;
     password: string;
 
 }
 const Login = () => {
+
+    const { loginContext } = React.useContext(UserContext);
+    const { user } = React.useContext(UserContext);
     const Router = useRouter()
     const form = useForm<DataUserSignup>({
         initialValues: {
-            email: '',
+            username: '',
             password: '',
         },
 
         validate: {
-            email: (value: string) => (/^\S+@\S+$/.test(value) ? null : 'Email is invalid'),
-            password: (value: string | any[]) => (value.length < 6 ? 'Password must have at least 6 characters' : null),
+
+            password: (value: string | any[]) => (
+                value.length < 6 ? 'Password must have at least 6 characters' : null
+            ),
         },
     });
 
     const handleSubmit = async (values: DataUserSignup) => {
         try {
             console.log(values);
-            const data = {
-                email: values.email,
-                password: values.password
+
+            console.log(`${process.env.NEXT_PUBLIC_SERVER_API}/login`);
+
+            const response = await fetch('http://localhost:8080/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+                credentials: 'include', //dme lần sau đừng quên cái này nhé, 
+            });
+            console.log(response);
+
+
+
+
+            if (response.status === 200) {
+                const data = await response.json();
+                console.log(data);
+                console.log('hit here 1');
+
+                const token = await getToken();
+                console.log('token in cookie', token);
+                console.log('token', token?.value);
+
+                const dataContext = {
+                    token: token?.value,
+                    username: data.user_data.username,
+                    email: data.user_data.email,
+                    isAuthenticate: true,
+                    first_name: data.user_data.first_name,
+                    id: data.user_data.id,
+                    last_name: data.user_data.last_name,
+                    role_name: data.user_data.role_name
+
+                }
+
+                console.log('data context', dataContext);
+
+                localStorage.setItem('user', JSON.stringify(dataContext));
+                loginContext(dataContext)
+                showNotification({
+                    title: 'Success',
+                    message: 'Logged in successfully!',
+                    color: 'green',
+                    position: 'bottom-right'
+
+                });
+
+
+                if (dataContext.role_name === 'admin') {
+                    Router.push('/admin/user')
+                }
+                else if (dataContext.role_name === 'manager') {
+                    Router.push('/manager/user')
+                }
+                else {
+                    Router.push('/')
+
+                }
+            } else {
+                showNotification({
+                    title: 'Error',
+                    message: 'Login failed. Please check your credentials.',
+                    color: 'red',
+                    position: 'bottom-right'
+                });
             }
-            sessionStorage.setItem('user', JSON.stringify(data));
-            Router.push('/admin')
-            // const response = await fetch('api/login', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(values),
-            // });
-
-            // const data = await response.json();
-
-            // if (data.success) {
-            //     showNotification({
-            //         title: 'Success',
-            //         message: 'Logged in successfully!',
-            //         color: 'green',
-            //         position: 'bottom-right'
-
-            //     });
-            // } else {
-            //     showNotification({
-            //         title: 'Error',
-            //         message: 'Login failed. Please check your credentials.',
-            //         color: 'red',
-            //         position: 'bottom-right'
-            //     });
-            // }
         } catch (error) {
             console.error(error);
             showNotification({
@@ -96,8 +141,8 @@ const Login = () => {
                         <form onSubmit={form.onSubmit(handleSubmit)}>
                             <TextInput
                                 label="Tên Đăng nhập "
-                                placeholder="info@gymconnect.com"
-                                {...form.getInputProps('email')}
+                                placeholder="username"
+                                {...form.getInputProps('username')}
                                 mb="md"
                             />
                             <PasswordInput

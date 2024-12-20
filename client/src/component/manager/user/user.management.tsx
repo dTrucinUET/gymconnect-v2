@@ -2,11 +2,8 @@
 
 'use client'
 import { Table, Button, Group, Pagination, Select, TextInput, Container, Title } from '@mantine/core';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './user-management.module.css';
-import { UserContext } from '@/component/userContext/userContext';
-import { showNotification } from '@mantine/notifications';
-import { useRouter } from 'next/navigation';
 
 interface User {
     email: string;
@@ -15,34 +12,10 @@ interface User {
     permissions: string[];
 }
 
-const UserManagement = (props: any) => {
-    const router = useRouter()
-    const { loginContext } = useContext(UserContext);
-    const { user, logoutContext } = useContext(UserContext);
+const UserManagementManager = (props: any) => {
+
     console.log(props.data);
-    useEffect(() => {
 
-        if (user && user.isAuthenticate === false && user.role_name !== 'admin') {
-            showNotification({
-                title: 'warning',
-                message: 'Bạn không có quyền tham gia hành động này!',
-                color: 'yellow',
-                position: 'bottom-right'
-
-            });
-            router.push('/');
-            // setTimeout(() => {
-
-            //     router.push('/login');
-            // }, 2000);
-
-        }
-        else {
-
-
-        }
-
-    }, [user]);
     const [users, setUsers] = useState<User[]>([
         { email: 'test1@gmail.com', username: 'test1gym123', role: 'Người dùng', permissions: ['Xem', 'Mua hàng', 'Xóa tài khoản'] },
         { email: 'quanly@gmail.com', username: 'quanlyphonggym', role: 'Quản lý', permissions: ['Quản lý phòng gym', 'Xem', 'Xóa tài khoản'] },
@@ -181,4 +154,4 @@ const UserManagement = (props: any) => {
     );
 };
 
-export default UserManagement;
+export default UserManagementManager;

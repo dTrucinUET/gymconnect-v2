@@ -1,4 +1,4 @@
-import UserManagement from "@/component/admin/user/user.management";
+import UserManagementManager from "@/component/manager/user/user.management";
 
 
 const UserManagementPage = async () => {
@@ -9,7 +9,7 @@ const UserManagementPage = async () => {
     const data = {}
     return (
         <>
-            <UserManagement data={data} />
+            <UserManagementManager data={data} />
         </>
     );
 }

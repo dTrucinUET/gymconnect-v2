@@ -7,6 +7,7 @@ const logoutController = require('../controllers/authController')
 const router = Router();
 
 // Requests 
+
 router.get('/', logoutController.logout);
 
 

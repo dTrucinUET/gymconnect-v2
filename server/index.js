@@ -1,7 +1,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser")
 
-const {checkUserJWT, checkUserPermission} = require('./middleware/jwtAction.js')
+const bodyParser = require("body-parser")
+
+const { checkUserJWT, checkUserPermission } = require('./middleware/jwtAction.js')
 
 const roomCommentRoute = require('./routes/room_comment_route.js')
 const roomRoute = require('./routes/room_route.js')
@@ -21,10 +23,14 @@ const logoutroute = require('./routes/logout_route.js')
 const userRoute = require('./routes/user_route.js')
 const userRoomRoute = require('./routes/user_room_route.js')
 
+
+const configCors = require('./config/cors.js')
 const app = express();
 const port = 8080;
 
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+configCors(app);
 app.use(express.json())
 app.use(cookieParser())
 
@@ -34,6 +40,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/register', registerRoute)
+
 app.use('/login', loginRoute)
 app.use('/logout', logoutroute)
 
