@@ -20,6 +20,21 @@ const getAllService = async() => {
     return services
 }
 
+const getServiceByRoomId = async(roomid) => {
+    let services = null;
+    try {
+        services = await Service.findAll({
+            where: {
+                room_id: roomid
+            }
+        })
+    }
+    catch(err) {
+        console.log("Cannot fetch Services by roomid");
+        throw new Error(err)
+    }
+    return services
+}
 
 const getServiceByIdService = async(id) => {
     id = parseInt(id)
@@ -89,5 +104,6 @@ module.exports = {
     getServiceByIdService,
     createService,
     updateServiceService,
-    deleteServiceService
+    deleteServiceService,
+    getServiceByRoomId
 }

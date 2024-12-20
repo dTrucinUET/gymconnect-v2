@@ -16,7 +16,7 @@ module.exports = {
       avatar_url: { type: Sequelize.STRING, allowNull: true },
       location: { type: Sequelize.JSON, allowNull: false },
       balance: { type: Sequelize.FLOAT, allowNull: false },
-      role_name: {type: Sequelize.STRING, allowNull: false},
+      role_id: {type: Sequelize.INTEGER, allowNull: false},
       createdAt: { type: Sequelize.DATE, allowNull: false },
       updatedAt: { type: Sequelize.DATE, allowNull: false },
       sex: {

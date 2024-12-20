@@ -1,6 +1,13 @@
-const { getAllEquipment, getEquipmentByIdService, deleteEquipmentService, createEquipment, updateEquipmentService } = require("../service/equipmentService");
+const { getAllEquipment, getEquipmentByIdService, deleteEquipmentService, createEquipment,
+     updateEquipmentService, getEquipmentByRoomId } = require("../service/equipmentService");
 
 const getEquipments = async(req, res)=>{
+    const query_obj = req.query;
+    if(query_obj.roomid){
+        const data = await getEquipmentByRoomId(query_obj.roomid);
+        return res.status(200).json(data);
+    }
+
     const data = await getAllEquipment()
 
     if(!data) {
