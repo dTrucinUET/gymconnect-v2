@@ -8,7 +8,7 @@ const router = Router();
 // Requests 
 router.get('/:id', roomController.getRoomById);
 router.get('/', roomController.getRooms);
-router.post('/', roomController.addRoom);
+router.post('/', roomController.upload, roomController.addRoom);
 router.put('/:id', roomController.updateRoom);
 router.delete('/:id', roomController.deleteRoom);
 
