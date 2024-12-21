@@ -1,14 +1,17 @@
 'use client';
 import { Button, Group, Container, Title, Text, Pagination, Input } from '@mantine/core';
 import { useState } from 'react';
+// import { useRouter } from 'next/router';
 import styles from './rooms.module.css';
 import RoomRating from '@/component/rating/rating';
+import { useRouter } from "next/navigation";
 
 const Rooms = (props: any) => {
     const itemsPerPage = 6;
 
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+    const router = useRouter();
 
     const filteredData = props.data.filter((room: any) =>
         room.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -32,7 +35,7 @@ const Rooms = (props: any) => {
     };
 
     const handleDetailRoom = (roomId: string) => {
-        console.log(`Update permissions for: ${roomId}`);
+        router.push(`/room/${roomId}`);
     };
 
     return (
