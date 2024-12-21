@@ -5,6 +5,24 @@ require("dotenv").config();
 
 const nonSecurePaths = ['/', '/register', '/login', '/logout'];
 
+const permissions = [
+    "create room", "delete room", "update room", "read room",
+    "create room_comment", "delete room_comment", "update room_comment", "read room_comment",
+    "create equipments", "delete equipments", "update equipments", "read equipments",
+    "create equipments_comment", "delete equipments_comment", "update equipments_comment", "read equipments_comment",
+    "create logs", "delete logs", "update logs", "read logs",
+    "create permission", "delete permission", "update permission", "read permission",
+    "create roles", "delete roles", "update roles", "read roles",
+    "create role_permission", "delete role_permission", "update role_permission", "read role_permission",
+    "create service", "delete service", "update service", "read service",
+    "create service_comment", "delete service_comment", "update service_comment", "read service_comment",
+    "create transaction", "delete transaction", "update transaction", "read transaction",
+    "create transaction_logs", "delete transaction_logs", "update transaction_logs", "read transaction_logs",
+    "create user_room", "delete user_room", "update user_room", "read user_room",
+    "create user", "delete user", "update user", "read user",
+]
+
+
 const roleRoutes = {
     '/room': ['admin', 'user', 'manager'],
     '/room/:id': ['admin', 'user', 'manager'],
