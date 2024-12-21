@@ -5,5 +5,5 @@
 
 You can seed user:
 
-    npx sequelize-cli db:seed:all
+    node seed.js
 

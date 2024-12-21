@@ -1,0 +1,34 @@
+/* Flexbox container */
+.room-container {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+/* Left column (text content) */
+.room-content {
+    flex: 1;
+}
+
+/* Right column (image) */
+.room-image-container {
+    flex: 1;
+}
+
+/* Image styles */
+.room-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Google Maps */
+.room-map {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 8px;
+    margin-top: 2rem;
+}

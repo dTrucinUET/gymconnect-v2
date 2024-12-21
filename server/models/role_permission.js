@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       RolePermission.belongsTo(models.Role, { foreignKey: 'role_id' });
       RolePermission.belongsTo(models.Permission, { foreignKey: 'permission_id' });
+
     }
   }
 

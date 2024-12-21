@@ -5,79 +5,84 @@ const { DataTypes } = require('sequelize');
 const Sequelize_In = sequelize
 const Room = RoomModel(Sequelize_In, DataTypes)
 
-const getAllRoom = async() => {
+const getAllRoom = async () => {
     let rooms = null;
-    try{
+    try {
         rooms = await Room.findAll({
             attributes: ['id', 'name', 'owner_id', 'description', 'location', 'rating', 'createdAt', 'updatedAt']
         })
     }
-    catch(err) {
+    catch (err) {
         console.log("Cannot fetch all rooms");
-        
+
         throw new Error(err)
     }
     return rooms
 }
 
 
-const getRoomByIdService = async(id) => {
+const getRoomByIdService = async (id) => {
+
     id = parseInt(id)
     let room = null;
-    try{
+    try {
         room = Room.findOne({
             where: { id: id },
             attributes: ['id', 'name', 'owner_id', 'description', 'location', 'rating', 'createdAt', 'updatedAt']
         })
         return room
     }
-    catch{
+    catch {
         console.log("Cannot fetch room by id");
         throw new Error(err)
     }
 }
 
-const createRoom = async(room) => {
+const createRoom = async (room) => {
     const newRoom = {
         ...room
     }
-    
-    try{
+
+    try {
         await Room.create({
             ...newRoom,
             owner_id: newRoom.owner_id
         })
         return "Created room successfully!"
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot create room");
         throw new Error(err)
     }
 }
 
-const deleteRoomService = async(id) => {
+const deleteRoomService = async (id) => {
     try {
         await Room.destroy({
-            where : {
-                id : id
+            where: {
+                id: id
             }
         })
         return `Room with id:${id} deleted successfully!`
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot delete room by id");
         throw new Error(err)
     }
 
 }
-const updateRoomService = async(id, data) => {
+const updateRoomService = async (id, data) => {
     try {
+        console.log(id, data);
+
+        console.log('hit edit room services');
+
         await Room.update(data, {
-            where: { id : id}
+            where: { id: id }
         })
         return `Room with id: ${id} updated successfully!`
     }
-    catch(err){
+    catch (err) {
         throw new Error(err)
     }
 }
@@ -85,7 +90,7 @@ const updateRoomService = async(id, data) => {
 
 
 module.exports = {
-    getAllRoom, 
+    getAllRoom,
     getRoomByIdService,
     createRoom,
     updateRoomService,

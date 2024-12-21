@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 
+
 const UserModel = require('../models/users')
 const RoleModel = require('../models/roles.js')
 
@@ -13,20 +14,25 @@ const Role = RoleModel(Sequelize_In, DataTypes)
 
 const salt = bcrypt.genSaltSync(10);
 
+
 const hashUserPassWord = (userPassWord) => {
     const hashPassWord = bcrypt.hashSync(userPassWord, salt);
     return hashPassWord;
 }
 
-const registerService = async(register_data) => {
+const registerService = async (register_data) => {
+    console.log('hit services server regist');
+
     const user_email = register_data.email
     const user_phone = register_data.phone_number
     let message = null
+
     const phoneValidatedUser = await User.findOne({
         where: {
             phone_number: user_phone
         }
     })
+
 
     const emailValidatedUser = await User.findOne({
         where: {
@@ -34,11 +40,12 @@ const registerService = async(register_data) => {
         }
     })
 
-    if(phoneValidatedUser){
+    if (phoneValidatedUser) {
+
         message = 'Error: Phone number already exists'
         return message
     }
-    if(emailValidatedUser){
+    if (emailValidatedUser) {
         message = 'Error: Email already exists'
         return message
     }
@@ -46,22 +53,23 @@ const registerService = async(register_data) => {
         const hash_password = hashUserPassWord(register_data.password)
         register_data.password = hash_password
         console.log(register_data);
-        
+
         await User.create({
             ...register_data
         })
         return 'Create new user successfully!'
     }
-    catch(err){
+    catch (err) {
         throw Error(err)
     }
+
 }
 
-const loginService = async(username, password) => {
+const loginService = async (username, password) => {
     const validated_username = username.trim()
     let message = ''
     let token = null
-    try{
+    try {
         const validatedUser = await User.findOne({
             where: {
                 username: validated_username
@@ -69,16 +77,16 @@ const loginService = async(username, password) => {
         })
 
 
-        if(!validatedUser){
+        if (!validatedUser) {
             message = 'Error: Username not found'
-            return {message: message, token: token}
+            return { message: message, token: token }
         }
 
         const isValidPassword = await bcrypt.compare(password, validatedUser.password)
 
-        if(!isValidPassword){
+        if (!isValidPassword) {
             message = 'Error: Password is incorrect'
-            return {message: message, token: token}
+            return { message: message, token: token }
         }
 
         const UserRole = await Role.findOne({
@@ -89,26 +97,28 @@ const loginService = async(username, password) => {
         const role_name = UserRole.role_name
 
         const token_data = {
-            username : validatedUser.username,
-            email : validatedUser.email,
+            username: validatedUser.username,
+            email: validatedUser.email,
             first_name: validatedUser.first_name,
             last_name: validatedUser.last_name,
             id : validatedUser.id,
             role_id: validatedUser.role_id,
             role_name: role_name
+
         }
 
         const received_token = createJWT(token_data)
-        if(!received_token) {
+        if (!received_token) {
             message = 'Error: Failed to create token'
-            return {message: message, token: token}
+            return { message: message, token: token }
         }
         token = received_token
         message = 'Login successful'
-        return {message: message, token: token, user_data : token_data}
+
+        return { message: message, token: token, user_data: token_data }
 
     }
-    catch(err){
+    catch (err) {
         throw Error(err)
     }
 }
