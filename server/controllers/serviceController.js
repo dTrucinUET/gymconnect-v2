@@ -1,6 +1,14 @@
-const { getAllService, getServiceByIdService, createService, deleteServiceService, updateServiceService } = require("../service/serviceService");
+const { getAllService, getServiceByIdService, createService, deleteServiceService,
+     updateServiceService, getServiceByRoomId } = require("../service/serviceService");
 
 const getServices = async(req, res)=>{
+    const query_obj = req.query
+    if(query_obj.roomid){
+        const {roomid} = query_obj
+        const data = await getServiceByRoomId(roomid)
+        return res.status(200).json(data)
+    }
+
     const data = await getAllService()
 
     if(!data) {

@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 
 
 const UserModel = require('../models/users')
+const RoleModel = require('../models/roles.js')
 
 const sequelize = require('../config/sequelize.js');
 const { DataTypes } = require('sequelize');
@@ -9,6 +10,7 @@ const { createJWT } = require('../middleware/jwtAction.js');
 
 const Sequelize_In = sequelize
 const User = UserModel(Sequelize_In, DataTypes)
+const Role = RoleModel(Sequelize_In, DataTypes)
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -87,13 +89,21 @@ const loginService = async (username, password) => {
             return { message: message, token: token }
         }
 
+        const UserRole = await Role.findOne({
+            where: {
+                id: validatedUser.role_id
+            }
+        })
+        const role_name = UserRole.role_name
+
         const token_data = {
             username: validatedUser.username,
             email: validatedUser.email,
             first_name: validatedUser.first_name,
             last_name: validatedUser.last_name,
-            id: validatedUser.id,
-            role_name: validatedUser.role_name
+            id : validatedUser.id,
+            role_id: validatedUser.role_id,
+            role_name: role_name
         }
 
         const received_token = createJWT(token_data)

@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       avatar_url: { type: DataTypes.STRING, allowNull: true },
       location: { type: DataTypes.JSON, allowNull: false },
       balance: { type: DataTypes.FLOAT, allowNull: false },
-      role_name: {type: DataTypes.STRING, allowNull: false},
+      role_id: {type: DataTypes.INTEGER, allowNull: false},
       sex: {type: DataTypes.STRING, allowNull: false},
       password: {type: DataTypes.STRING, allowNull: false}
     },
