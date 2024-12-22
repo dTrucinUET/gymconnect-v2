@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('room_comments', {
+    await queryInterface.createTable('rating_services', {
       id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
       room_id: { 
         type: Sequelize.INTEGER, 
@@ -11,13 +11,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      user_id: { 
-        type: Sequelize.INTEGER, 
-        references: { model: 'users', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-      },
-      comment: { type: Sequelize.TEXT, allowNull: false },
+      comment: { type: Sequelize.TEXT, allowNull: true },
       images_url: { type: Sequelize.JSON, allowNull: true },
       rating: { type: Sequelize.FLOAT, allowNull: true },
       createdAt: { type: Sequelize.DATE, allowNull: false },
@@ -26,7 +20,7 @@ module.exports = {
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable('room_comments');
+    await queryInterface.dropTable('rating_services');
   },
 };
 

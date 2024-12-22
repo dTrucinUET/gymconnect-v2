@@ -10,6 +10,7 @@ module.exports = {
                 name: faker.commerce.productName(),
                 description: faker.lorem.sentence(),
                 location: JSON.stringify({ city: faker.address.city(), country: faker.address.country() }),
+                image:  faker.commerce.productName(),
                 rating: faker.datatype.float({ min: 1, max: 5, precision: 0.1 }),
                 owner_id: faker.datatype.number({ min: 1, max: 10 }),
                 createdAt: new Date(),

@@ -1,4 +1,4 @@
-const {getAllRoomComment, deleteRoomCommentService, getRoomCommentByIdService, createRoomComment, updateRoomCommentService} = require('../service/roomCommentService.js')
+const {getAllRoomComment, deleteRoomCommentService, getRoomCommentByIdService, createRoomComment, updateRoomCommentService, getCommentByRoomService} = require('../service/roomCommentService.js')
 
 const getRoomComments = async(req, res)=>{
     const data = await getAllRoomComment()
@@ -51,11 +51,22 @@ const updateRoomComment = async(req, res) => {
 }
 
 
-// Export of all methods as object
+const getCommentByRoom = async (req, res) => {
+    const { roomId } = req.params;
+    try {
+        const roomComments = await getCommentByRoomService(roomId);
+        res.status(200).json(roomComments);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Unable to fetch comments for the specified room.' });
+    }
+};
+
 module.exports = {
     getRoomCommentById,
     getRoomComments,
     addRoomComments,
+    updateRoomComment,
     deleteRoomComment,
-    updateRoomComment
-}
+    getCommentByRoom 
+};

@@ -105,8 +105,8 @@ const checkUserJWT = (req, res, next) => {
 
     let cookies = req.cookies;
     let bearerToken = extractToken(req);
-    console.log(cookies);
-    console.log(req);
+    // console.log(cookies);
+    // console.log(req);
     
     console.log(bearerToken);
 

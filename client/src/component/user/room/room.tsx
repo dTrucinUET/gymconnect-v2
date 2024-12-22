@@ -30,8 +30,8 @@ const RoomDetail = ({ room }: RoomDetailProps) => {
     notFound();
   }
 
-  console.log("room location", room.location);
-  console.log("type", typeof(room.location));
+  // console.log("room location", room.location);
+  // console.log("type", typeof(room.location));
 
   return (
     <Container size="lg" style={{ marginTop: '2rem' }}>
