@@ -46,7 +46,7 @@ export function NavbarNested(props: any) {
       {
         label: "Quản lý nhân viên",
         icon: IconNotes,
-        links: "aaa"
+        links: "customer"
       }
 
 

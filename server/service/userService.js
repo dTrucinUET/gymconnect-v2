@@ -34,16 +34,6 @@ const createNewUser = async (email, password, username) => {
 
 }
 
-// const getUserList = async () => {
-
-//     let user = []
-//     try {
-//         user = await User.findAll()
-//         return user;
-//     } catch (err) {
-//         throw Error(err)
-//     }
-// }
 
 const getUserList = async () => {
     try {
@@ -52,11 +42,29 @@ const getUserList = async () => {
         let userList = []
         for (let user of users) {
             const role1 = user;
-            console.log("role user", role1.dataValues.id);
+            console.log("user in loop", user.dataValues)
+            // console.log("role user", role1.dataValues.role_id);
+            // let role_id = role1.dataValues.role_id
 
+            let role_id = 1
+            switch (role1.dataValues.role_name) {
+                case 'admin':
+                    role_id = 2;
+                    break;
+                case 'manager':
+                    role_id = 3;
+
+                    break;
+                case 'user':
+                    role_id = 1;
+
+                    break;
+                default:
+                    role_id = 1;
+            }
             const permission_role = await RolePermission.findAll({
                 where: {
-                    role_id: role1.dataValues.id
+                    role_id: role_id
                 },
                 raw: true
             });
@@ -66,7 +74,7 @@ const getUserList = async () => {
             let permission_list = [];
 
             for (let item of permission_role) {
-                console.log(item.permission_id);
+                console.log("item.permission_id", item.permission_id);
 
                 const permission = await Permission.findOne({
                     where: {
@@ -106,6 +114,8 @@ const deleteUserService = async (userIndex) => {
         await User.destroy({
             where: { id: userIndex }
         });
+        return "Delete user successfully!"
+
     } catch (err) {
         throw Error(err)
 

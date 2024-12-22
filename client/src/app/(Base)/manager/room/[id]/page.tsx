@@ -27,9 +27,7 @@ const RoomDetail = async ({ params }: RoomDetailProps) => {
         credentials: 'include',
 
     });
-    // const response = await customFetch(`http://localhost:8080/room/${id}`, {
-    //     method: 'GET'
-    // })
+
     console.log(response);
 
     console.log("Response status:", response.status);
@@ -109,7 +107,6 @@ const RoomDetail = async ({ params }: RoomDetailProps) => {
                         loading="lazy"
                         allowFullScreen
                         src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDc7PnOq3Hxzq6dxeUVaY8WGLHIePl0swY&q=${JSON.parse(room.location).city},${JSON.parse(room.location).country}`}
-                    // src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDc7PnOq3Hxzq6dxeUVaY8WGLHIePl0swY&q=Hà Nội,Việt Nam`}
 
                     ></iframe>
                 </div>

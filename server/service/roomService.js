@@ -42,23 +42,35 @@ const getRoomByIdService = async (id) => {
 }
 
 const createRoom = async (room, image) => {
-    const newRoom = {
-        ...room
-    }
+
+    console.log("newRoom", JSON.parse(room));
+    let newRoom = JSON.parse(room);
+    console.log(newRoom.name);
+
+
 
     try {
         if (image) {
             const imageBuffer = image.buffer;
+            console.log(image);
 
             await Room.create({
-                ...newRoom,
-                image: imageBuffer,
-                owner_id: newRoom.owner_id
+                name: newRoom.name,
+                owner_id: newRoom.owner_id,
+                description: newRoom.description,
+                rating: newRoom.rating,
+                image: image.path,
+                owner_id: newRoom.owner_id,
+                location: JSON.stringify(newRoom.location)
             });
         } else {
             await Room.create({
-                ...newRoom,
-                owner_id: newRoom.owner_id
+                name: newRoom.name,
+                owner_id: newRoom.owner_id,
+                description: newRoom.description,
+                rating: newRoom.rating,
+                location: JSON.stringify(newRoom.location)
+
             });
         }
 

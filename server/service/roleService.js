@@ -5,84 +5,85 @@ const { DataTypes } = require('sequelize');
 const Sequelize_In = sequelize
 const Role = RoleModel(Sequelize_In, DataTypes)
 
-const getAllRole = async() => {
+const getAllRole = async () => {
     let roles = null;
-    try{
+    try {
         roles = await Role.findAll({
             attributes: ['id', 'role_name', 'createdAt', 'updatedAt']
         })
     }
-    catch(err) {
+    catch (err) {
         console.log("Cannot fetch all Roles");
-        
+
         throw new Error(err)
     }
     return roles
 }
 
 
-const getRoleByIdService = async(id) => {
+const getRoleByIdService = async (id) => {
     id = parseInt(id)
     let role = null;
-    try{
+    try {
         role = Role.findOne({
             where: { id: id },
             attributes: ['id', 'role_name', 'createdAt', 'updatedAt']
         })
         return role
     }
-    catch{
+    catch {
         console.log("Cannot fetch Role by id");
         throw new Error(err)
     }
 }
 
-const createRole = async(role) => {
+const createRole = async (role) => {
     const newRole = {
         ...role
     }
-    
-    try{
+
+    try {
         await Role.create({
-            ...newRole        })
+            ...newRole
+        })
         return "Created Role successfully!"
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot create Role");
         throw new Error(err)
     }
 }
 
-const deleteRoleService = async(id) => {
+const deleteRoleService = async (id) => {
     try {
         await Role.destroy({
-            where : {
-                id : id
+            where: {
+                id: id
             }
         })
         return `Role with id:${id} deleted successfully!`
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot delete Role by id");
         throw new Error(err)
     }
 
 }
-const updateRoleService = async(id, data) => {
+
+const updateRoleService = async (id, data) => {
     try {
         await Role.update(data, {
-            where: { id : id}
+            where: { id: id }
         })
         return `Role with id: ${id} updated successfully!`
     }
-    catch(err){
+    catch (err) {
         throw new Error(err)
     }
 }
 
-
 module.exports = {
-    getAllRole, 
+    getAllRole,
     getRoleByIdService,
     createRole,
     updateRoleService,

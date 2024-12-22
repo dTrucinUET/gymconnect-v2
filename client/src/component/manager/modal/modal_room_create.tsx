@@ -1,17 +1,28 @@
-import React, { useState } from 'react';
-import { Modal, Box, Button, TextInput, NumberInput, Stack } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
+import { Modal, Box, Button, TextInput, NumberInput, Stack, FileInput, FileButton, Group } from '@mantine/core';
+import { Text } from '@mantine/core';
 
 interface CreateRoomProps {
     openCreateRoom: boolean;
     setOpenCreateRoom: (openCreateRoom: boolean) => void;
     formRoomData: any;
     setFormRoomData: (formRoomData: any) => void;
-    handleSubmitCreate: (formData: any) => void;
+    handleSubmitCreate: (formData: any, file: File | null) => void;
 }
 
-const CreateRoomModal = (props: CreateRoomProps) => {
+const CreateRoomModalManager = (props: CreateRoomProps) => {
     const { openCreateRoom, setOpenCreateRoom, formRoomData, setFormRoomData, handleSubmitCreate } = props;
+    const [file, setFile] = useState<File | null>(null);
 
+    const handleCloseModal = () => {
+        setOpenCreateRoom(false);
+        resetFormData()
+    };
+    useEffect(() => {
+        if (!openCreateRoom) {
+            resetFormData()
+        }
+    }, [openCreateRoom])
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setFormRoomData({
@@ -19,15 +30,9 @@ const CreateRoomModal = (props: CreateRoomProps) => {
             [name]: value,
         });
     };
-
-    const handleCloseModal = () => {
-        setOpenCreateRoom(false);
-        resetFormData()
-    };
-
     const resetFormData = () => {
         setFormRoomData({
-            owner_id: 0,
+            owner_id: formRoomData.owner_id,
             name: '',
             description: '',
             location: '{}', // JSON string for location
@@ -38,8 +43,8 @@ const CreateRoomModal = (props: CreateRoomProps) => {
     const handleSubmitCreateRoom = async (e: any) => {
         e.preventDefault();
         console.log(formRoomData);
-        handleSubmitCreate(formRoomData);
-        resetFormData()// Pass the form data to the parent component for submission
+        handleSubmitCreate(formRoomData, file);
+        // Pass the form data to the parent component for submission
     };
 
     return (
@@ -51,14 +56,7 @@ const CreateRoomModal = (props: CreateRoomProps) => {
         >
             <form onSubmit={handleSubmitCreateRoom}>
                 <Stack gap="md">
-                    <TextInput
-                        label="Owner ID"
-                        name="owner_id"
-                        type="number"
-                        value={formRoomData.owner_id}
-                        onChange={handleChange}
-                        required
-                    />
+
 
                     <TextInput
                         label="Name"
@@ -95,6 +93,17 @@ const CreateRoomModal = (props: CreateRoomProps) => {
                         step={0.1}
                         required
                     />
+                    <Group justify="flex-start">
+                        <FileButton onChange={setFile} accept="image/png,image/jpeg">
+                            {(props) => <Button {...props}>Upload image</Button>}
+                        </FileButton>
+                        {file && (
+                            <Text>
+                                Picked file: {file.name}
+                            </Text>
+                        )}
+                    </Group>
+
 
                     <Button type="submit" fullWidth>
                         Create Room
@@ -105,4 +114,4 @@ const CreateRoomModal = (props: CreateRoomProps) => {
     );
 };
 
-export default CreateRoomModal;
+export default CreateRoomModalManager;
