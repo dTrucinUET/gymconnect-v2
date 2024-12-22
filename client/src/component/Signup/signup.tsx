@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Container, TextInput, PasswordInput, Button, Text, Group, Paper, Title, Checkbox, Anchor, px, Popover, Box } from '@mantine/core';
+import { Container, TextInput, PasswordInput, Button, Text, Group, Paper, Title, Checkbox, Anchor, px, Popover, Box, ComboboxHiddenInput, Select } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import styles from './Signup.module.css';
@@ -46,7 +46,8 @@ const SignupForm = () => {
             balance: 1000,
             role_name: 'user',
             sex: '',
-            address: ''
+            address: '',
+            role_id: '2 ',
         },
 
         validate: {
@@ -54,7 +55,7 @@ const SignupForm = () => {
             username: (value) => (value.length < 3 ? 'Username must have at least 3 characters' : null),
             password: (value) => (value.length < 6 ? 'Password must have at least 6 characters' : null),
             confirmPassword: (value, values) => (value !== values.password ? 'Passwords do not match' : null),
-            address: (value) => (value.length < 10 ? 'Address is too short' : null),
+            address: (value) => (value.length < 5 ? 'Address is too short' : null),
             terms: (value) => (value === false ? 'You must accept the terms and conditions' : null),
 
         },
@@ -118,6 +119,7 @@ const SignupForm = () => {
                         Đăng ký ngay để nhận thêm ưu đãi
                     </Text>
                     <form onSubmit={form.onSubmit(handleSubmit)}>
+                        <input type="hidden" {...form.getInputProps('role_id')} value='2'/>
                         <Group mb={0} >
                             <TextInput
                                 className={styles.inputField}
@@ -143,34 +145,38 @@ const SignupForm = () => {
                             label="Tên Đăng nhập"
                             placeholder="username"
                             {...form.getInputProps('username')}
-                        />
-
+                                />
+                        <Group >
+                                    <PasswordInput
+                                        style={{ width: '48%' }}
+                                        label="Mật khẩu"
+                                        placeholder="Nhập mật khẩu của bạn"
+                                        {...form.getInputProps('password')}
+                                    />
+                                    <PasswordInput
+                                        style={{ width: '48%' }}
+                                        label="Nhắc lại mật khẩu"
+                                        placeholder="Nhập lại mật khẩu của bạn"
+                                        {...form.getInputProps('confirmPassword')}
+                            />
+                        </Group>
                         <Group >
                             <TextInput
                                 label="Số điện thoại"
                                 placeholder="0123456789"
                                 {...form.getInputProps('phone_number')}
                             />
-                            <TextInput
+                           <Select
                                 label="Giới tính"
-                                placeholder="Male"
+                                placeholder="Chọn giới tính"
+                                data={[
+                                    { value: '0', label: 'Nam' },
+                                    { value: '1', label: 'Nữ' },
+                                ]}
                                 {...form.getInputProps('sex')}
                             />
                         </Group>
-                        <Group >
-                            <PasswordInput
-                                style={{ width: '48%' }}
-                                label="Mật khẩu"
-                                placeholder="Nhập mật khẩu của bạn"
-                                {...form.getInputProps('password')}
-                            />
-                            <PasswordInput
-                                style={{ width: '48%' }}
-                                label="Nhắc lại mật khẩu"
-                                placeholder="Nhập lại mật khẩu của bạn"
-                                {...form.getInputProps('confirmPassword')}
-                            />
-                        </Group>
+       
                         <DatePickerInput
                             label="Ngày Sinh"
                             placeholder="04/12/2004"

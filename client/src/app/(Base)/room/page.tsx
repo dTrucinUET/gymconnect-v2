@@ -1,15 +1,18 @@
-import RoomView from "@/component/user/rooms/rooms.view";
+import Rooms from "@/component/user/rooms/rooms.view";
+
 
 
 const Room = async () => {
 
     const response = await fetch('http://localhost:8080/room');
-    const data = await response.json();
-    console.log("data", data)
+
+    const dataAA = await response.json();
+    console.log("dataqqqqqqqqq fetch server new ", dataAA)
 
     return (
         <>
-            <RoomView data={data} />
+            <Rooms data={dataAA} />
+
         </>
     );
 }

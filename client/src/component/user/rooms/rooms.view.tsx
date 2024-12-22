@@ -1,7 +1,9 @@
 'use client';
 import { Button, Group, Container, Title, Text, Pagination, Input } from '@mantine/core';
 import { useState } from 'react';
-// import { useRouter } from 'next/router';
+
+import { useRouter } from 'next/navigation';
+
 import styles from './rooms.module.css';
 import RoomRating from '@/component/rating/rating';
 import { useRouter } from "next/navigation";
@@ -13,9 +15,12 @@ const Rooms = (props: any) => {
     const [searchTerm, setSearchTerm] = useState('');
     const router = useRouter();
 
-    const filteredData = props.data.filter((room: any) =>
+
+    const filteredData = Array.isArray(props.data) 
+    ? props.data.filter((room: any) =>
         room.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
+    : [];  
 
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -24,7 +29,8 @@ const Rooms = (props: any) => {
         const endIndex = startIndex + itemsPerPage;
         return filteredData.slice(startIndex, endIndex);
     };
-
+    console.log(props.data);
+    
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };

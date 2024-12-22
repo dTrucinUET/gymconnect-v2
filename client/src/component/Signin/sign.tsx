@@ -35,11 +35,13 @@ const Login = () => {
             ),
         },
     });
-
+    // console.log("meo moe meo");
+    
     const handleSubmit = async (values: DataUserSignup) => {
         try {
             console.log(values);
-
+            console.log("aaaaaaaa");
+            
             console.log(`${process.env.NEXT_PUBLIC_SERVER_API}/login`);
 
             const response = await fetch('http://localhost:8080/login', {
