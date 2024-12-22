@@ -48,11 +48,15 @@
 }
 
 .buttonRegister {
-    border-color: red !important;
-    color: white
+    border-color: gray !important;
+    border-width: 2px;
+    color: white !important;
+    opacity: 0.8
 }
 
+
 .buttonRegister :hover {
-    opacity: 0.8;
-    color: beige;
+    opacity: 1;
+    color: white;
+
 }
