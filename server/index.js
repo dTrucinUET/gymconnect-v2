@@ -60,7 +60,7 @@ app.use('/permission', checkUserJWT, checkUserPermission, permissionRoute);
 app.use('/roles', checkUserJWT, checkUserPermission, rolesRoute);
 app.use('/role_permission', checkUserJWT, checkUserPermission, rolePermissionRoute);
 
-app.use('/service', checkUserJWT, checkUserPermission, serviceRoute);
+app.use('/service', serviceRoute);
 app.use('/service_comment', checkUserJWT, checkUserPermission, serviceCommentRoute);
 
 app.use('/transaction', checkUserJWT, checkUserPermission, transactionRoute);

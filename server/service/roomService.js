@@ -1,9 +1,9 @@
 const sequelize = require('../config/sequelize.js');
 const RoomModel = require('../models/rooms.js')
 const { DataTypes } = require('sequelize');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
+// const multer = require('multer');
+// const fs = require('fs');
+// const path = require('path');
 
 const Sequelize_In = sequelize
 const Room = RoomModel(Sequelize_In, DataTypes)

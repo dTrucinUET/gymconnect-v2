@@ -15,6 +15,10 @@ const getRooms = async (req, res) => {
 
 const getRoomById = async (req, res) => {
     const id = req.params.id
+    console.log(id);
+    console.log("server get");
+    
+    
     const data = await getRoomByIdService(id)
 
     if (!data) {
