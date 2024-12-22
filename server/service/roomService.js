@@ -22,12 +22,12 @@ const getAllRoom = async () => {
     }
     return rooms
 }
-
+ 
 
 const getRoomByIdService = async (id) => {
 
-    id = parseInt(id)
-    let room = null;
+    id = parseInt(id) 
+    let room = null; 
     try {
         room = Room.findOne({
             where: { id: id },
@@ -41,33 +41,25 @@ const getRoomByIdService = async (id) => {
     }
 }
 
-const createRoom = async (room, image) => {
-    const newRoom = {
+const createRoom = async (room) => {
+    const newRoom = { 
         ...room
     }
-
+    console.log("new room", newRoom);
+    
     try {
-        if (image) {
-            const imageBuffer = image.buffer;
-
-            await Room.create({
-                ...newRoom,
-                image: imageBuffer,
-                owner_id: newRoom.owner_id
-            });
-        } else {
-            await Room.create({
-                ...newRoom,
-                owner_id: newRoom.owner_id
-            });
-        }
-
-        return "Created room successfully!";
-    } catch (err) {
-        console.log("Cannot create room", err);
-        throw new Error(err);
+        await Room.create({  
+            ...newRoom,
+            owner_id: newRoom.owner_id   
+        })
+        return "Created room successfully!"
     }
-};
+    catch (err) {
+        console.log("Cannot create room");
+        throw new Error(err)
+    }
+}
+
 
 
 const deleteRoomService = async (id) => {
@@ -100,6 +92,8 @@ const updateRoomService = async (id, data) => {
         throw new Error(err)
     }
 }
+
+
 
 
 

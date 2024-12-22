@@ -1,0 +1,39 @@
+.titleContainer {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .searchContainer {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .searchBox {
+    width: 50%;
+  }
+  
+  .commentsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .commentCard {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .paginationGroup {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  

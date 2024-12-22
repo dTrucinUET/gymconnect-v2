@@ -18,14 +18,16 @@ const RoomPage = async ({ params }: RoomPageProps) => {
         notFound();
     }
 
-    // const responseComment = await fetch(`http://localhost:8080/room_comment/room/${roomId}`);
-    // const comment = await responseComment.json();
-    // console.log("comment", comment);
+
+    const responseComment = await fetch(`http://localhost:8080/room_comment/room/${roomId}`);
+    const comments = await responseComment.json(); 
+    console.log("comment", typeof(comments));
     
 
     return (
         <>
             <RoomDetail room={room} />
+            <Comment comments={comments} />
         </>
     );
 };
