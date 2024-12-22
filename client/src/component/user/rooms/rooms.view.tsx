@@ -28,7 +28,7 @@ const Rooms = (props: any) => {
         const endIndex = startIndex + itemsPerPage;
         return filteredData.slice(startIndex, endIndex);
     };
-    console.log(props.data);
+    // console.log(props.data);
     
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
