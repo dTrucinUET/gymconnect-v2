@@ -40,7 +40,6 @@ const addService = async(req, res)=>{
 }
 
 const deleteService = async(req, res) => {
-
     const delete_id = req.params.id
     const message =  await deleteServiceService(delete_id)
     if(!message){

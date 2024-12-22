@@ -13,11 +13,11 @@ const seeds = [
     'demo-userRoom.js',
     'demo-equip.js',
     'demo-room.js',
+    'demo-roomComment.js',
     'demo-services.js',
     'demo-transiction.js',
     'demo-equipcomment.js',
     'demo-logs.js',
-    'demo-roomComment.js',
     'demo-servicesComment.js',
     'demo-transictionLogs.js',
   ];

@@ -1,9 +1,9 @@
 const sequelize = require('../config/sequelize.js');
 const RoomModel = require('../models/rooms.js')
 const { DataTypes } = require('sequelize');
-const multer = require('multer');
-const fs = require('fs');
-const path = require('path');
+// const multer = require('multer');
+// const fs = require('fs');
+// const path = require('path');
 
 const Sequelize_In = sequelize
 const Room = RoomModel(Sequelize_In, DataTypes)
@@ -23,12 +23,12 @@ const getAllRoom = async () => {
     }
     return rooms
 }
-
+ 
 
 const getRoomByIdService = async (id) => {
 
-    id = parseInt(id)
-    let room = null;
+    id = parseInt(id) 
+    let room = null; 
     try {
         room = Room.findOne({
             where: { id: id },
@@ -79,8 +79,10 @@ const createRoom = async (room, image) => {
     } catch (err) {
         console.log("Cannot create room", err);
         throw new Error(err);
+
     }
-};
+}
+
 
 
 const deleteRoomService = async (id) => {
@@ -113,6 +115,8 @@ const updateRoomService = async (id, data) => {
         throw new Error(err)
     }
 }
+
+
 
 
 

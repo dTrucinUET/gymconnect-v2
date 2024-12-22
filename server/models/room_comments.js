@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // A room comment belongs to a room
       RoomComment.belongsTo(models.Room, { foreignKey: 'room_id' });
+      RoomComment.belongsTo(models.User, { foreignKey: 'user_id' });
+
     }
   }
 
@@ -14,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       comment: DataTypes.TEXT,
       images_url: DataTypes.JSON,
       rating: DataTypes.FLOAT,
-      room_id: DataTypes.INTEGER
+      room_id: DataTypes.INTEGER,
+      user_id: DataTypes.INTEGER,
     },
     {
       sequelize,

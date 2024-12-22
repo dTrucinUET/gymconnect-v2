@@ -19,7 +19,7 @@ const RoomDetail = ({ room }: RoomDetailProps) => {
   const router = useRouter();
 
   const handleServiceRoom = (roomId: string) => {
-    router.push(``); 
+    router.push(`/service?roomId=${roomId}`); 
   };
 
   const handleEquipmentRoom = (roomId: string) => {
@@ -30,8 +30,8 @@ const RoomDetail = ({ room }: RoomDetailProps) => {
     notFound();
   }
 
-  console.log("room location", room.location);
-  console.log("type", typeof(room.location));
+  // console.log("room location", room.location);
+  // console.log("type", typeof(room.location));
 
   return (
     <Container size="lg" style={{ marginTop: '2rem' }}>

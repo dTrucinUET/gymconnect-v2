@@ -15,6 +15,10 @@ const getRooms = async (req, res) => {
 
 const getRoomById = async (req, res) => {
     const id = req.params.id
+    console.log(id);
+    console.log("server get");
+    
+    
     const data = await getRoomByIdService(id)
 
     if (!data) {
@@ -31,6 +35,7 @@ const addRoom = async (req, res) => {
     console.log('image', image);
 
     const message = await createRoom(data, image)
+
     if (!message) {
         return res.status(400).json({ message: "Failed to create room" })
     }

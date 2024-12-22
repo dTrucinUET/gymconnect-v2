@@ -44,6 +44,8 @@ const getEquipmentByIdService = async (id) => {
             where: { id: id },
             attributes: ['id', 'name', 'room_id', 'description', 'amount', 'rating', 'createdAt', 'updatedAt']
         })
+        console.log("asdasdasd", equipment);
+        
         return equipment
     }
     catch {
