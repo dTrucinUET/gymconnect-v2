@@ -104,6 +104,7 @@ const loginService = async (username, password) => {
             id : validatedUser.id,
             role_id: validatedUser.role_id,
             role_name: role_name
+
         }
 
         const received_token = createJWT(token_data)
