@@ -1,6 +1,7 @@
 'use client';
 import { Button, Group, Container, Title, Text, Pagination, Input } from '@mantine/core';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './rooms.module.css';
 import RoomRating from '@/component/rating/rating';
 
@@ -9,10 +10,17 @@ const Rooms = (props: any) => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
+    const router = useRouter();
+    
+    // const filteredData = props.data.filter((room: any) =>
+    //     room.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
 
-    const filteredData = props.data.filter((room: any) =>
+    const filteredData = Array.isArray(props.data) 
+    ? props.data.filter((room: any) =>
         room.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    )
+    : [];  
 
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -21,7 +29,8 @@ const Rooms = (props: any) => {
         const endIndex = startIndex + itemsPerPage;
         return filteredData.slice(startIndex, endIndex);
     };
-
+    console.log(props.data);
+    
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
@@ -32,7 +41,7 @@ const Rooms = (props: any) => {
     };
 
     const handleDetailRoom = (roomId: string) => {
-        console.log(`Update permissions for: ${roomId}`);
+        router.push(`/room/${roomId}`); // Điều hướng đến trang chi tiết
     };
 
     return (

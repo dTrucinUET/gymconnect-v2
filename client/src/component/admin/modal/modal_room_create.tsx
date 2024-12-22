@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Box, Button, TextInput, NumberInput, Stack } from '@mantine/core';
+import { Modal, Box, Button, TextInput, NumberInput, Stack, FileInput } from '@mantine/core';
 
 interface CreateRoomProps {
     openCreateRoom: boolean;
@@ -13,24 +13,34 @@ const CreateRoomModal = (props: CreateRoomProps) => {
     const { openCreateRoom, setOpenCreateRoom, formRoomData, setFormRoomData, handleSubmitCreate } = props;
 
     const handleChange = (e: any) => {
-        const { name, value } = e.target;
-        setFormRoomData({
-            ...formRoomData,
-            [name]: value,
-        });
+        const { name, value } = e.target || {};
+    
+        if (name === "image") {
+            setFormRoomData({
+                ...formRoomData,
+                image: e,
+            });
+        } else {
+            setFormRoomData({
+                ...formRoomData,
+                [name]: value,
+            });
+        }
     };
+    
 
     const handleCloseModal = () => {
         setOpenCreateRoom(false);
-        resetFormData()
+        resetFormData();
     };
 
     const resetFormData = () => {
         setFormRoomData({
+            image: '',
             owner_id: 0,
             name: '',
             description: '',
-            location: '{}', // JSON string for location
+            location: '{}',
             rating: 0,
         });
     };
@@ -39,7 +49,7 @@ const CreateRoomModal = (props: CreateRoomProps) => {
         e.preventDefault();
         console.log(formRoomData);
         handleSubmitCreate(formRoomData);
-        resetFormData()// Pass the form data to the parent component for submission
+        resetFormData();
     };
 
     return (
@@ -81,7 +91,7 @@ const CreateRoomModal = (props: CreateRoomProps) => {
                         name="location"
                         value={formRoomData.location}
                         onChange={handleChange}
-                        placeholder='{"latitude": 0, "longitude": 0}' // Example format for location
+                        placeholder='{"latitude": 0, "longitude": 0}'
                         required
                     />
 
@@ -89,15 +99,29 @@ const CreateRoomModal = (props: CreateRoomProps) => {
                         label="Rating"
                         name="rating"
                         value={formRoomData.rating}
-                        onChange={(value) => setFormRoomData((prev: any) => ({ ...prev, rating: value || 0 }))}
+                        onChange={(value) =>
+                            setFormRoomData((prev: any) => ({
+                                ...prev,
+                                rating: value || 0,
+                            }))
+                        }
                         min={0}
                         max={5}
                         step={0.1}
                         required
                     />
 
+                    <FileInput
+                        label="Room Image"
+                        placeholder="Upload an image"
+                        onChange={handleChange}
+                        name="image"
+                        accept="image/*"
+                        required
+                    />
+
                     <Button type="submit" fullWidth>
-                        Create Room
+                        Create Room 
                     </Button>
                 </Stack>
             </form>
