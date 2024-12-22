@@ -51,7 +51,7 @@ app.use('/room', roomRoute);
 app.use('/room_comment', roomCommentRoute);
 
 
-app.use('/equipments', checkUserJWT, checkUserPermission, equipmentsRoute);
+app.use('/equipments', equipmentsRoute);
 app.use('/equiment_comments', checkUserJWT, checkUserPermission, equipmentCommentsRoute);
 
 app.use('/logs', checkUserJWT, checkUserPermission, logsRoute);
