@@ -13,6 +13,7 @@ module.exports = {
       },
       name: { type: Sequelize.STRING, allowNull: false },
       description: { type: Sequelize.TEXT, allowNull: false },
+      image: { type: Sequelize.STRING, allowNull: true },
       rating: { type: Sequelize.FLOAT, allowNull: true },
       amount: { type: Sequelize.INTEGER, allowNull: false },
       createdAt: { type: Sequelize.DATE, allowNull: false },

@@ -46,7 +46,9 @@ app.use('/login', loginRoute)
 app.use('/logout', logoutroute)
 
 app.use('/room_comment', checkUserJWT, checkUserPermission, roomCommentRoute);
-app.use('/room', checkUserJWT, checkUserPermission, roomRoute);
+// app.use('/room', checkUserJWT, checkUserPermission, roomRoute);
+app.use('/room', roomRoute);
+
 
 app.use('/equipments', checkUserJWT, checkUserPermission, equipmentsRoute);
 app.use('/equiment_comments', checkUserJWT, checkUserPermission, equipmentCommentsRoute);
