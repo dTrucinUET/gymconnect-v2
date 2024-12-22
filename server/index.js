@@ -46,12 +46,13 @@ app.use('/register', registerRoute)
 app.use('/login', loginRoute)
 app.use('/logout', logoutroute)
 
-app.use('/room_comment', checkUserJWT, checkUserPermission, roomCommentRoute);
+// app.use('/room_comment', checkUserJWT, checkUserPermission, roomCommentRoute);
 // app.use('/room', checkUserJWT, checkUserPermission, roomRoute);
 app.use('/room', roomRoute);
+app.use('/room_comment', roomCommentRoute);
 
 
-app.use('/equipments', checkUserJWT, checkUserPermission, equipmentsRoute);
+app.use('/equipments', equipmentsRoute);
 app.use('/equiment_comments', checkUserJWT, checkUserPermission, equipmentCommentsRoute);
 
 app.use('/logs', checkUserJWT, checkUserPermission, logsRoute);
@@ -60,7 +61,7 @@ app.use('/permission', checkUserJWT, checkUserPermission, permissionRoute);
 app.use('/roles', checkUserJWT, checkUserPermission, rolesRoute);
 app.use('/role_permission', checkUserJWT, checkUserPermission, rolePermissionRoute);
 
-app.use('/service', checkUserJWT, checkUserPermission, serviceRoute);
+app.use('/service', serviceRoute);
 app.use('/service_comment', checkUserJWT, checkUserPermission, serviceCommentRoute);
 
 app.use('/transaction', checkUserJWT, checkUserPermission, transactionRoute);

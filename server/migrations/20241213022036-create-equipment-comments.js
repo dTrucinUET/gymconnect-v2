@@ -11,6 +11,12 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
+      user_id: { 
+        type: Sequelize.INTEGER, 
+        references: { model: 'users', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
       comment: { type: Sequelize.TEXT, allowNull: false },
       images_url: { type: Sequelize.JSON, allowNull: true },
       rating: { type: Sequelize.FLOAT, allowNull: true },

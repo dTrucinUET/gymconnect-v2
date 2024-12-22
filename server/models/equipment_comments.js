@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // An equipment comment belongs to an equipment
       EquipmentComment.belongsTo(models.Equipment, { foreignKey: 'equipment_id' });
+      EquipmentComment.belongsTo(models.User, { foreignKey: 'user_id' });
+
     }
   }
 

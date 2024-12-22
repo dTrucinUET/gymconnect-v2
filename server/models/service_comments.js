@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // A service comment belongs to a service
       ServiceComment.belongsTo(models.Service, { foreignKey: 'service_id' });
+      ServiceComment.belongsTo(models.User, { foreignKey: 'user_id' });
+
     }
   }
 
