@@ -14,6 +14,7 @@ module.exports = {
       name: { type: Sequelize.STRING, allowNull: false },
       description: { type: Sequelize.TEXT, allowNull: false },
       location: { type: Sequelize.JSON, allowNull: false },
+      image: { type: Sequelize.STRING, allowNull: false },
       rating: { type: Sequelize.FLOAT, allowNull: true },
       createdAt: { type: Sequelize.DATE, allowNull: false },
       updatedAt: { type: Sequelize.DATE, allowNull: false },

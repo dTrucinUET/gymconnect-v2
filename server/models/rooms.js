@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       description: DataTypes.TEXT,
       location: DataTypes.JSON,
+      image: DataTypes.STRING,
       rating: DataTypes.FLOAT,
       owner_id: DataTypes.INTEGER
     },

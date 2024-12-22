@@ -1,6 +1,9 @@
 const sequelize = require('../config/sequelize.js');
 const RoomModel = require('../models/rooms.js')
 const { DataTypes } = require('sequelize');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 
 const Sequelize_In = sequelize
 const Room = RoomModel(Sequelize_In, DataTypes)
@@ -38,23 +41,34 @@ const getRoomByIdService = async (id) => {
     }
 }
 
-const createRoom = async (room) => {
+const createRoom = async (room, image) => {
     const newRoom = {
         ...room
     }
 
     try {
-        await Room.create({
-            ...newRoom,
-            owner_id: newRoom.owner_id
-        })
-        return "Created room successfully!"
+        if (image) {
+            const imageBuffer = image.buffer;
+
+            await Room.create({
+                ...newRoom,
+                image: imageBuffer,
+                owner_id: newRoom.owner_id
+            });
+        } else {
+            await Room.create({
+                ...newRoom,
+                owner_id: newRoom.owner_id
+            });
+        }
+
+        return "Created room successfully!";
+    } catch (err) {
+        console.log("Cannot create room", err);
+        throw new Error(err);
     }
-    catch (err) {
-        console.log("Cannot create room");
-        throw new Error(err)
-    }
-}
+};
+
 
 const deleteRoomService = async (id) => {
     try {

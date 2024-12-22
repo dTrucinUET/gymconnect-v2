@@ -75,8 +75,7 @@ const loginService = async (username, password) => {
                 username: validated_username
             }
         })
-
-
+        
         if (!validatedUser) {
             message = 'Error: Username not found'
             return { message: message, token: token }
@@ -89,11 +88,13 @@ const loginService = async (username, password) => {
             return { message: message, token: token }
         }
 
-        const UserRole = await Role.findOne({
+        const UserRole = await Role.findOne({ 
             where: {
                 id: validatedUser.role_id
             }
-        })
+        })  
+        console.log("role", validatedUser.role_id);
+        
         const role_name = UserRole.role_name
 
         const token_data = {
