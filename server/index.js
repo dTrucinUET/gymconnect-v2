@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser")
+const path = require('path');
 
 const bodyParser = require("body-parser")
 
@@ -69,6 +70,8 @@ app.use('/users', checkUserJWT, checkUserPermission, userRoute)
 app.use('/user_room', checkUserJWT, checkUserPermission, userRoomRoute)
 
 app.use('/payment', checkUserJWT, checkUserPermission, paymentRoute)
+
+app.use('/Images', express.static(path.join(__dirname, 'Images')));
 
 app.listen(port, () => {
    console.log(`Example app listening on port ${port}`);

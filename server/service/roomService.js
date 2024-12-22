@@ -12,8 +12,9 @@ const getAllRoom = async () => {
     let rooms = null;
     try {
         rooms = await Room.findAll({
-            attributes: ['id', 'name', 'owner_id', 'description', 'location', 'rating', 'createdAt', 'updatedAt']
+            attributes: ['id', 'name', 'owner_id', 'description', 'image', 'location', 'rating', 'createdAt', 'updatedAt']
         })
+
     }
     catch (err) {
         console.log("Cannot fetch all rooms");
@@ -59,7 +60,7 @@ const createRoom = async (room, image) => {
                 owner_id: newRoom.owner_id,
                 description: newRoom.description,
                 rating: newRoom.rating,
-                image: image.path,
+                image: image.filename,
                 owner_id: newRoom.owner_id,
                 location: JSON.stringify(newRoom.location)
             });

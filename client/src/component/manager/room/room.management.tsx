@@ -273,7 +273,7 @@ const RoomManagementManager = (props: any) => {
                 {paginateData().map((room: any) => (
                     <div key={room.id} className={styles.card}>
                         {/* <img src={room.imageUrl} alt={room.name} className={styles.cardImage} /> */}
-                        <img src={`http://localhost:8080/Images/1734851975098.jpg`} alt={room.name} className={styles.cardImage} />
+                        <img src={`http://localhost:8080/Images/${room.image}`} alt={room.name} className={styles.cardImage} />
                         <div className={styles.cardContent}>
 
                             <Title order={4}>{room.name}</Title>
