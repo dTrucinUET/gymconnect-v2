@@ -5,29 +5,29 @@ const { DataTypes } = require('sequelize');
 const Sequelize_In = sequelize
 const Equipment = EquimentModel(Sequelize_In, DataTypes)
 
-const getAllEquipment = async() => {
+const getAllEquipment = async () => {
     let equipments = null;
-    try{
+    try {
         equipments = await Equipment.findAll({
-            attributes: ['id', 'name', 'room_id', 'description', 'amount', 'rating', 'createdAt', 'updatedAt'] 
+            attributes: ['id', 'name', 'room_id', 'description', 'amount', 'rating', 'createdAt', 'updatedAt']
         })
     }
-    catch(err) {
+    catch (err) {
         console.log("Cannot fetch all equipments");
-        
+
         throw new Error(err)
     }
     return equipments
 }
 
-const getEquipmentByRoomId = async(roomid) => {
+const getEquipmentByRoomId = async (roomid) => {
     let equipments = null;
     try {
         equipments = await Equipment.findAll({
-            where: {room_id: roomid}
+            where: { room_id: roomid }
         })
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot fetch equipments by room id");
 
         throw new Error(err)
@@ -36,10 +36,10 @@ const getEquipmentByRoomId = async(roomid) => {
 }
 
 
-const getEquipmentByIdService = async(id) => {
+const getEquipmentByIdService = async (id) => {
     id = parseInt(id)
     let equipment = null;
-    try{
+    try {
         equipment = Equipment.findOne({
             where: { id: id },
             attributes: ['id', 'name', 'room_id', 'description', 'amount', 'rating', 'createdAt', 'updatedAt']
@@ -48,53 +48,52 @@ const getEquipmentByIdService = async(id) => {
         
         return equipment
     }
-    catch{
+    catch {
         console.log("Cannot fetch Equiment by id");
         throw new Error(err)
     }
 }
 
-const createEquipment = async(equipment) => {
+const createEquipment = async (equipment) => {
     const newEquipment = {
         ...equipment
     }
-    
-    try{
+
+    try {
         await Equipment.create({
             ...newEquipment,
-            owner_id: newEquipment.owner_id
         })
         return "Created Equipment successfully!"
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot create Equipment");
         throw new Error(err)
     }
 }
 
-const deleteEquipmentService = async(id) => {
+const deleteEquipmentService = async (id) => {
     try {
         await Equipment.destroy({
-            where : {
-                id : id
+            where: {
+                id: id
             }
         })
         return `Equipment with id:${id} deleted successfully!`
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot delete Equipment by id");
         throw new Error(err)
     }
 
 }
-const updateEquipmentService = async(id, data) => {
+const updateEquipmentService = async (id, data) => {
     try {
         await Equipment.update(data, {
-            where: { id : id}
+            where: { id: id }
         })
         return `Equiment with id: ${id} updated successfully!`
     }
-    catch(err){
+    catch (err) {
         throw new Error(err)
     }
 }
@@ -102,7 +101,7 @@ const updateEquipmentService = async(id, data) => {
 
 
 module.exports = {
-    getAllEquipment, 
+    getAllEquipment,
     getEquipmentByIdService,
     createEquipment,
     updateEquipmentService,

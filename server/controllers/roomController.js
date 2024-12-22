@@ -29,11 +29,13 @@ const getRoomById = async (req, res) => {
 }
 
 const addRoom = async (req, res) => {
-    const data = req.body
-    // const image = req.file
-    console.log("room controller", data);
-    
-    const message = await createRoom(data)
+    const data = req.body.data
+    const image = req.file
+
+    console.log('image', image);
+
+    const message = await createRoom(data, image)
+
     if (!message) {
         return res.status(400).json({ message: "Failed to create room" })
     }
@@ -77,10 +79,10 @@ const upload = multer({
     limits: { fileSize: '1000000' },
     fileFilter: (req, file, cb) => {
         const fileTypes = /jpeg|jpg|png|gif/
-        const mimeType = fileTypes.test(file.mimetype)  
+        const mimeType = fileTypes.test(file.mimetype)
         const extname = fileTypes.test(path.extname(file.originalname))
 
-        if(mimeType && extname) {
+        if (mimeType && extname) {
             return cb(null, true)
         }
         cb('Give proper files formate to upload')

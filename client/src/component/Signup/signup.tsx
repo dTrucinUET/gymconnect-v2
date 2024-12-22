@@ -47,7 +47,7 @@ const SignupForm = () => {
             role_name: 'user',
             sex: '',
             address: '',
-            role_id: '2 ',
+            role_id: '1 ',
         },
 
         validate: {
@@ -119,7 +119,7 @@ const SignupForm = () => {
                         Đăng ký ngay để nhận thêm ưu đãi
                     </Text>
                     <form onSubmit={form.onSubmit(handleSubmit)}>
-                        <input type="hidden" {...form.getInputProps('role_id')} value='2'/>
+                        <input type="hidden" {...form.getInputProps('role_id')} value='2' />
                         <Group mb={0} >
                             <TextInput
                                 className={styles.inputField}
@@ -145,19 +145,19 @@ const SignupForm = () => {
                             label="Tên Đăng nhập"
                             placeholder="username"
                             {...form.getInputProps('username')}
-                                />
+                        />
                         <Group >
-                                    <PasswordInput
-                                        style={{ width: '48%' }}
-                                        label="Mật khẩu"
-                                        placeholder="Nhập mật khẩu của bạn"
-                                        {...form.getInputProps('password')}
-                                    />
-                                    <PasswordInput
-                                        style={{ width: '48%' }}
-                                        label="Nhắc lại mật khẩu"
-                                        placeholder="Nhập lại mật khẩu của bạn"
-                                        {...form.getInputProps('confirmPassword')}
+                            <PasswordInput
+                                style={{ width: '48%' }}
+                                label="Mật khẩu"
+                                placeholder="Nhập mật khẩu của bạn"
+                                {...form.getInputProps('password')}
+                            />
+                            <PasswordInput
+                                style={{ width: '48%' }}
+                                label="Nhắc lại mật khẩu"
+                                placeholder="Nhập lại mật khẩu của bạn"
+                                {...form.getInputProps('confirmPassword')}
                             />
                         </Group>
                         <Group >
@@ -166,7 +166,7 @@ const SignupForm = () => {
                                 placeholder="0123456789"
                                 {...form.getInputProps('phone_number')}
                             />
-                           <Select
+                            <Select
                                 label="Giới tính"
                                 placeholder="Chọn giới tính"
                                 data={[
@@ -176,7 +176,7 @@ const SignupForm = () => {
                                 {...form.getInputProps('sex')}
                             />
                         </Group>
-       
+
                         <DatePickerInput
                             label="Ngày Sinh"
                             placeholder="04/12/2004"

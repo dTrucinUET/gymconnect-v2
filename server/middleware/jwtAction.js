@@ -105,9 +105,7 @@ const checkUserJWT = (req, res, next) => {
 
     let cookies = req.cookies;
     let bearerToken = extractToken(req);
-    // console.log(cookies);
-    // console.log(req);
-    
+
     console.log(bearerToken);
 
     if (cookies && cookies.access_token || bearerToken) {
@@ -200,7 +198,6 @@ const checkUserPermission = (req, res, next) => {
             DT: ''
         });
     }
-    console.log('hit end');
 };
 module.exports = {
     createJWT,

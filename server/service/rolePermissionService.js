@@ -5,44 +5,43 @@ const { DataTypes } = require('sequelize');
 const Sequelize_In = sequelize
 const RolePermission = RolePermissionModel(Sequelize_In, DataTypes)
 
-const getAllRolePermission = async() => {
+const getAllRolePermission = async () => {
     let rolePermissions = null;
-    try{
+    try {
         rolePermissions = await RolePermission.findAll({
             attributes: ['id', 'role_id', 'permission_id', 'createdAt', 'updatedAt']
         })
     }
-    catch(err) {
+    catch (err) {
         console.log("Cannot fetch all RolePermissions");
-        
+
         throw new Error(err)
     }
     return rolePermissions
 }
 
-
-const getRolePermissionByIdService = async(id) => {
+const getRolePermissionByIdService = async (id) => {
     id = parseInt(id)
     let rolePermission = null;
-    try{
+    try {
         rolePermission = RolePermission.findOne({
             where: { id: id },
             attributes: ['id', 'role_id', 'permission_id', 'createdAt', 'updatedAt']
         })
         return rolePermission
     }
-    catch{
+    catch {
         console.log("Cannot fetch RolePermission by id");
         throw new Error(err)
     }
 }
 
-const createRolePermission = async(rolePermission) => {
+const createRolePermission = async (rolePermission) => {
     const newRolePermission = {
         ...rolePermission
     }
-    
-    try{
+
+    try {
         await RolePermission.create({
             ...newRolePermission,
             role_id: newRolePermission.role_id,
@@ -50,43 +49,41 @@ const createRolePermission = async(rolePermission) => {
         })
         return "Created RolePermission successfully!"
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot create RolePermission");
         throw new Error(err)
     }
 }
 
-const deleteRolePermissionService = async(id) => {
+const deleteRolePermissionService = async (id) => {
     try {
         await RolePermission.destroy({
-            where : {
-                id : id
+            where: {
+                id: id
             }
         })
         return `RolePermission with id:${id} deleted successfully!`
     }
-    catch(err){
+    catch (err) {
         console.log("Cannot delete RolePermission by id");
         throw new Error(err)
     }
 
 }
-const updateRolePermissionService = async(id, data) => {
+const updateRolePermissionService = async (id, data) => {
     try {
         await RolePermission.update(data, {
-            where: { id : id}
+            where: { id: id }
         })
         return `RolePermission with id: ${id} updated successfully!`
     }
-    catch(err){
+    catch (err) {
         throw new Error(err)
     }
 }
 
-
-
 module.exports = {
-    getAllRolePermission, 
+    getAllRolePermission,
     getRolePermissionByIdService,
     createRolePermission,
     updateRolePermissionService,

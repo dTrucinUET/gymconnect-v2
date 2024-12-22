@@ -46,7 +46,17 @@ export function NavbarNested(props: any) {
       {
         label: "Quản lý nhân viên",
         icon: IconNotes,
-        links: "aaa"
+        links: "customer"
+      },
+      {
+        label: "Quản lý thiết bị",
+        icon: IconNotes,
+        links: "equipment"
+      },
+      {
+        label: "Quản lý dịch vụ",
+        icon: IconNotes,
+        links: "services"
       }
 
 

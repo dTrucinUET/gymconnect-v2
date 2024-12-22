@@ -15,11 +15,11 @@ const Rooms = (props: any) => {
     const router = useRouter();
 
 
-    const filteredData = Array.isArray(props.data) 
-    ? props.data.filter((room: any) =>
-        room.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    : [];  
+    const filteredData = Array.isArray(props.data)
+        ? props.data.filter((room: any) =>
+            room.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : [];
 
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
@@ -28,8 +28,7 @@ const Rooms = (props: any) => {
         const endIndex = startIndex + itemsPerPage;
         return filteredData.slice(startIndex, endIndex);
     };
-    // console.log(props.data);
-    
+
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
