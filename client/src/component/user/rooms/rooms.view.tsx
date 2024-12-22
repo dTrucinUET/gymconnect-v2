@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 
 import styles from './rooms.module.css';
 import RoomRating from '@/component/rating/rating';
-import { useRouter } from "next/navigation";
 
 const Rooms = (props: any) => {
     const itemsPerPage = 6;

@@ -19,7 +19,7 @@ const RoomDetail = ({ room }: RoomDetailProps) => {
   const router = useRouter();
 
   const handleServiceRoom = (roomId: string) => {
-    router.push(``); 
+    router.push(`/service?roomId=${roomId}`); 
   };
 
   const handleEquipmentRoom = (roomId: string) => {
