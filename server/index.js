@@ -22,6 +22,7 @@ const loginRoute = require('./routes/login_route.js')
 const logoutroute = require('./routes/logout_route.js')
 const userRoute = require('./routes/user_route.js')
 const userRoomRoute = require('./routes/user_room_route.js')
+const paymentRoute = require('./routes/embedded_payment_route.js')
 
 
 const configCors = require('./config/cors.js')
@@ -65,6 +66,7 @@ app.use('/transaction_logs', checkUserJWT, checkUserPermission, transactionLogsR
 app.use('/users', checkUserJWT, checkUserPermission, userRoute)
 app.use('/user_room', checkUserJWT, checkUserPermission, userRoomRoute)
 
+app.use('/payment', checkUserJWT, checkUserPermission, paymentRoute)
 
 app.listen(port, () => {
    console.log(`Example app listening on port ${port}`);

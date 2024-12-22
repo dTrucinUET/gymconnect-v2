@@ -52,6 +52,8 @@ const roleRoutes = {
     '/transaction_logs/:id': ['admin', 'user', 'manager'],
     '/user_room': ['admin', 'user', 'manager'],
     '/user_room/:id': ['admin', 'user', 'manager'],
+    '/payment': ['admin', 'user', 'manager'],
+    '/payment/:id': ['admin', 'user', 'manager'],
 
 }
 
