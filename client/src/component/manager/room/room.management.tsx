@@ -256,6 +256,16 @@ const RoomManagementManager = (props: any) => {
             })
         }
     }
+
+    const handleServices = (roomId: number) => {
+        console.log("handleServices", roomId);
+        router.push(`/manager/services/${roomId}`)
+    }
+
+    const hanldeEquipment = (roomId: number) => {
+        console.log("handleServices", roomId);
+        router.push(`/manager/equipment/${roomId}`)
+    }
     return (
         <Container size="lg">
             {/* <Title className={styles.title}>
@@ -287,6 +297,13 @@ const RoomManagementManager = (props: any) => {
                                 </Button>
                                 <Button color="red" onClick={() => handleDeleteRoom(room.id)}>
                                     Xóa
+                                </Button>
+
+                                <Button color="cyan" onClick={() => hanldeEquipment(room.id)}>
+                                    Quản lý thiết bị
+                                </Button>
+                                <Button color="gray" onClick={() => handleServices(room.id)}>
+                                    Quản lý dịch vụ
                                 </Button>
                             </Group>
                         </div>

@@ -7,10 +7,9 @@ import { UserContext } from '@/component/userContext/userContext';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
 import AdminUserCreationModal from '../modal/modal_user/create_user';
-import AdminUserEditModal, { UserEdit } from '../modal/modal_user/edit_user';
-import { IconAlertSmall } from '@tabler/icons-react';
 
 export interface User {
+    role_id: number;
     email: string;
     first_name: string;
     last_name: string;
@@ -32,7 +31,8 @@ const fakeUsers: User[] = [
         role_name: 'admin',
         token: 'fake-token-1',
         username: 'admin',
-        permission_list: ['create', 'read', 'update', 'delete']
+        permission_list: ['create', 'read', 'update', 'delete'],
+        role_id: 0
     },
     {
         email: 'user@example.com',
@@ -43,9 +43,9 @@ const fakeUsers: User[] = [
         role_name: 'user',
         token: 'fake-token-2',
         username: 'user',
-        permission_list: ['read']
+        permission_list: ['read'],
+        role_id: 0
     },
-    // Add more fake users as needed
 ];
 
 const UserManagement = () => {
@@ -75,6 +75,8 @@ const UserManagement = () => {
             if (response.status === 200) {
                 console.log('Successfully fetched user data');
                 const data = await response.json();
+                console.log(data);
+
                 setDataUser(data); // Lưu dữ liệu vào state
             } else {
                 showNotification({
@@ -96,46 +98,7 @@ const UserManagement = () => {
     };
 
     useEffect(() => {
-        // const fetchData = async () => {
-        //     try {
-        //         console.log('fetch user list in admin');
 
-        //         if (user.isAuthenticate === false || !user.token) {
-        //             router.push('/'); // Chuyển hướng nếu người dùng không xác thực
-        //             return;
-        //         }
-
-        //         const response = await fetch('http://localhost:8080/users', {
-        //             method: 'GET',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': `Bearer ${user.token}`
-        //             },
-        //             credentials: 'include',
-        //         });
-
-        //         if (response.status === 200) {
-        //             console.log('Successfully fetched user data');
-        //             const data = await response.json();
-        //             setDataUser(data); // Lưu dữ liệu vào state
-        //         } else {
-        //             showNotification({
-        //                 title: 'Error',
-        //                 message: 'Không thể tải dữ liệu!',
-        //                 color: 'red',
-        //                 position: 'bottom-right',
-        //             });
-        //         }
-        //     } catch (error) {
-        //         console.error(error);
-        //         showNotification({
-        //             title: 'Error',
-        //             message: 'Không thể tải dữ liệu!',
-        //             color: 'red',
-        //             position: 'bottom-right',
-        //         });
-        //     }
-        // };
         fetchData()
         if (user) {
             if (user.isAuthenticate === false || user.role_name !== 'admin') {
@@ -153,21 +116,6 @@ const UserManagement = () => {
     }, [user, router]);
 
     const displayedUsers = dataUser.slice((page - 1) * rowsPerPage, page * rowsPerPage);
-
-    const handlePermissionUpdate = (userId: number) => {
-        console.log(userId);
-
-        // Quản lý Cấp quyền. Mỗi khi cấp 1 quyền cho nhóm người dùng, thì toàn bộ người dùng thay đổi.
-        // Quản lý role: chỉnh sửa role của người dùng
-
-    };
-
-
-    const handleClickPermission = (userId: number) => {
-        console.log(userId);
-    };
-
-
 
 
     const [openedConfirmDeleteUser, setOpenedConfirmDeleteUser] = useState(false);
@@ -235,8 +183,6 @@ const UserManagement = () => {
     };
 
 
-
-
     const [modalCreateOpen, setModalCreateOpened] = useState(false);
 
     const handleCreateUser = () => {
@@ -250,6 +196,8 @@ const UserManagement = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+
             },
             body: JSON.stringify(userCreate),
             credentials: 'include'
@@ -274,6 +222,65 @@ const UserManagement = () => {
             });
         }
     }
+
+
+    const [editingUserId, setEditingUserId] = useState<number | null>(null);
+    const [selectedRole, setSelectedRole] = useState<number | null>(null);
+
+    const roles = [
+        { id: 1, name: 'User' },
+        { id: 2, name: 'Admin' },
+        { id: 3, name: 'Manager' },
+    ];
+
+    const handlePermissionUpdate = (userId: number, currentRoleId: number) => {
+        setEditingUserId(userId);
+        setSelectedRole(currentRoleId);
+    };
+
+    const handleRoleChange = async (userId: number, roleId: number) => {
+        try {
+            console.log('handleRoleChange in Admin', userId, roleId);
+
+            const response = await fetch(`http://localhost:8080/users/${userId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                body: JSON.stringify({ roleId }),
+            });
+
+            if (response.ok) {
+                showNotification({
+                    title: 'Cấp quyền cho người dùng thành công',
+                    message: `Cấp quyền thành công người dùng số ${userIdDelete}`,
+                    color: 'green',
+                    position: 'bottom-right'
+
+
+                })
+                setEditingUserId(null);
+                fetchData();
+            } else {
+                showNotification({
+                    title: 'Cấp quyền cho người dùng thất bại',
+                    message: `Cấp quyền thất bại người dùng số ${userIdDelete}`,
+                    color: 'red',
+                    position: 'bottom-right'
+
+
+                })
+            }
+        } catch (error) {
+            showNotification({
+                title: 'có vấn đề gì đó xảy ra với server',
+                message: `server đang có vấn đề này, đợi fix nhé`,
+                color: 'red',
+                position: 'bottom-right'
+            })
+        }
+    };
 
     return (
         <Container size="lg">
@@ -304,15 +311,57 @@ const UserManagement = () => {
                                 <td>{(page - 1) * rowsPerPage + index + 1}</td>
                                 <td>{user.email}</td>
                                 <td>{user.username}</td>
-                                <td>{user.role_name}</td>
+
+                                <td >
+                                    {editingUserId === user.id ? (
+                                        <>
+                                            <Group wrap='nowrap' gap={1}>
+                                                <Select
+                                                    value={selectedRole?.toString() || user.role_id.toString()}
+                                                    onChange={(value) => setSelectedRole(Number(value))}
+                                                    data={roles.map((role) => ({ value: role.id.toString(), label: role.name }))}
+                                                    style={{ width: '15vh' }}
+                                                />
+                                                <Button
+                                                    onClick={() => {
+                                                        if (selectedRole !== null) { handleRoleChange(user.id, selectedRole) }
+                                                    }
+                                                    }
+                                                    size="xs"
+                                                    variant="filled"
+                                                    style={{ backgroundColor: '#228be6', color: '#fff' }}
+                                                >
+                                                    Save
+                                                </Button>
+                                                <Button
+                                                    onClick={() => setEditingUserId(null)}
+                                                    size="xs"
+                                                    variant="outline"
+                                                    style={{ backgroundColor: 'orange', color: '#fff' }}
+                                                >
+                                                    Cancel
+                                                </Button>
+                                            </Group>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {user.role_id === 1
+                                                ? 'User'
+                                                : user.role_id === 2
+                                                    ? 'Admin'
+                                                    : 'Manager'}
+
+                                        </>
+                                    )}
+                                </td>
                                 <td>
-                                    <Group gap="xs">
+                                    <Group gap={1}>
                                         {user.permission_list.map((permissionObj: any, index: any) => (
                                             <Button
                                                 size="xs"
                                                 variant="light"
                                                 key={index}
-                                                color={permissionObj.permission === 'xoá phòng gym' ? 'red' : 'blue'}
+                                                color={user.role_id === 2 ? 'red' : user.role_id === 3 ? 'orange' : 'blue'}
                                             >
                                                 {permissionObj.permission}
                                             </Button>
@@ -321,7 +370,7 @@ const UserManagement = () => {
                                 </td>
                                 <td>
                                     <Group gap="xs">
-                                        <Button size="xs" color="green" onClick={() => handlePermissionUpdate(user.id)}>
+                                        <Button size="xs" color="green" onClick={() => handlePermissionUpdate(user.id, user.role_id)}>
                                             Chỉnh sửa quyền
                                         </Button>
                                         {/* <Button size="xs" color="yellow" onClick={() => handleEditUser(user)}>
@@ -383,6 +432,7 @@ const UserManagement = () => {
                 </Group>
 
             </Modal>
+
         </Container>
     );
 };

@@ -44,24 +44,10 @@ const getUserList = async () => {
             const role1 = user;
             console.log("user in loop", user.dataValues)
             // console.log("role user", role1.dataValues.role_id);
-            // let role_id = role1.dataValues.role_id
+            let role_id = role1.dataValues.role_id
 
-            let role_id = 1
-            switch (role1.dataValues.role_name) {
-                case 'admin':
-                    role_id = 2;
-                    break;
-                case 'manager':
-                    role_id = 3;
+            console.log(role_id);
 
-                    break;
-                case 'user':
-                    role_id = 1;
-
-                    break;
-                default:
-                    role_id = 1;
-            }
             const permission_role = await RolePermission.findAll({
                 where: {
                     role_id: role_id
@@ -74,7 +60,6 @@ const getUserList = async () => {
             let permission_list = [];
 
             for (let item of permission_role) {
-                console.log("item.permission_id", item.permission_id);
 
                 const permission = await Permission.findOne({
                     where: {
@@ -134,8 +119,10 @@ const getUserByIdService = async (userIndex) => {
 }
 const updateUserInfor = async (userIndex, data) => {
     try {
+        console.log(userIndex, data);
+
         await User.update({
-            ...data
+            role_id: data.roleId
         },
             {
                 where: {
@@ -143,6 +130,7 @@ const updateUserInfor = async (userIndex, data) => {
                 },
             },
         );
+        return "Update user successfully!"
 
     } catch (err) {
         throw Error(err)

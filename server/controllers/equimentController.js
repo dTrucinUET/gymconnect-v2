@@ -1,60 +1,60 @@
 const { getAllEquipment, getEquipmentByIdService, deleteEquipmentService, createEquipment,
-     updateEquipmentService, getEquipmentByRoomId } = require("../service/equipmentService");
+    updateEquipmentService, getEquipmentByRoomId } = require("../service/equipmentService");
 
-const getEquipments = async(req, res)=>{
+const getEquipments = async (req, res) => {
     const query_obj = req.query;
-    if(query_obj.roomid){
+    if (query_obj.roomid) {
         const data = await getEquipmentByRoomId(query_obj.roomid);
         return res.status(200).json(data);
     }
 
     const data = await getAllEquipment()
 
-    if(!data) {
-        return res.status(404).json({message: "No equipment found"})
+    if (!data) {
+        return res.status(404).json({ message: "No equipment found" })
     }
     return res.status(200).json(data)
 }
 
-const getEquipmentById = async(req, res) => {
+const getEquipmentById = async (req, res) => {
     const id = req.params.id
     const data = await getEquipmentByIdService(id)
 
-    if(!data) {
-        return res.status(404).json({message: "No equipment found"})
+    if (!data) {
+        return res.status(404).json({ message: "No equipment found" })
     }
     return res.status(200).json(data)
 
 }
 
-const addEquipment = async(req, res)=>{
+const addEquipment = async (req, res) => {
     const data = req.body
     const message = await createEquipment(data)
-    if(!message){
-        return res.status(400).json({message: "Failed to create equipment"})
+    if (!message) {
+        return res.status(400).json({ message: "Failed to create equipment" })
     }
     return res.status(200).json({
         'message': `${message}`,
     })
 }
 
-const deleteEquipment = async(req, res) => {
+const deleteEquipment = async (req, res) => {
 
     const delete_id = req.params.id
-    const message =  await deleteEquipmentService(delete_id)
-    if(!message){
-        return res.status(400).json({message: "Failed to delete equipment"})
+    const message = await deleteEquipmentService(delete_id)
+    if (!message) {
+        return res.status(400).json({ message: "Failed to delete equipment" })
     }
-    return res.status(200).json({message: message})
+    return res.status(200).json({ message: message })
 }
 
-const updateEquipment = async(req, res) => {
+const updateEquipment = async (req, res) => {
     const update_id = req.params.id
     const message = await updateEquipmentService(update_id, req.body)
-    if(!message) {
-        return res.status(400).json({message: "Failed to update equipment"})
+    if (!message) {
+        return res.status(400).json({ message: "Failed to update equipment" })
     }
-    return res.status(200).json({message: message})
+    return res.status(200).json({ message: message })
 }
 
 
@@ -64,5 +64,6 @@ module.exports = {
     getEquipmentById,
     addEquipment,
     deleteEquipment,
-    updateEquipment
+    updateEquipment,
+    getEquipmentByRoomId
 }
