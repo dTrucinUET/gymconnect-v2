@@ -17,7 +17,7 @@ const Service = async({searchParams}:RoomIdQuery) => {
 
     console.log(token);
     
-    const { roomId } = searchParams;
+    const { roomId } = await searchParams;
     const servicesInRoomRes = await fetch(`http://localhost:8080/service?roomid=${roomId}`, {
         method: 'GET',
         headers: {
