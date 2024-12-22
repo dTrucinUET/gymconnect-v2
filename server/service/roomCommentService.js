@@ -1,9 +1,13 @@
 const sequelize = require('../config/sequelize.js');
 const RoomCommentModel = require('../models/room_comments.js')
+const UserModel = require('../models/users.js')
 const { DataTypes } = require('sequelize');
+const moment = require('moment');
 
 const Sequelize_In = sequelize
 const RoomComment = RoomCommentModel(Sequelize_In, DataTypes)
+const User = UserModel(Sequelize_In, DataTypes)
+
 
 const getAllRoomComment = async() => {
     let roomComments = null;
@@ -84,10 +88,55 @@ const updateRoomCommentService = async(id, data) => {
 
 
 
+const getCommentByRoomService = async (roomId) => {
+    try {
+        const roomComments = await RoomComment.findAll({
+            where: { room_id: roomId },
+            attributes: ['comment', 'images_url', 'rating', 'createdAt', 'user_id']
+        });
+        const userIds = [...new Set(roomComments.map(comment => comment.user_id))];
+
+        const users = await User.findAll({
+            where: { id: userIds },
+            attributes: ['id', 'username', 'first_name', 'last_name']
+        });
+
+        const userMap = users.reduce((map, user) => {
+            map[user.id] = {
+                username: user.username,
+                fullname: `${user.first_name} ${user.last_name}`
+            };
+            return map;
+        }, {});
+
+        const results = roomComments.map(comment => {
+            const createdAt = moment(comment.createdAt);
+            const timeAgo = createdAt.fromNow();
+
+            return {
+                username: userMap[comment.user_id]?.username || 'Unknown',
+                fullname: userMap[comment.user_id]?.fullname || 'Unknown',
+                comment: comment.comment,
+                images_url: comment.images_url,
+                rating: comment.rating,
+                time_ago: timeAgo
+            };
+        });
+
+        // console.log("result", results);
+        
+        return results;
+    } catch (err) {
+        console.error("Cannot fetch comments for room id:", roomId);
+        throw new Error(err);
+    }
+};
+
 module.exports = {
-    getAllRoomComment, 
+    getAllRoomComment,
     getRoomCommentByIdService,
     createRoomComment,
     updateRoomCommentService,
-    deleteRoomCommentService
-}
+    deleteRoomCommentService,
+    getCommentByRoomService
+};
