@@ -2,50 +2,54 @@
 
 import { Table, Button, Group, Pagination, Select, Container, Title, Modal } from '@mantine/core';
 import { useContext, useEffect, useState } from 'react';
-import styles from './services.module.css';
 import { UserContext } from '@/component/userContext/userContext';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/navigation';
+import styles from './services.module.css';
+import DeleteServiceModal from './modal/modal_service_delete';
+import EditServiceModal from './modal/modal_service_edit';
+import CreateServiceModal from './modal/modal_service_create';
 
-
-export interface Equipment {
+export interface Service {
     id: number;
     name: string;
     room_id: number | null;
     description: string;
     amount: number;
+    balance: number;
     rating: number;
+    type: string;
     createdAt: string;
     updatedAt: string;
 }
-
-const fakeEquipments: Equipment[] = [
+const fakeServices: Service[] = [
     {
         id: 1,
-        name: 'Sleek Steel Keyboard',
-        room_id: null,
-        description: 'Sit facere voluptatem praesentium hic velit.',
-        amount: 9,
-        rating: 3.5,
-        createdAt: '2024-12-22T04:15:56.000Z',
-        updatedAt: '2024-12-22T04:15:56.000Z',
+        name: "Intelligent Metal Shoes",
+        room_id: 6,
+        description: "Voluptate expedita dolores perferendis voluptatem aut nobis minima mollitia.",
+        amount: 2,
+        balance: 976.75,
+        rating: 4.5,
+        type: "trainer",
+        createdAt: "2024-12-22T04:15:56.000Z",
+        updatedAt: "2024-12-22T04:15:56.000Z"
     },
 ];
 
-const ServicesManagerment = () => {
+const ServiceManagement = () => {
     const router = useRouter();
     const { user } = useContext(UserContext);
-    const [equipments, setEquipments] = useState<Equipment[]>(fakeEquipments);
+    const [services, setServices] = useState<Service[]>(fakeServices);
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
-
     const fetchData = async () => {
         try {
-            console.log('Fetching equipment list');
+            console.log('Fetching service list');
 
             if (user.isAuthenticate === false || !user.token) {
-                router.push('/'); // Redirect if the user is not authenticated
+                router.push('/');
                 return;
             }
 
@@ -58,14 +62,13 @@ const ServicesManagerment = () => {
                 credentials: 'include',
             });
 
-
             if (response.status === 200) {
                 const data = await response.json();
-                setEquipments(data); // Update state with the fetched data
+                setServices(data);
             } else {
                 showNotification({
                     title: 'Error',
-                    message: 'Cannot load equipment data!',
+                    message: 'Cannot load service data!',
                     color: 'red',
                     position: 'bottom-right',
                 });
@@ -74,7 +77,7 @@ const ServicesManagerment = () => {
             console.error(error);
             showNotification({
                 title: 'Error',
-                message: 'Cannot load equipment data!',
+                message: 'Cannot load service data!',
                 color: 'red',
                 position: 'bottom-right',
             });
@@ -82,8 +85,6 @@ const ServicesManagerment = () => {
     };
 
     useEffect(() => {
-        fetchData();
-
         if (user) {
             if (user.isAuthenticate === false || user.role_name !== 'manager') {
                 showNotification({
@@ -99,13 +100,13 @@ const ServicesManagerment = () => {
         }
     }, [user, router]);
 
-    const displayedEquipments = equipments.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+    const displayedServices = services.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
     const [openedConfirmDelete, setOpenedConfirmDelete] = useState(false);
-    const [equipmentIdDelete, setEquipmentIdDelete] = useState<number | null>(null);
+    const [serviceIdDelete, setServiceIdDelete] = useState<number | null>(null);
 
-    const handleDeleteEquipment = (id_delete: number) => {
-        setEquipmentIdDelete(id_delete);
+    const handleDeleteService = (id_delete: number) => {
+        setServiceIdDelete(id_delete);
         setOpenedConfirmDelete(true);
     };
 
@@ -114,9 +115,10 @@ const ServicesManagerment = () => {
     };
 
     const confirmDelete = async () => {
-        if (equipmentIdDelete) {
+        if (serviceIdDelete) {
             try {
                 const response = await fetch(`http://localhost:8080/api/v1/equipments/${equipmentIdDelete}`, {
+
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -128,14 +130,14 @@ const ServicesManagerment = () => {
                     fetchData();
                     showNotification({
                         title: 'Success',
-                        message: `Successfully deleted equipment with ID ${equipmentIdDelete}`,
+                        message: `Successfully deleted service with ID ${serviceIdDelete}`,
                         color: 'green',
                         position: 'bottom-right'
                     });
                 } else {
                     showNotification({
                         title: 'Error',
-                        message: `Failed to delete equipment with ID ${equipmentIdDelete}`,
+                        message: `Failed to delete service with ID ${serviceIdDelete}`,
                         color: 'red',
                         position: 'bottom-right'
                     });
@@ -154,19 +156,20 @@ const ServicesManagerment = () => {
 
     const [modalCreateOpen, setModalCreateOpened] = useState(false);
 
-    const handleCreateEquipment = () => {
+    const handleCreateService = () => {
         setModalCreateOpened(true);
     };
 
-    const handleSubmitCreateEquipment = async (newEquipment: any) => {
+    const handleSubmitCreateService = async (newService: any) => {
         try {
             const response = await fetch('http://localhost:8080/api/v1/equipments', {
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}`
                 },
-                body: JSON.stringify(newEquipment),
+                body: JSON.stringify(newService),
                 credentials: 'include'
             });
 
@@ -174,7 +177,7 @@ const ServicesManagerment = () => {
                 setModalCreateOpened(false);
                 showNotification({
                     title: 'Success',
-                    message: 'Equipment successfully created!',
+                    message: 'Service successfully created!',
                     color: 'green',
                 });
                 fetchData();
@@ -182,40 +185,42 @@ const ServicesManagerment = () => {
                 const data = await response.json();
                 showNotification({
                     title: 'Error',
-                    message: data.message || 'Failed to create equipment. Please try again.',
+                    message: data.message || 'Failed to create service. Please try again.',
                     color: 'red',
                 });
             }
         } catch (error) {
             showNotification({
                 title: 'Error',
-                message: 'Failed to create equipment. Please try again.',
+                message: 'Failed to create service. Please try again.',
                 color: 'red',
             });
         }
     };
 
-
-
-    const [openEditEquipment, setOpenEditEquipment] = useState(false);
-    const [formEquipmentData, setFormEquipmentData] = useState<Equipment>({
+    const [openEditService, setOpenEditService] = useState(false);
+    const [formServiceData, setFormServiceData] = useState<Service>({
         id: 0,
         name: '',
-        room_id: null,
+        room_id: 0,
         description: '',
         amount: 0,
+        balance: 0,
         rating: 0,
+        type: '',
         createdAt: '',
         updatedAt: ''
     });
-    const handleEditEquipment = (equipment: Equipment) => {
-        setFormEquipmentData(equipment);
-        setOpenEditEquipment(true);
+
+    const handleEditService = (service: Service) => {
+        setFormServiceData(service);
+        setOpenEditService(true);
     };
 
-    const handleSubmitEditEquipment = async (updatedData: Equipment) => {
+    const handleSubmitEditService = async (updatedData: Service) => {
         try {
             const response = await fetch(`http://localhost:8080/api/v1/equipments/${updatedData.id}`, {
+
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -228,17 +233,17 @@ const ServicesManagerment = () => {
             if (response.status === 200) {
                 showNotification({
                     title: 'Success',
-                    message: 'Equipment updated successfully!',
+                    message: 'Service updated successfully!',
                     color: 'green',
                     position: 'bottom-right',
                 });
-                fetchData(); // Refresh the list after update
-                setOpenEditEquipment(false); // Close the modal
+                fetchData();
+                setOpenEditService(false);
             } else {
                 const data = await response.json();
                 showNotification({
                     title: 'Error',
-                    message: data.message || 'Failed to update equipment.',
+                    message: data.message || 'Failed to update service.',
                     color: 'red',
                     position: 'bottom-right',
                 });
@@ -253,9 +258,10 @@ const ServicesManagerment = () => {
             });
         }
     };
+
     return (
         <Container size="lg">
-            <Title className={styles.title}>Equipment Management</Title>
+            <Title className={styles.title}>Service Management</Title>
 
             <Table highlightOnHover className={styles.table}>
                 <thead>
@@ -265,33 +271,39 @@ const ServicesManagerment = () => {
                         <th>Room</th>
                         <th>Description</th>
                         <th>Amount</th>
+                        <th>Balance</th>
                         <th>Rating</th>
+                        <th>Type</th>
+
                         <th>
                             <div className={styles.actionHeader}>
                                 Actions
-                                <Button size="xs" color="blue" onClick={handleCreateEquipment}>
-                                    Add New Equipment
+                                <Button size="xs" color="indigo" onClick={handleCreateService}>
+                                    Add New Service
                                 </Button>
                             </div>
                         </th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    {displayedEquipments.length > 0 ? (
-                        displayedEquipments.map((equipment) => (
-                            <tr key={equipment.id}>
-                                <td>{equipment.id}</td>
-                                <td>{equipment.name}</td>
-                                <td>{equipment.room_id || 'N/A'}</td>
-                                <td>{equipment.description}</td>
-                                <td>{equipment.amount}</td>
-                                <td>{equipment.rating}</td>
+                    {displayedServices.length > 0 ? (
+                        displayedServices.map((service) => (
+                            <tr key={service.id}>
+                                <td>{service.id}</td>
+                                <td>{service.name}</td>
+                                <td>{service.room_id}</td>
+                                <td>{service.description}</td>
+                                <td>{service.amount}</td>
+                                <td>{service.balance}</td>
+                                <td>{service.rating}</td>
+                                <td>{service.type}</td>
                                 <td>
                                     <Group gap="xs">
-                                        <Button size="xs" color="green" onClick={() => handleEditEquipment(equipment)}>
+                                        <Button size="xs" color="green" onClick={() => handleEditService(service)} className={`${styles.button} ${styles.buttonGreen}`}>
                                             Edit
                                         </Button>
-                                        <Button size="xs" color="red" onClick={() => handleDeleteEquipment(equipment.id)}>
+                                        <Button size="xs" color="red" onClick={() => handleDeleteService(service.id)} className={`${styles.button} ${styles.buttonRed}`}>
                                             Delete
                                         </Button>
                                     </Group>
@@ -300,8 +312,8 @@ const ServicesManagerment = () => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={7} style={{ textAlign: 'center', padding: '20px' }}>
-                                No equipment found.
+                            <td colSpan={9} style={{ textAlign: 'center', padding: '20px' }}>
+                                No services found.
                             </td>
                         </tr>
                     )}
@@ -312,8 +324,7 @@ const ServicesManagerment = () => {
                 <Pagination
                     value={page}
                     onChange={setPage}
-                    total={Math.ceil(equipments.length / rowsPerPage)}
-                    className={styles.paginationGroup}
+                    total={Math.ceil(services.length / rowsPerPage)}
                 />
                 <Select
                     value={rowsPerPage.toString()}
@@ -324,23 +335,31 @@ const ServicesManagerment = () => {
                 />
             </Group>
 
-            {/* <CreateEquipmentModalManager
-                openCreateEquipment={modalCreateOpen}
-                setOpenCreateEquipment={setModalCreateOpened}
-                formEquipmentData={formEquipmentData}
-                setFormEquipmentData={setFormEquipmentData}
-                handleSubmitCreate={handleSubmitCreateEquipment}
+            {/* Add CreateServiceModal, EditServiceModal, and DeleteServiceModal components here */}
+            <CreateServiceModal
+                openCreateService={modalCreateOpen}
+                setOpenCreateService={setModalCreateOpened}
+                formServiceData={formServiceData}
+                setFormServiceData={setFormServiceData}
+                handleSubmitCreate={handleSubmitCreateService}
             />
-            <EditEquipmentModal
-                openEditEquipment={openEditEquipment}
-                setOpenEditEquipment={setOpenEditEquipment}
-                formEquipmentData={formEquipmentData}
-                setFormEquipmentData={setFormEquipmentData}
-                handleSubmitEdit={handleSubmitEditEquipment}
-            />
-            <DeleteEquipmentModal opened={openedConfirmDelete} onClose={cancelDelete} onConfirm={confirmDelete} /> */}
 
+            <EditServiceModal
+                openEditService={openEditService}
+                setOpenEditService={setOpenEditService}
+                formServiceData={formServiceData}
+                setFormServiceData={setFormServiceData}
+                handleSubmitEdit={handleSubmitEditService}
+            />
+            <DeleteServiceModal
+                opened={openedConfirmDelete}
+                onConfirm={confirmDelete}
+                onClose={cancelDelete}
+
+            />
         </Container>
     )
 }
-export default ServicesManagerment;
+
+export default ServiceManagement;
+

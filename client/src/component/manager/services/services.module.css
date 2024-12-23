@@ -1,103 +1,106 @@
 /* Container */
 .container {
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 20px;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
+    /* Màu trắng sáng */
     border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Giảm độ đậm bóng */
 }
 
 /* Title */
 .title {
     margin-bottom: 20px;
-    font-size: 26px;
+    font-size: 28px;
+    /* Tăng cỡ chữ để nổi bật hơn */
     font-weight: bold;
     text-align: center;
-    color: #2c3e50;
+    color: #34495e;
+    /* Màu xanh đậm */
 }
 
 /* Table styling */
 .table {
     width: 100%;
     background-color: #ffffff;
+    /* Màu trắng để đồng nhất với container */
     border-radius: 8px;
-    overflow: hidden;
     text-align: center;
-
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    /* Nhẹ hơn để tạo cảm giác tinh tế */
+    overflow: hidden;
 }
 
 .table th {
-    background-color: #34495e;
-    text-align: center;
+    background-color: #2f5351;
+    /* Màu xanh sáng nổi bật */
     color: #ffffff;
-    padding: 12px;
-    text-align: left;
-    font-size: 1.5vh;
+    font-size: 10px;
+    padding: 10px;
     font-weight: bold;
+    text-transform: uppercase;
 }
 
 .table td {
     padding: 12px;
-    font-size: 0.7vw;
-    color: #2c3e50;
-    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: #555555;
+    /* Màu xám tối cho chữ */
+    border-bottom: 1px solid #eaeaea;
 }
 
 .table tr:nth-child(even) {
-    background-color: #f8f9fa;
+    background-color: #f9f9f9;
+    /* Màu nền sáng xen kẽ */
 }
 
 .table tr:hover {
-    background-color: #e8f0fe;
+    background-color: #eaf6ff;
+    /* Màu xanh nhạt khi hover */
     cursor: pointer;
-}
-
-.paginationGroup {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2vh;
 }
 
 .actionHeader {
     display: flex;
     align-items: center;
-    /* Căn giữa theo chiều dọc */
     justify-content: space-between;
-    /* Khoảng cách giữa chữ và nút */
     gap: 8px;
-    /* Khoảng cách giữa chữ và nút */
 }
 
 .actionHeader button {
     font-size: 12px;
-    /* Đảm bảo kích thước nút không quá lớn */
     padding: 4px 8px;
-    /* Tinh chỉnh khoảng padding trong nút */
     margin-left: auto;
-    /* Đẩy nút sang bên phải */
     line-height: 1.2;
-    /* Đảm bảo text trong nút không bị cắt */
 }
 
+
+/* Button Styling */
 .button {
     cursor: pointer;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 13px;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
     font-weight: bold;
     border: none;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: all 0.3s ease-in-out;
 }
 
 .button:hover {
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    /* Nhấn nhá thêm chuyển động */
+    opacity: 0.9;
 }
 
+/* Button Colors */
 .buttonRed {
     background-color: #e74c3c;
     color: #ffffff;
+}
+
+.buttonRed:hover {
+    background-color: #c0392b;
 }
 
 .buttonBlue {
@@ -105,31 +108,40 @@
     color: #ffffff;
 }
 
+.buttonBlue:hover {
+    background-color: #2980b9;
+}
+
 .buttonGreen {
     background-color: #2ecc71;
     color: #ffffff;
 }
 
-.buttonYellow {
-    background-color: #f1c40f;
-    color: #ffffff;
+.buttonGreen:hover {
+    background-color: #27ae60;
 }
 
+/* Pagination and Select */
 .paginationGroup {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 16px;
     margin-top: 16px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Bóng nhẹ */
 }
 
 .paginationGroup select,
 .paginationGroup input {
-    border: 1px solid #dcdcdc;
+    border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 6px;
     font-size: 14px;
     text-align: center;
+    background-color: #ffffff;
+    /* Nền trắng sáng */
 }
 
 .paginationGroup select:focus,
@@ -137,90 +149,61 @@
     outline: none;
     border-color: #3498db;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    /* Ánh sáng xanh tinh tế */
 }
 
 /* Responsive Styles */
-/* Responsive Styles */
 
-/* Màn hình nhỏ hơn 1200px */
+/* Dưới 1200px */
 @media (max-width: 1200px) {
 
     .table th,
     .table td {
-        font-size: 1rem;
-        /* Giảm kích thước font cho các cell, thay vì 1vh */
+        font-size: 14px;
     }
 
     .paginationGroup {
         flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .paginationGroup select,
-    .paginationGroup input {
-        width: 100%;
-        margin-top: 10px;
+        gap: 12px;
     }
 }
 
+/* Dưới 768px */
 @media (max-width: 768px) {
 
     .table th,
     .table td {
-        font-size: 14px;
-        /* Tăng cỡ chữ cho bảng ở màn hình nhỏ */
-    }
-
-    .table {
-        font-size: 1rem;
-        /* Đảm bảo bảng dễ đọc hơn */
+        font-size: 13px;
     }
 
     .title {
-        font-size: 22px;
-        /* Giảm chút ít nhưng vẫn dễ đọc */
-    }
-
-    .paginationGroup {
-        width: 100%;
-        justify-content: flex-start;
-    }
-
-    .paginationGroup select,
-    .paginationGroup input {
-        width: 150px;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .table th,
-    .table td {
-        font-size: 14px;
-        /* Đảm bảo chữ đủ lớn để đọc trên màn hình nhỏ */
+        font-size: 24px;
     }
 
     .paginationGroup {
         flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
+        align-items: center;
     }
+}
 
-    .paginationGroup select,
-    .paginationGroup input {
-        width: 100%;
-        margin-top: 10px;
+/* Dưới 480px */
+@media (max-width: 480px) {
+
+    .table th,
+    .table td {
+        font-size: 12px;
     }
 
     .title {
-        font-size: 18px;
-        /* Điều chỉnh cỡ chữ cho tiêu đề trên màn hình rất nhỏ */
+        font-size: 20px;
     }
 
     .button {
-        font-size: 14px;
-        /* Giữ cỡ chữ của nút đủ dễ đọc */
+        font-size: 12px;
         padding: 6px 12px;
-        /* Điều chỉnh padding để các nút dễ nhấn */
+    }
+
+    .paginationGroup {
+        gap: 10px;
     }
 }
