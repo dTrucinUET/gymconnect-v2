@@ -1,11 +1,16 @@
+export function generateStaticParams() {
+    return [{ id: "manager/services" }];
+  }
+
 import ServiceManagementById from "@/component/manager/services/servicesById";
 
+
 interface ParamsServices {
-    params: { id: string };
+params: Promise<{ id: string }>;
 }
 const ServicesPageID = async ({ params }: ParamsServices) => {
 
-    const { id } = params
+    const { id } = await params
     return (
         <>
             <ServiceManagementById id={id} />

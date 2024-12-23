@@ -4,12 +4,16 @@ import { Paper, Text, Rating, Stack, Image } from '@mantine/core';
 import { cookies } from 'next/headers';
 import customFetch from '@/component/utils/custom_fetch';
 
+export function generateStaticParams() {
+    return [{ id: "admin/room" }];
+  }
+
 interface RoomDetailProps {
-    params: { id: string };
+params: Promise<{ id: string }>;
 }
 
 const RoomDetail = async ({ params }: RoomDetailProps) => {
-    const { id } = params;
+    const { id } = await params;
 
     const cookie = await cookies();
     const token = cookie.get('token')
@@ -18,7 +22,7 @@ const RoomDetail = async ({ params }: RoomDetailProps) => {
     }
     console.log("token in room id", token?.value);
 
-    const response = await fetch(`http://localhost:8080/room/${id}`, {
+    const response = await fetch(`http://localhost:8080/api/v1/room/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -27,7 +31,7 @@ const RoomDetail = async ({ params }: RoomDetailProps) => {
         credentials: 'include',
 
     });
-    // const response = await customFetch(`http://localhost:8080/room/${id}`, {
+    // const response = await customFetch(`http://localhost:8080/api/v1/room/${id}`, {
     //     method: 'GET'
     // })
     console.log(response);

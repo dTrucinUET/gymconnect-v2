@@ -53,7 +53,7 @@ const ServiceManagement = () => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:8080/service`, {
+            const response = await fetch(`http://localhost:8080/api/v1/service`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,7 +117,8 @@ const ServiceManagement = () => {
     const confirmDelete = async () => {
         if (serviceIdDelete) {
             try {
-                const response = await fetch(`http://localhost:8080/service/${serviceIdDelete}`, {
+                const response = await fetch(`http://localhost:8080/api/v1/equipments/${equipmentIdDelete}`, {
+
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -161,7 +162,8 @@ const ServiceManagement = () => {
 
     const handleSubmitCreateService = async (newService: any) => {
         try {
-            const response = await fetch('http://localhost:8080/service', {
+            const response = await fetch('http://localhost:8080/api/v1/equipments', {
+
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -217,7 +219,8 @@ const ServiceManagement = () => {
 
     const handleSubmitEditService = async (updatedData: Service) => {
         try {
-            const response = await fetch(`http://localhost:8080/service/${updatedData.id}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/equipments/${updatedData.id}`, {
+
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
