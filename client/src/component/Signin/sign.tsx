@@ -44,7 +44,7 @@ const Login = () => {
             
             console.log(`${process.env.NEXT_PUBLIC_SERVER_API}/login`);
 
-            const response = await fetch('http://localhost:8080/login', {
+            const response = await fetch('http://localhost:8080/api/v1/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

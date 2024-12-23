@@ -5,9 +5,12 @@ import { cookies } from "next/headers";
 import ServiceContent from "./serviceContent";
 
 interface RoomIdQuery {
-    searchParams : {
-        roomId : string
-    }
+    searchParams : 
+        Promise<{ roomId: string }>;
+    
+
+    // params: Promise<{ id: string }>;
+
 }
 
 const Service = async({searchParams}:RoomIdQuery) => {
@@ -17,8 +20,8 @@ const Service = async({searchParams}:RoomIdQuery) => {
 
     console.log(token);
     
-    const { roomId } = searchParams;
-    const servicesInRoomRes = await fetch(`http://localhost:8080/service?roomid=${roomId}`, {
+    const { roomId } = await searchParams;
+    const servicesInRoomRes = await fetch(`http://localhost:8080/api/v1/service?roomid=${roomId}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token?.value}`,

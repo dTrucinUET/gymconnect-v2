@@ -67,7 +67,7 @@ const SignupForm = () => {
             form.setFieldValue('location', fullLocation);
             console.log(values);
 
-            const response = await fetch('http://localhost:8080/register', {
+            const response = await fetch('http://localhost:8080/api/v1/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
