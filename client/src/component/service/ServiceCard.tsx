@@ -1,33 +1,62 @@
 'use client'
 
 import { Card, Text, Button, Group } from '@mantine/core';
+import { useRouter } from 'next/navigation'
 import '../../component/service/ServiceCards.css'
 
-function ServiceCard() {
+interface ServiceInfo {
+  name: string;
+  description: string;
+  amount: number;
+  id: number;
+  quantity: number;
+}
+
+function ServiceCard({name, description, amount, id, quantity}: ServiceInfo) {
+  const router = useRouter()
+
+  console.log(id);
+  console.log(quantity);
+  
+  
+  const handdleClick = () => {
+    router.push(`/service/purchase/${id}?quantity=${quantity}&price=${amount}&name=${name}`)
+  }
+
+
   return (
     <Card
     style={{
         width: '31%',
+        height: '50vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: '2%',
-        paddingRight: '2%',
-        paddingBottom: '3%'
+        
     }} 
-    shadow="sm" padding="sx" radius="md" withBorder>
+    shadow="sm" radius="md" withBorder>
 
         <Group justify="space-between" mt="md" mb="xs">
             <Text
             style={{
                 fontSize: '1.4rem',
-                fontWeight: 500
             }}
-             fw={600}>Thẻ thường</Text>
+             fw={600}>{name}</Text>
         </Group>
       
       <Group mt="md" mb="xs" >
+        
         <Group gap={0}>
+          <Text 
+            style={{
+                fontSize: '0.6rem',
+                marginTop: '-1.4rem'
+            }}
+            fw={600}
+            size='sm'>
+                VNĐ
+          </Text>
+
             <Text
             size='xl'
             style={{
@@ -36,17 +65,7 @@ function ServiceCard() {
                 flexDirection: 'row'
             }}
              fw={800}>
-                <Text 
-                    style={{
-                        fontSize: '0.6rem',
-                        marginTop: '0.3rem'
-                    }}
-                    fw={600}
-                    size='sm'>
-                        VNĐ
-                </Text>
-
-                3</Text>
+                {amount}</Text>
             <Text
             span
             size='sm'
@@ -61,17 +80,20 @@ function ServiceCard() {
 
       <Text 
       style={{
-        
+        height: '21%'
       }}
       size="sm" 
       c="dimmed">
-        With Fjord Tours you can explore more of the magical fjord landscapes with tours and
-        activities on and around the fjords of Norway
+        {description}
       </Text>
 
       <Button
+      onClick={handdleClick}
+      className='purchase-btn'
       style={{
         width: '90%',
+        boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+        opacity: 0.8
       }}
        color="black" mt="md" radius="md">
         Đăng ký ngay

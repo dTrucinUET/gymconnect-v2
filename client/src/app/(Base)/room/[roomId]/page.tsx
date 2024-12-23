@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
+
 import RoomDetail from "@/component/user/room/room";
 // import Comment from "@/component/comment/comment"; 
+
 
 
 interface RoomPageProps {
