@@ -63,7 +63,7 @@ const PurchaseServiceContent = ({serviceId, serviceName, price, quantity}: Purch
         }
 
         const paidMoney = Math.floor(buyQuantity*price)
-        const description = `Userid: ${user.id} serviceid: ${serviceId}`
+        const description = `Uid: ${user.id} seid: ${serviceId} quantity ${buyQuantity}`
         const item = [
             {
                 name: serviceName,
