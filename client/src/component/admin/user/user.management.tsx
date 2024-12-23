@@ -63,7 +63,7 @@ const UserManagement = () => {
                 return;
             }
 
-            const response = await fetch('http://localhost:8080/users', {
+            const response = await fetch('http://localhost:8080/api/v1/users', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ const UserManagement = () => {
     const confirmDelete = async () => {
         if (userIdDelete) {
             try {
-                const response = await fetch(`http://localhost:8080/users/${userIdDelete}`, {
+                const response = await fetch(`http://localhost:8080/api/v1/users/${userIdDelete}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -192,7 +192,7 @@ const UserManagement = () => {
     const handleSubmitCreateUser = async (userCreate: any) => {
         console.log('userCreate in Admin', userCreate);
 
-        const response = await fetch('http://localhost:8080/register', {
+        const response = await fetch('http://localhost:8080/api/v1/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ const UserManagement = () => {
         try {
             console.log('handleRoleChange in Admin', userId, roleId);
 
-            const response = await fetch(`http://localhost:8080/users/${userId}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/users/${userId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

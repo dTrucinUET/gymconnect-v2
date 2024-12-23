@@ -26,7 +26,7 @@ const RoomManagement = (props: any) => {
     const fetchRoomdata = async () => {
 
         try {
-            const response = await fetch('http://localhost:8080/room', {
+            const response = await fetch('http://localhost:8080/api/v1/room', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const RoomManagement = (props: any) => {
         console.log("data final edit", editedData);
         try {
 
-            const response = await fetch(`http://localhost:8080/room/${editedData.id}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/room/${editedData.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -141,7 +141,7 @@ const RoomManagement = (props: any) => {
     const confirmDelete = async () => {
         if (roomIdToDelete) {
             try {
-                const response = await fetch(`http://localhost:8080/room/${roomIdToDelete}`, {
+                const response = await fetch(`http://localhost:8080/api/v1/room/${roomIdToDelete}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ const RoomManagement = (props: any) => {
         try {
             console.log("dataCreate", dataCreate);
 
-            const response = await fetch(`http://localhost:8080/room`, {
+            const response = await fetch(`http://localhost:8080/api/v1/room`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

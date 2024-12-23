@@ -1,11 +1,13 @@
 import EquipmentManagermentByID from "@/component/manager/equipment/equipmentById";
-
+export function generateStaticParams() {
+    return [{ id: "manager/equipment" }];
+  }
 interface ParamsEquipment {
-    params: { id: string };
+params: Promise<{ id: string }>;
 }
 const EquipmentPageID = async ({ params }: ParamsEquipment) => {
 
-    const { id } = params
+    const { id } = await params
     return (
         <>
             <EquipmentManagermentByID roomId={id} />

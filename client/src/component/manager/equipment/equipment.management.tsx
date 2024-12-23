@@ -51,7 +51,7 @@ const EquipmentManagerment = () => {
                 return;
             }
 
-            const response = await fetch(`http://localhost:8080/equipments`, {
+            const response = await fetch(`http://localhost:8080/api/v1/equipments`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const EquipmentManagerment = () => {
     const confirmDelete = async () => {
         if (equipmentIdDelete) {
             try {
-                const response = await fetch(`http://localhost:8080/equipments/${equipmentIdDelete}`, {
+                const response = await fetch(`http://localhost:8080/api/v1/equipments/${equipmentIdDelete}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ const EquipmentManagerment = () => {
 
     const handleSubmitCreateEquipment = async (newEquipment: any) => {
         try {
-            const response = await fetch('http://localhost:8080/equipments', {
+            const response = await fetch('http://localhost:8080/api/v1/equipments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ const EquipmentManagerment = () => {
 
     const handleSubmitEditEquipment = async (updatedData: Equipment) => {
         try {
-            const response = await fetch(`http://localhost:8080/equipments/${updatedData.id}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/equipments/${updatedData.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

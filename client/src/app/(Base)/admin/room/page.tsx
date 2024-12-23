@@ -11,7 +11,7 @@ const RoomManagementPage = async () => {
     }
     console.log("token in room", token?.value);
 
-    const response = await fetch('http://localhost:8080/room', {
+    const response = await fetch('http://localhost:8080/api/v1/room', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

@@ -28,7 +28,7 @@ const RoomManagementManager = (props: any) => {
     const fetchRoomdata = async () => {
 
         try {
-            const response = await fetch('http://localhost:8080/room', {
+            const response = await fetch('http://localhost:8080/api/v1/room', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const RoomManagementManager = (props: any) => {
         console.log("data final edit", editedData);
         try {
 
-            const response = await fetch(`http://localhost:8080/room/${editedData.id}`, {
+            const response = await fetch(`http://localhost:8080/api/v1/room/${editedData.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -145,7 +145,7 @@ const RoomManagementManager = (props: any) => {
     const confirmDelete = async () => {
         if (roomIdToDelete) {
             try {
-                const response = await fetch(`http://localhost:8080/room/${roomIdToDelete}`, {
+                const response = await fetch(`http://localhost:8080/api/v1/room/${roomIdToDelete}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
@@ -227,7 +227,7 @@ const RoomManagementManager = (props: any) => {
                 console.log(key);
                 console.log(formData.get(key));
             }
-            const response = await fetch(`http://localhost:8080/room`, {
+            const response = await fetch(`http://localhost:8080/api/v1/room`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${user.token}`
@@ -283,7 +283,7 @@ const RoomManagementManager = (props: any) => {
                 {paginateData().map((room: any) => (
                     <div key={room.id} className={styles.card}>
                         {/* <img src={room.imageUrl} alt={room.name} className={styles.cardImage} /> */}
-                        <img src={`http://localhost:8080/Images/${room.image}`} alt={room.name} className={styles.cardImage} />
+                        <img src={`http://localhost:8080/api/v1/Images/${room.image}`} alt={room.name} className={styles.cardImage} />
                         <div className={styles.cardContent}>
 
                             <Title order={4}>{room.name}</Title>

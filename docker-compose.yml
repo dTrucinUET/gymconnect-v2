@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  backend:
+    build:
+      context: ./server
+    container_name: express-backend
+    ports:
+      - "8080:8080"   # The backend API runs on port 8080
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./server:/usr/src/app
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./client
+    container_name: nextjs-frontend
+    ports:
+      - "80:80"  # Frontend served on port 80 (via Nginx)
+    depends_on:
+      - backend  # Make sure frontend waits for the backend to start
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
