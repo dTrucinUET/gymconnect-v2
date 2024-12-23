@@ -1,28 +1,43 @@
 'use client'
 import { Button, Group, Container, Title, Text, Pagination, Modal } from '@mantine/core';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './room-management.module.css';
 import EditRoomModal from '../modal/modal_room_edit';
 import { IconArrowRotaryLastRight } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import CreateRoomModal from '../modal/modal_room_create';
 import { useRouter } from 'next/navigation';
+import { UserContext } from '@/component/userContext/userContext';
+import customFetch from '@/component/utils/custom_fetch';
+import { cookies } from 'next/headers';
+import CreateRoomModalManager from '../modal/modal_room_create';
 interface Room {
     id: number;
     name: string;
     description: string;
     location: string; // JSON string
     rating: number;
+    image: File;
 }
 
-const RoomManagement = (props: any) => {
+const RoomManagementManager = (props: any) => {
     const [dataPage, setDataPage] = useState(props.data)
     const itemsPerPage = 6;
+    const { user } = useContext(UserContext);
 
     const fetchRoomdata = async () => {
 
         try {
-            const response = await fetch('http://localhost:8080/room');
+            const response = await fetch('http://localhost:8080/room', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                credentials: 'include',
+
+            });
+
             const data = await response.json();
             console.log("data fetch any time", data)
             setDataPage(data)
@@ -50,7 +65,7 @@ const RoomManagement = (props: any) => {
     const handleDetailRoom = (room: any) => {
         console.log("handle detailRoom");
         console.log(room);
-        router.push(`/admin/room/${room.id}`)
+        router.push(`/manager/room/${room.id}`)
     };
 
     const [openModalEdit, setModalEdit] = useState(false)
@@ -72,13 +87,21 @@ const RoomManagement = (props: any) => {
     const handleSubmitEdit = async (editedData: any) => {
         console.log("data final edit", editedData);
         try {
+
             const response = await fetch(`http://localhost:8080/room/${editedData.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': `Bearer ${user.token}`
                 },
                 body: JSON.stringify(editedData),
             });
+
+
+            console.log('hit get data');
+
+            console.log(response);
+
             const data = await response.json();
             console.log("data server response", data);
             if (response.status === 200) {
@@ -86,13 +109,14 @@ const RoomManagement = (props: any) => {
                 fetchRoomdata()
                 showNotification({
                     title: 'Chỉnh sửa thông tin thành công',
-                    message: `Thông tin Phòng số ${roomIdToDelete} đã được cập nhật`,
+                    message: `Thông tin Phòng số ${editedData.id} đã được cập nhật`,
                     color: 'green',
                     position: 'bottom-right'
                 })
             }
         } catch (error) {
-            console.log(error);
+
+            console.log('hit error', error);
             showNotification({
                 title: 'Có gì đó xảy ra?',
                 message: `Có điều gì đó đã xảy ra với server???`,
@@ -123,6 +147,11 @@ const RoomManagement = (props: any) => {
             try {
                 const response = await fetch(`http://localhost:8080/room/${roomIdToDelete}`, {
                     method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+
+                    }
                 });
 
                 if (response.ok) {
@@ -163,26 +192,47 @@ const RoomManagement = (props: any) => {
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [dataCreate, setDataCreate] = useState({
-        owner_id: 0,
+        owner_id: user.id,
         name: "",
         description: "",
         location: '{"city":"","country":""}',
         rating: 0,
+
     });
 
     const handleCreateGym = () => {
         console.log("Thêm mới phòng gym");
         setOpenModalCreate(true)
     };
-    const handleSumbitCreate = async (dataCreate: any) => {
+    const handleSumbitCreate = async (dataCreate: any, file: File | null) => {
         console.log("data final create", dataCreate);
         try {
+            console.log(file);
+
+            if (!file) {
+                showNotification({
+                    title: 'Chưa chọn file',
+                    message: 'Vui lòng chọn một file trước khi tạo phòng',
+                    color: 'red',
+                    position: 'bottom-right'
+                });
+                return;
+            }
+            const formData = new FormData();
+
+            formData.append("data", JSON.stringify(dataCreate));
+            formData.append("image", file);
+            console.log("formData in create Room >+++", formData);
+            for (var key of formData.keys()) {
+                console.log(key);
+                console.log(formData.get(key));
+            }
             const response = await fetch(`http://localhost:8080/room`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${user.token}`
                 },
-                body: JSON.stringify(dataCreate),
+                body: formData,
             });
             const data = await response.json();
             console.log("data server response", data);
@@ -206,6 +256,16 @@ const RoomManagement = (props: any) => {
             })
         }
     }
+
+    const handleServices = (roomId: number) => {
+        console.log("handleServices", roomId);
+        router.push(`/manager/services/${roomId}`)
+    }
+
+    const hanldeEquipment = (roomId: number) => {
+        console.log("handleServices", roomId);
+        router.push(`/manager/equipment/${roomId}`)
+    }
     return (
         <Container size="lg">
             {/* <Title className={styles.title}>
@@ -223,7 +283,7 @@ const RoomManagement = (props: any) => {
                 {paginateData().map((room: any) => (
                     <div key={room.id} className={styles.card}>
                         {/* <img src={room.imageUrl} alt={room.name} className={styles.cardImage} /> */}
-                        <img src='/phongtap2.png' alt={room.name} className={styles.cardImage} />
+                        <img src={`http://localhost:8080/Images/${room.image}`} alt={room.name} className={styles.cardImage} />
                         <div className={styles.cardContent}>
 
                             <Title order={4}>{room.name}</Title>
@@ -237,6 +297,13 @@ const RoomManagement = (props: any) => {
                                 </Button>
                                 <Button color="red" onClick={() => handleDeleteRoom(room.id)}>
                                     Xóa
+                                </Button>
+
+                                <Button color="cyan" onClick={() => hanldeEquipment(room.id)}>
+                                    Quản lý thiết bị
+                                </Button>
+                                <Button color="gray" onClick={() => handleServices(room.id)}>
+                                    Quản lý dịch vụ
                                 </Button>
                             </Group>
                         </div>
@@ -261,7 +328,7 @@ const RoomManagement = (props: any) => {
                 setFormUserData={setDataEdit}
                 handleSubmitEdit={handleSubmitEdit}
             />
-            <CreateRoomModal
+            <CreateRoomModalManager
                 openCreateRoom={openModalCreate}
                 setOpenCreateRoom={setOpenModalCreate}
                 formRoomData={dataCreate}
@@ -289,6 +356,6 @@ const RoomManagement = (props: any) => {
     );
 };
 
-export default RoomManagement;
+export default RoomManagementManager;
 
 

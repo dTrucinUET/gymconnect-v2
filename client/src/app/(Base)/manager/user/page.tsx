@@ -9,7 +9,7 @@ const UserManagementPage = async () => {
     const data = {}
     return (
         <>
-            <UserManagementManager data={data} />
+            <UserManagementManager />
         </>
     );
 }

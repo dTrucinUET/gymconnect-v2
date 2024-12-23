@@ -12,8 +12,9 @@ const getAllRoom = async () => {
     let rooms = null;
     try {
         rooms = await Room.findAll({
-            attributes: ['id', 'name', 'owner_id', 'description', 'location', 'rating', 'createdAt', 'updatedAt']
+            attributes: ['id', 'name', 'owner_id', 'description', 'image', 'location', 'rating', 'createdAt', 'updatedAt']
         })
+
     }
     catch (err) {
         console.log("Cannot fetch all rooms");
@@ -41,22 +42,44 @@ const getRoomByIdService = async (id) => {
     }
 }
 
-const createRoom = async (room) => {
-    const newRoom = { 
-        ...room
-    }
-    console.log("new room", newRoom);
-    
+const createRoom = async (room, image) => {
+
+    console.log("newRoom", JSON.parse(room));
+    let newRoom = JSON.parse(room);
+    console.log(newRoom.name);
+
+
+
     try {
-        await Room.create({  
-            ...newRoom,
-            owner_id: newRoom.owner_id   
-        })
-        return "Created room successfully!"
-    }
-    catch (err) {
-        console.log("Cannot create room");
-        throw new Error(err)
+        if (image) {
+            const imageBuffer = image.buffer;
+            console.log(image);
+
+            await Room.create({
+                name: newRoom.name,
+                owner_id: newRoom.owner_id,
+                description: newRoom.description,
+                rating: newRoom.rating,
+                image: image.filename,
+                owner_id: newRoom.owner_id,
+                location: JSON.stringify(newRoom.location)
+            });
+        } else {
+            await Room.create({
+                name: newRoom.name,
+                owner_id: newRoom.owner_id,
+                description: newRoom.description,
+                rating: newRoom.rating,
+                location: JSON.stringify(newRoom.location)
+
+            });
+        }
+
+        return "Created room successfully!";
+    } catch (err) {
+        console.log("Cannot create room", err);
+        throw new Error(err);
+
     }
 }
 

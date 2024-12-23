@@ -1,0 +1,209 @@
+/* Container */
+.container {
+    margin-top: 15px;
+    padding: 20px;
+    background-color: #ffffff;
+    /* Màu trắng sáng */
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Giảm độ đậm bóng */
+}
+
+/* Title */
+.title {
+    margin-bottom: 20px;
+    font-size: 28px;
+    /* Tăng cỡ chữ để nổi bật hơn */
+    font-weight: bold;
+    text-align: center;
+    color: #34495e;
+    /* Màu xanh đậm */
+}
+
+/* Table styling */
+.table {
+    width: 100%;
+    background-color: #ffffff;
+    /* Màu trắng để đồng nhất với container */
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    /* Nhẹ hơn để tạo cảm giác tinh tế */
+    overflow: hidden;
+}
+
+.table th {
+    background-color: #2f5351;
+    /* Màu xanh sáng nổi bật */
+    color: #ffffff;
+    font-size: 10px;
+    padding: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.table td {
+    padding: 12px;
+    font-size: 14px;
+    color: #555555;
+    /* Màu xám tối cho chữ */
+    border-bottom: 1px solid #eaeaea;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+    /* Màu nền sáng xen kẽ */
+}
+
+.table tr:hover {
+    background-color: #eaf6ff;
+    /* Màu xanh nhạt khi hover */
+    cursor: pointer;
+}
+
+.actionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.actionHeader button {
+    font-size: 12px;
+    padding: 4px 8px;
+    margin-left: auto;
+    line-height: 1.2;
+}
+
+
+/* Button Styling */
+.button {
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    /* Nhấn nhá thêm chuyển động */
+    opacity: 0.9;
+}
+
+/* Button Colors */
+.buttonRed {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+.buttonRed:hover {
+    background-color: #c0392b;
+}
+
+.buttonBlue {
+    background-color: #3498db;
+    color: #ffffff;
+}
+
+.buttonBlue:hover {
+    background-color: #2980b9;
+}
+
+.buttonGreen {
+    background-color: #2ecc71;
+    color: #ffffff;
+}
+
+.buttonGreen:hover {
+    background-color: #27ae60;
+}
+
+/* Pagination and Select */
+.paginationGroup {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Bóng nhẹ */
+}
+
+.paginationGroup select,
+.paginationGroup input {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 14px;
+    text-align: center;
+    background-color: #ffffff;
+    /* Nền trắng sáng */
+}
+
+.paginationGroup select:focus,
+.paginationGroup input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    /* Ánh sáng xanh tinh tế */
+}
+
+/* Responsive Styles */
+
+/* Dưới 1200px */
+@media (max-width: 1200px) {
+
+    .table th,
+    .table td {
+        font-size: 14px;
+    }
+
+    .paginationGroup {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+/* Dưới 768px */
+@media (max-width: 768px) {
+
+    .table th,
+    .table td {
+        font-size: 13px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .paginationGroup {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* Dưới 480px */
+@media (max-width: 480px) {
+
+    .table th,
+    .table td {
+        font-size: 12px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .paginationGroup {
+        gap: 10px;
+    }
+}

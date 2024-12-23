@@ -1,6 +1,8 @@
 import { Container, Title } from '@mantine/core';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Paper, Text, Rating, Stack, Image } from '@mantine/core';
+import { cookies } from 'next/headers';
+import customFetch from '@/component/utils/custom_fetch';
 
 interface RoomDetailProps {
     params: { id: string };
@@ -9,7 +11,29 @@ interface RoomDetailProps {
 const RoomDetail = async ({ params }: RoomDetailProps) => {
     const { id } = params;
 
-    const response = await fetch(`http://localhost:8080/room/${id}`);
+    const cookie = await cookies();
+    const token = cookie.get('token')
+    if (!token) {
+        return redirect('/login')
+    }
+    console.log("token in room id", token?.value);
+
+    const response = await fetch(`http://localhost:8080/room/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token?.value}`
+        },
+        credentials: 'include',
+
+    });
+    // const response = await customFetch(`http://localhost:8080/room/${id}`, {
+    //     method: 'GET'
+    // })
+    console.log(response);
+
+    console.log("Response status:", response.status);
+
     const room = await response.json();
     console.log("room check here", room);
 

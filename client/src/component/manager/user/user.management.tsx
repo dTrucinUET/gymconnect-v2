@@ -1,5 +1,3 @@
-
-
 'use client'
 import { Table, Button, Group, Pagination, Select, TextInput, Container, Title } from '@mantine/core';
 import { useState } from 'react';
@@ -12,9 +10,8 @@ interface User {
     permissions: string[];
 }
 
-const UserManagementManager = (props: any) => {
+const UserManagementManager = () => {
 
-    console.log(props.data);
 
     const [users, setUsers] = useState<User[]>([
         { email: 'test1@gmail.com', username: 'test1gym123', role: 'Người dùng', permissions: ['Xem', 'Mua hàng', 'Xóa tài khoản'] },
@@ -87,11 +84,6 @@ const UserManagementManager = (props: any) => {
                         <th>Tên đăng nhập</th>
                         <th>Vai trò</th>
                         <th>Quyền</th>
-                        {/* <th>Hành động <Button size="xs" color="blue" onClick={() => handleCreatePermission()}>
-                            Thêm mới
-                        </Button></th> */}
-
-
                         <th>
                             <div className={styles.actionHeader}>
                                 Hành động
@@ -121,9 +113,7 @@ const UserManagementManager = (props: any) => {
                             </td>
                             <td>
                                 <Group gap="xs">
-                                    <Button size="xs" color="green" onClick={() => handlePermissionUpdate(user.email)}>
-                                        Cấp quyền
-                                    </Button>
+
                                     <Button size="xs" color="yellow" onClick={() => handleEditUser(user.email)}>
                                         Chỉnh sửa
                                     </Button>

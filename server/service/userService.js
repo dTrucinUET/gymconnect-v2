@@ -34,16 +34,6 @@ const createNewUser = async (email, password, username) => {
 
 }
 
-// const getUserList = async () => {
-
-//     let user = []
-//     try {
-//         user = await User.findAll()
-//         return user;
-//     } catch (err) {
-//         throw Error(err)
-//     }
-// }
 
 const getUserList = async () => {
     try {
@@ -52,11 +42,15 @@ const getUserList = async () => {
         let userList = []
         for (let user of users) {
             const role1 = user;
-            console.log("role user", role1.dataValues.id);
+            console.log("user in loop", user.dataValues)
+            // console.log("role user", role1.dataValues.role_id);
+            let role_id = role1.dataValues.role_id
+
+            console.log(role_id);
 
             const permission_role = await RolePermission.findAll({
                 where: {
-                    role_id: role1.dataValues.id
+                    role_id: role_id
                 },
                 raw: true
             });
@@ -66,7 +60,6 @@ const getUserList = async () => {
             let permission_list = [];
 
             for (let item of permission_role) {
-                console.log(item.permission_id);
 
                 const permission = await Permission.findOne({
                     where: {
@@ -106,6 +99,8 @@ const deleteUserService = async (userIndex) => {
         await User.destroy({
             where: { id: userIndex }
         });
+        return "Delete user successfully!"
+
     } catch (err) {
         throw Error(err)
 
@@ -124,8 +119,10 @@ const getUserByIdService = async (userIndex) => {
 }
 const updateUserInfor = async (userIndex, data) => {
     try {
+        console.log(userIndex, data);
+
         await User.update({
-            ...data
+            role_id: data.roleId
         },
             {
                 where: {
@@ -133,6 +130,7 @@ const updateUserInfor = async (userIndex, data) => {
                 },
             },
         );
+        return "Update user successfully!"
 
     } catch (err) {
         throw Error(err)

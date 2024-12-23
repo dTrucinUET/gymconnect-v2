@@ -1,12 +1,15 @@
 'use client'
 import { Button, Group, Container, Title, Text, Pagination, Modal } from '@mantine/core';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './room-management.module.css';
 import EditRoomModal from '../modal/modal_room_edit';
 import { IconArrowRotaryLastRight } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import CreateRoomModal from '../modal/modal_room_create';
 import { useRouter } from 'next/navigation';
+import { UserContext } from '@/component/userContext/userContext';
+import customFetch from '@/component/utils/custom_fetch';
+import { cookies } from 'next/headers';
 interface Room {
     id: number;
     name: string;
@@ -18,11 +21,21 @@ interface Room {
 const RoomManagement = (props: any) => {
     const [dataPage, setDataPage] = useState(props.data)
     const itemsPerPage = 6;
+    const { user } = useContext(UserContext);
 
     const fetchRoomdata = async () => {
 
         try {
-            const response = await fetch('http://localhost:8080/room');
+            const response = await fetch('http://localhost:8080/room', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                },
+                credentials: 'include',
+
+            });
+
             const data = await response.json();
             console.log("data fetch any time", data)
             setDataPage(data)
@@ -72,13 +85,21 @@ const RoomManagement = (props: any) => {
     const handleSubmitEdit = async (editedData: any) => {
         console.log("data final edit", editedData);
         try {
+
             const response = await fetch(`http://localhost:8080/room/${editedData.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': `Bearer ${user.token}`
                 },
                 body: JSON.stringify(editedData),
             });
+
+
+            console.log('hit get data');
+
+            console.log(response);
+
             const data = await response.json();
             console.log("data server response", data);
             if (response.status === 200) {
@@ -86,13 +107,14 @@ const RoomManagement = (props: any) => {
                 fetchRoomdata()
                 showNotification({
                     title: 'Chỉnh sửa thông tin thành công',
-                    message: `Thông tin Phòng số ${roomIdToDelete} đã được cập nhật`,
+                    message: `Thông tin Phòng số ${editedData.id} đã được cập nhật`,
                     color: 'green',
                     position: 'bottom-right'
                 })
             }
         } catch (error) {
-            console.log(error);
+
+            console.log('hit error', error);
             showNotification({
                 title: 'Có gì đó xảy ra?',
                 message: `Có điều gì đó đã xảy ra với server???`,
@@ -102,8 +124,6 @@ const RoomManagement = (props: any) => {
         }
 
     }
-
-
 
 
     const [opened, setOpened] = useState(false);
@@ -123,6 +143,11 @@ const RoomManagement = (props: any) => {
             try {
                 const response = await fetch(`http://localhost:8080/room/${roomIdToDelete}`, {
                     method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+
+                    }
                 });
 
                 if (response.ok) {
@@ -163,7 +188,7 @@ const RoomManagement = (props: any) => {
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [dataCreate, setDataCreate] = useState({
-        owner_id: 0,
+        owner_id: user.id,
         name: "",
         description: "",
         location: '{"city":"","country":""}',
@@ -177,10 +202,14 @@ const RoomManagement = (props: any) => {
     const handleSumbitCreate = async (dataCreate: any) => {
         console.log("data final create", dataCreate);
         try {
+            console.log("dataCreate", dataCreate);
+
             const response = await fetch(`http://localhost:8080/room`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    'Authorization': `Bearer ${user.token}`
+
                 },
                 body: JSON.stringify(dataCreate),
             });
@@ -215,9 +244,9 @@ const RoomManagement = (props: any) => {
                 <Title className={styles.title}>
                     Quản lý Phòng gym
                 </Title>
-                <Button size="md" color="blue" onClick={() => handleCreateGym()}>
+                {/* <Button size="md" color="blue" onClick={() => handleCreateGym()}>
                     Tạo mới phòng gym
-                </Button>
+                </Button> */}
             </div>
             <div className={styles.cardsContainer}>
                 {paginateData().map((room: any) => (
@@ -232,12 +261,12 @@ const RoomManagement = (props: any) => {
                                 <Button color="blue" onClick={() => handleDetailRoom(room)}>
                                     Chi tiết
                                 </Button>
-                                <Button color="yellow" onClick={() => handleEditRoom(room)}>
+                                {/* <Button color="yellow" onClick={() => handleEditRoom(room)}>
                                     Chỉnh sửa
                                 </Button>
                                 <Button color="red" onClick={() => handleDeleteRoom(room.id)}>
                                     Xóa
-                                </Button>
+                                </Button> */}
                             </Group>
                         </div>
                     </div>
