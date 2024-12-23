@@ -1,66 +1,68 @@
 const { getAllUserRoom,
-     getUserRoomByIdService,
-      createUserRoom,
-       deleteUserRoomService,
-        updateUserRoomService,
-        getUserByRoomId} = require("../service/userRoomService");
+    getUserRoomByIdService,
+    createUserRoom,
+    deleteUserRoomService,
+    updateUserRoomService,
+    getUserByRoomId } = require("../service/userRoomService");
 
-const getUserRooms = async(req, res)=>{
-    const query_obj = req.query;    
-    if(query_obj.roomid){
-        const {roomid} = query_obj
+const getUserRooms = async (req, res) => {
+    const query_obj = req.query;
+    if (query_obj.roomid) {
+        const { roomid } = query_obj
         console.log(roomid);
-        
-        const users =  await getUserByRoomId(roomid)
+
+        const users = await getUserByRoomId(roomid)
         return res.status(200).json(users)
     }
     const data = await getAllUserRoom()
 
-    if(!data) {
-        return res.status(404).json({message: "No UserRooms found"})
+    if (!data) {
+        return res.status(404).json({ message: "No UserRooms found" })
     }
     return res.status(200).json(data)
 }
 
-const getUserRoomById = async(req, res) => {
+const getUserRoomById = async (req, res) => {
     const id = req.params.id
     const data = await getUserRoomByIdService(id)
 
-    if(!data) {
-        return res.status(404).json({message: "No UserRooms found"})
+    if (!data) {
+        return res.status(404).json({ message: "No UserRooms found" })
     }
     return res.status(200).json(data)
 
 }
 
-const addUserRoom = async(req, res)=>{
+const addUserRoom = async (req, res) => {
     const data = req.body
+    console.log("adding user room", data);
+
     const message = await createUserRoom(data)
-    if(!message){
-        return res.status(400).json({message: "Failed to create UserRoom"})
+    if (!message) {
+        return res.status(400).json({ message: "Failed to create UserRoom" })
     }
     return res.status(200).json({
         'message': `${message}`,
     })
 }
 
-const deleteUserRoom = async(req, res) => {
+const deleteUserRoom = async (req, res) => {
 
     const delete_id = req.params.id
-    const message =  await deleteUserRoomService(delete_id)
-    if(!message){
-        return res.status(400).json({message: "Failed to delete UserRoom"})
+    const message = await deleteUserRoomService(delete_id)
+    if (!message) {
+        return res.status(400).json({ message: "Failed to delete UserRoom" })
     }
-    return res.status(200).json({message: message})
+    return res.status(200).json({ message: message })
 }
 
-const updateUserRoom = async(req, res) => {
+const updateUserRoom = async (req, res) => {
     const update_id = req.params.id
     const message = await updateUserRoomService(update_id, req.body)
-    if(!message) {
-        return res.status(400).json({message: "Failed to update UserRoom"})
+    if (!message) {
+        return res.status(400).json({ message: "Failed to update UserRoom" })
     }
-    return res.status(200).json({message: message})
+    return res.status(200).json({ message: message })
 }
 
 

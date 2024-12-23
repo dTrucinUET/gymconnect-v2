@@ -3,14 +3,13 @@ const { registerService, hashUserPassWord, loginService, logoutService } = requi
 
 const register = async (req, res) => {
     const payload = req.body
-    const message = await registerService(payload)
+    const data = await registerService(payload)
     console.log(payload);
 
-    const flag_message = message.slice(0, 5)
-    if (flag_message === 'Error' || !message) {
-        return res.status(400).json({ message: "Error registering user: " + message })
+    if (!data) {
+        return res.status(400).json({ message: 'Registration failed' })
     }
-    return res.status(201).json({ message: message })
+    return res.status(201).json({ message: "Registration successfully   ", data: data.user })
 }
 
 const login = async (req, res) => {
