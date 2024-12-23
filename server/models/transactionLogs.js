@@ -12,11 +12,12 @@ module.exports = (sequelize, DataTypes) => {
   TransactionLog.init(
     {
       event: DataTypes.TEXT,
+      transaction_id: DataTypes.INTEGER
     },
     {
       sequelize,
       modelName: 'TransactionLog',
-      tableName: 'transaction_logs',
+      tableName: 'transactionLogs',
       timestamps: true,
     }
   );

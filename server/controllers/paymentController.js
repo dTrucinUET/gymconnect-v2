@@ -10,6 +10,8 @@ const createPayment = async(req, res) => {
     res.status(500).send({message: 'Payment failed'})
 }
 
+
+
 module.exports = {
     createPayment
 }

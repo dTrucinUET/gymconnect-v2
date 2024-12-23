@@ -24,7 +24,7 @@ const logoutroute = require('./routes/logout_route.js')
 const userRoute = require('./routes/user_route.js')
 const userRoomRoute = require('./routes/user_room_route.js')
 const paymentRoute = require('./routes/embedded_payment_route.js')
-
+const receiveHookroute = require('./routes/hook_route.js')
 
 const configCors = require('./config/cors.js')
 const app = express();
@@ -71,7 +71,7 @@ app.use('/users', checkUserJWT, checkUserPermission, userRoute)
 app.use('/user_room', checkUserJWT, checkUserPermission, userRoomRoute)
 
 app.use('/payment', checkUserJWT, checkUserPermission, paymentRoute)
-
+app.use('/receive-hook', receiveHookroute)
 app.use('/Images', express.static(path.join(__dirname, 'Images')));
 
 app.listen(port, () => {
