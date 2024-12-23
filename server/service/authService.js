@@ -54,10 +54,20 @@ const registerService = async (register_data) => {
         register_data.password = hash_password
         console.log(register_data);
 
-        await User.create({
+        const user = await User.create({
             ...register_data
         })
-        return 'Create new user successfully!'
+        console.log(user);
+
+        if (user) {
+            return {
+                user: user,
+                message: 'User registered successfully'
+            }
+        }
+        else {
+            return null;
+        }
     }
     catch (err) {
         throw Error(err)
@@ -75,7 +85,7 @@ const loginService = async (username, password) => {
                 username: validated_username
             }
         })
-        
+
         if (!validatedUser) {
             message = 'Error: Username not found'
             return { message: message, token: token }
@@ -88,13 +98,13 @@ const loginService = async (username, password) => {
             return { message: message, token: token }
         }
 
-        const UserRole = await Role.findOne({ 
+        const UserRole = await Role.findOne({
             where: {
                 id: validatedUser.role_id
             }
-        })  
+        })
         console.log("role", validatedUser.role_id);
-        
+
         const role_name = UserRole.role_name
 
         const token_data = {
@@ -102,7 +112,7 @@ const loginService = async (username, password) => {
             email: validatedUser.email,
             first_name: validatedUser.first_name,
             last_name: validatedUser.last_name,
-            id : validatedUser.id,
+            id: validatedUser.id,
             role_id: validatedUser.role_id,
             role_name: role_name
 

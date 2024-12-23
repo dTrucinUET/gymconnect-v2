@@ -43,11 +43,11 @@ export function NavbarNested(props: any) {
         icon: IconNotes,
         links: "room"
       },
-      {
-        label: "Quản lý nhân viên",
-        icon: IconNotes,
-        links: "customer"
-      },
+      // {
+      //   label: "Quản lý nhân viên",
+      //   icon: IconNotes,
+      //   links: "customer"
+      // },
       {
         label: "Quản lý thiết bị",
         icon: IconNotes,
